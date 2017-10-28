@@ -40,6 +40,7 @@ public class RCSlave extends javax.swing.JFrame {
         listener.setPort(port);
         System.out.println("Listener start");
         listener.start();
+        System.out.println(listener.toString());
     }
     
 
