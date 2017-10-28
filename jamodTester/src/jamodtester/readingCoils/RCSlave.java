@@ -38,6 +38,7 @@ public class RCSlave extends javax.swing.JFrame {
         
         listener = new ModbusTCPListener(5);
         listener.setPort(port);
+        System.out.println("Listener start");
         listener.start();
     }
     
