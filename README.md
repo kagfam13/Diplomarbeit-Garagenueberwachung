@@ -1,3 +1,1 @@
 # jamodTester
-
-contributor Mario
