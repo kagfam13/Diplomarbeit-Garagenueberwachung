@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jamodtester.readingCoils;
+package jamodtester.readCoils;
 
 import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.ModbusCoupler;
@@ -40,9 +40,23 @@ public class RCSlave extends javax.swing.JFrame {
         listener.setPort(port);
         System.out.println("Listener start");
         listener.start();
+<<<<<<< HEAD:jamodTester/src/jamodtester/readingCoils/RCSlave.java
         System.out.println(listener.toString());
+=======
+        System.out.println("läuft");
+>>>>>>> master:jamodTester/src/jamodtester/readCoils/RCSlave.java
     }
     
+    private void mirFalltKaKlassenNameEin()
+    {
+        spi.setDigitalOut(0, new SimpleDigitalOut(btCoil1.isSelected()));
+        spi.setDigitalOut(1, new SimpleDigitalOut(btCoil2.isSelected()));
+        spi.setDigitalOut(2, new SimpleDigitalOut(btCoil3.isSelected()));
+        spi.setDigitalOut(3, new SimpleDigitalOut(btCoil4.isSelected()));
+        spi.setDigitalOut(4, new SimpleDigitalOut(btCoil5.isSelected()));
+        spi.setDigitalOut(5, new SimpleDigitalOut(btCoil6.isSelected()));
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -153,32 +167,32 @@ public class RCSlave extends javax.swing.JFrame {
 
     private void btCoil1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil1ActionPerformed
         // TODO add your handling code here:
-        spi.setDigitalOut(0, new SimpleDigitalOut(btCoil1.isSelected()));
+        mirFalltKaKlassenNameEin();
     }//GEN-LAST:event_btCoil1ActionPerformed
 
     private void btCoil2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil2ActionPerformed
         // TODO add your handling code here:
-        spi.setDigitalOut(1, new SimpleDigitalOut(btCoil2.isSelected()));
+        mirFalltKaKlassenNameEin();
     }//GEN-LAST:event_btCoil2ActionPerformed
 
     private void btCoil3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil3ActionPerformed
         // TODO add your handling code here:
-        spi.setDigitalOut(2, new SimpleDigitalOut(btCoil3.isSelected()));
+        mirFalltKaKlassenNameEin();
     }//GEN-LAST:event_btCoil3ActionPerformed
 
     private void btCoil4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil4ActionPerformed
         // TODO add your handling code here:
-        spi.setDigitalOut(3, new SimpleDigitalOut(btCoil4.isSelected()));
+        mirFalltKaKlassenNameEin();
     }//GEN-LAST:event_btCoil4ActionPerformed
 
     private void btCoil5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil5ActionPerformed
         // TODO add your handling code here:
-        spi.setDigitalOut(4, new SimpleDigitalOut(btCoil5.isSelected()));
+        mirFalltKaKlassenNameEin();
     }//GEN-LAST:event_btCoil5ActionPerformed
 
     private void btCoil6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil6ActionPerformed
         // TODO add your handling code here:
-        spi.setDigitalOut(5, new SimpleDigitalOut(btCoil6.isSelected()));
+        mirFalltKaKlassenNameEin();
     }//GEN-LAST:event_btCoil6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
