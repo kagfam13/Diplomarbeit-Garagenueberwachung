@@ -14,6 +14,7 @@ import net.wimpi.modbus.io.ModbusTCPTransaction;
 import net.wimpi.modbus.msg.ModbusRequest;
 import net.wimpi.modbus.msg.ModbusResponse;
 import net.wimpi.modbus.msg.ReadCoilsRequest;
+import net.wimpi.modbus.msg.WriteCoilRequest;
 import net.wimpi.modbus.msg.WriteMultipleCoilsRequest;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
@@ -47,14 +48,15 @@ public class WCMaster extends javax.swing.JFrame {
             ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
             
             
-            WriteMultipleCoilsRequest request= new WriteMultipleCoilsRequest(0, 6);
-            System.out.println("test");
-            request.setCoilStatus(0, coil1.isSelected());
-            request.setCoilStatus(1, coil2.isSelected());
-            request.setCoilStatus(2, coil3.isSelected());
-            request.setCoilStatus(3, coil4.isSelected());
-            request.setCoilStatus(4, coil5.isSelected());
-            request.setCoilStatus(5, coil6.isSelected());
+//            WriteMultipleCoilsRequest request= new WriteMultipleCoilsRequest(0, 6);
+//            System.out.println("test");
+//            request.setCoilStatus(0, coil1.isSelected());
+//            request.setCoilStatus(1, coil2.isSelected());
+//            request.setCoilStatus(2, coil3.isSelected());
+//            request.setCoilStatus(3, coil4.isSelected());
+//            request.setCoilStatus(4, coil5.isSelected());
+//            request.setCoilStatus(5, coil6.isSelected());
+            ModbusRequest request = new WriteCoilRequest(0,coil1.isSelected());
             
             request.setUnitID(Modbus.DEFAULT_UNIT_ID);
             transaction.setRequest(request);

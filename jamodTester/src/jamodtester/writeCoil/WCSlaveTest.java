@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jamodtester.writeCoils;
+package jamodtester.writeCoil;
 
 import java.awt.Color;
 import javax.swing.SwingWorker;
@@ -11,6 +11,7 @@ import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.ModbusCoupler;
 import net.wimpi.modbus.net.ModbusTCPListener;
 import net.wimpi.modbus.procimg.DigitalIn;
+import net.wimpi.modbus.procimg.DigitalOut;
 import net.wimpi.modbus.procimg.SimpleDigitalIn;
 import net.wimpi.modbus.procimg.SimpleDigitalOut;
 import net.wimpi.modbus.procimg.SimpleProcessImage;
@@ -19,7 +20,7 @@ import net.wimpi.modbus.procimg.SimpleProcessImage;
  *
  * @author Fabian
  */
-public class WCSlave extends javax.swing.JFrame {
+public class WCSlaveTest extends javax.swing.JFrame {
     SimpleProcessImage spi;
     ModbusTCPListener listener;
     
@@ -29,58 +30,29 @@ public class WCSlave extends javax.swing.JFrame {
         @Override
         protected Object doInBackground() throws Exception {
             while (true) {                
-                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(1).isSet())
+                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(0).isSet())
                     coil1.setForeground(Color.green);
                 else
                     coil1.setForeground(Color.red);
-                
-//                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(1).isSet())
-//                    coil2.setForeground(Color.green);
-//                else
-//                    coil2.setForeground(Color.red);
-//                
-//                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(2).isSet())
-//                    coil3.setForeground(Color.green);
-//                else
-//                    coil3.setForeground(Color.red);
-//                
-//                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(3).isSet())
-//                    coil4.setForeground(Color.green);
-//                else
-//                    coil4.setForeground(Color.red);
-//                
-//                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(4).isSet())
-//                    coil5.setForeground(Color.green);
-//                else
-//                    coil5.setForeground(Color.red);
-//                
-//                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(5).isSet())
-//                    coil6.setForeground(Color.green);
-//                else
-//                    coil6.setForeground(Color.red);
             }
         }
         
     }
     
-    public WCSlave() {
+    public WCSlaveTest() {
         initComponents();
         
         int port = Modbus.DEFAULT_PORT;
         spi = new SimpleProcessImage();
         
         spi.addDigitalIn(new SimpleDigitalIn());
-        //spi.addDigitalIn(new SimpleDigitalIn());
-        //spi.addDigitalIn(new SimpleDigitalIn());
-        //spi.addDigitalIn(new SimpleDigitalIn());
-        //spi.addDigitalIn(new SimpleDigitalIn());
-        //spi.addDigitalIn(new SimpleDigitalIn());
+        spi.addDigitalOut(new SimpleDigitalOut());
         
-        ModbusCoupler.getReference().setUnitID(Modbus.DEFAULT_UNIT_ID);
+        ModbusCoupler.getReference().setUnitID(15);
         ModbusCoupler.getReference().setMaster(false);
         ModbusCoupler.getReference().setProcessImage(spi);
         
-        listener = new ModbusTCPListener(5);
+        listener = new ModbusTCPListener(3);
         listener.setPort(port);
         listener.start();
         System.out.println("läuft");
@@ -103,11 +75,6 @@ public class WCSlave extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         pMain = new javax.swing.JPanel();
         coil1 = new javax.swing.JLabel();
-        coil2 = new javax.swing.JLabel();
-        coil3 = new javax.swing.JLabel();
-        coil4 = new javax.swing.JLabel();
-        coil5 = new javax.swing.JLabel();
-        coil6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -129,37 +96,6 @@ public class WCSlave extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         pMain.add(coil1, gridBagConstraints);
-
-        coil2.setText("Coil 2");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        pMain.add(coil2, gridBagConstraints);
-
-        coil3.setText("Coil 3");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        pMain.add(coil3, gridBagConstraints);
-
-        coil4.setText("Coil 4");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        pMain.add(coil4, gridBagConstraints);
-
-        coil5.setText("Coil 5");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        pMain.add(coil5, gridBagConstraints);
-
-        coil6.setText("Coil 6");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        pMain.add(coil6, gridBagConstraints);
 
         getContentPane().add(pMain, java.awt.BorderLayout.CENTER);
 
@@ -190,14 +126,18 @@ public class WCSlave extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(WCSlave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCSlaveTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(WCSlave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCSlaveTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(WCSlave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCSlaveTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(WCSlave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCSlaveTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -206,18 +146,13 @@ public class WCSlave extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new WCSlave().setVisible(true);
+                new WCSlaveTest().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel coil1;
-    private javax.swing.JLabel coil2;
-    private javax.swing.JLabel coil3;
-    private javax.swing.JLabel coil4;
-    private javax.swing.JLabel coil5;
-    private javax.swing.JLabel coil6;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel pMain;
     private javax.swing.JPanel pSouth;
