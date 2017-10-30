@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jamodtester.readingCoils;
+package jamodtester.readCoils;
 
+import jamodtester.writeCoils.WCSlave;
 import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.ModbusCoupler;
 import net.wimpi.modbus.net.ModbusTCPListener;

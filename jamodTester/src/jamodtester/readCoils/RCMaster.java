@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jamodtester.readingCoils;
+package jamodtester.readCoils;
 
+import jamodtester.writeCoils.WCMaster;
 import java.awt.Color;
 import java.net.InetAddress;
 import javax.swing.JLabel;
