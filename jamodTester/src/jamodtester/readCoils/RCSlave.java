@@ -5,7 +5,6 @@
  */
 package jamodtester.readCoils;
 
-import jamodtester.writeCoils.WCSlave;
 import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.ModbusCoupler;
 import net.wimpi.modbus.net.ModbusTCPListener;
