@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jamodtester.readingCoils;
+package jamodtester.writeCoils;
 
-import jamodtester.writeCoils.WCSlave;
 import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.ModbusCoupler;
 import net.wimpi.modbus.net.ModbusTCPListener;
@@ -16,13 +15,13 @@ import net.wimpi.modbus.procimg.SimpleProcessImage;
  *
  * @author Fabian
  */
-public class RCSlave extends javax.swing.JFrame {
+public class WCSlave extends javax.swing.JFrame {
     SimpleProcessImage spi;
     ModbusTCPListener listener;
     /**
      * Creates new form RCServer
      */
-    public RCSlave() {
+    public WCSlave() {
         initComponents();
         int port = Modbus.DEFAULT_PORT;
         spi = new SimpleProcessImage();
@@ -40,17 +39,19 @@ public class RCSlave extends javax.swing.JFrame {
         listener = new ModbusTCPListener(5);
         listener.setPort(port);
         listener.start();
-<<<<<<< HEAD:jamodTester/src/jamodtester/readingCoils/RCSlave.java
-<<<<<<< HEAD:jamodTester/src/jamodtester/readCoils/RCSlave.java
         System.out.println("läuft");
-=======
-        System.out.println(listener.toString());
->>>>>>> parent of 3ebab93... Merge branch 'master' into Mario:jamodTester/src/jamodtester/readingCoils/RCSlave.java
-=======
-        System.out.println(listener.toString());
->>>>>>> parent of 3ebab93... Merge branch 'master' into Mario:jamodTester/src/jamodtester/readingCoils/RCSlave.java
     }
     
+    private void mirFalltKaKlassenNameEin()
+    {
+        spi.setDigitalOut(0, new SimpleDigitalOut(btCoil1.isSelected()));
+        spi.setDigitalOut(1, new SimpleDigitalOut(btCoil2.isSelected()));
+        spi.setDigitalOut(2, new SimpleDigitalOut(btCoil3.isSelected()));
+        spi.setDigitalOut(3, new SimpleDigitalOut(btCoil4.isSelected()));
+        spi.setDigitalOut(4, new SimpleDigitalOut(btCoil5.isSelected()));
+        spi.setDigitalOut(5, new SimpleDigitalOut(btCoil6.isSelected()));
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -161,32 +162,32 @@ public class RCSlave extends javax.swing.JFrame {
 
     private void btCoil1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil1ActionPerformed
         // TODO add your handling code here:
-        spi.setDigitalOut(0, new SimpleDigitalOut(btCoil1.isSelected()));
+        mirFalltKaKlassenNameEin();
     }//GEN-LAST:event_btCoil1ActionPerformed
 
     private void btCoil2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil2ActionPerformed
         // TODO add your handling code here:
-        spi.setDigitalOut(1, new SimpleDigitalOut(btCoil2.isSelected()));
+        mirFalltKaKlassenNameEin();
     }//GEN-LAST:event_btCoil2ActionPerformed
 
     private void btCoil3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil3ActionPerformed
         // TODO add your handling code here:
-        spi.setDigitalOut(2, new SimpleDigitalOut(btCoil3.isSelected()));
+        mirFalltKaKlassenNameEin();
     }//GEN-LAST:event_btCoil3ActionPerformed
 
     private void btCoil4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil4ActionPerformed
         // TODO add your handling code here:
-        spi.setDigitalOut(3, new SimpleDigitalOut(btCoil4.isSelected()));
+        mirFalltKaKlassenNameEin();
     }//GEN-LAST:event_btCoil4ActionPerformed
 
     private void btCoil5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil5ActionPerformed
         // TODO add your handling code here:
-        spi.setDigitalOut(4, new SimpleDigitalOut(btCoil5.isSelected()));
+        mirFalltKaKlassenNameEin();
     }//GEN-LAST:event_btCoil5ActionPerformed
 
     private void btCoil6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil6ActionPerformed
         // TODO add your handling code here:
-        spi.setDigitalOut(5, new SimpleDigitalOut(btCoil6.isSelected()));
+        mirFalltKaKlassenNameEin();
     }//GEN-LAST:event_btCoil6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -213,21 +214,23 @@ public class RCSlave extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RCSlave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCSlave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RCSlave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCSlave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RCSlave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCSlave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RCSlave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCSlave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RCSlave().setVisible(true);
+                new WCSlave().setVisible(true);
             }
         });
     }

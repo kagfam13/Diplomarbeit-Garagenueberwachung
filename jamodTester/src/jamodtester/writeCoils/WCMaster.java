@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jamodtester.readCoils;
+package jamodtester.writeCoils;
 
-import jamodtester.writeCoils.WCMaster;
 import java.awt.Color;
 import java.net.InetAddress;
 import javax.swing.JLabel;
@@ -21,12 +20,12 @@ import net.wimpi.modbus.net.TCPMasterConnection;
  *
  * @author Fabian
  */
-public class RCMaster extends javax.swing.JFrame {
+public class WCMaster extends javax.swing.JFrame {
      
     /**
      * Creates new form RCMaster
      */
-    public RCMaster() {
+    public WCMaster() {
         initComponents();
     }
     
@@ -201,20 +200,21 @@ public class RCMaster extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RCMaster.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCMaster.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RCMaster.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCMaster.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RCMaster.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCMaster.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RCMaster.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCMaster.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RCMaster().setVisible(true);
+                new WCMaster().setVisible(true);
             }
         });
     }
