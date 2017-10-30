@@ -14,6 +14,7 @@ import net.wimpi.modbus.io.ModbusTCPTransaction;
 import net.wimpi.modbus.msg.ModbusRequest;
 import net.wimpi.modbus.msg.ModbusResponse;
 import net.wimpi.modbus.msg.ReadCoilsRequest;
+import net.wimpi.modbus.msg.WriteMultipleCoilsRequest;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
 /**
@@ -31,15 +32,6 @@ public class WCMaster extends javax.swing.JFrame {
     
     private class refresh extends SwingWorker<Object, Object>
     {
-
-        private void setText(JLabel label,char c)
-        {
-            if(c=='1')
-                label.setForeground(Color.green);
-            else
-                label.setForeground(Color.red);
-        }
-        
         public refresh() {
         }
 
@@ -52,38 +44,27 @@ public class WCMaster extends javax.swing.JFrame {
             connection.setPort(port);
             System.out.println("Trying to connect to "+addy.getHostAddress()+" on port "+port);
             connection.connect();
-            System.out.println("hi");
             ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
             
-            ModbusRequest request = new ReadCoilsRequest(0, 6);
+            
+            WriteMultipleCoilsRequest request= new WriteMultipleCoilsRequest(0, 6);
+            System.out.println("test");
+            request.setCoilStatus(0, coil1.isSelected());
+            request.setCoilStatus(1, coil2.isSelected());
+            request.setCoilStatus(2, coil3.isSelected());
+            request.setCoilStatus(3, coil4.isSelected());
+            request.setCoilStatus(4, coil5.isSelected());
+            request.setCoilStatus(5, coil6.isSelected());
+            
             request.setUnitID(Modbus.DEFAULT_UNIT_ID);
             transaction.setRequest(request);
+            System.out.println("test2");
             transaction.execute();
-            ModbusResponse response = transaction.getResponse();
-            System.out.println("hi2");
-            String hexNumber = response.getHexMessage();
+            System.out.println("test3");
+            System.out.println(transaction.getResponse().toString());
+
             
             connection.close();
-            
-            System.out.println("hi3");
-            System.out.println(hexNumber);
-            String hex2 = hexNumber.replaceAll(" ", "");
-            int intVal = Integer.parseInt(hex2.substring(hex2.length()-2), 16);
-            String bin = Integer.toBinaryString(intVal);
-            System.out.println(bin);
-            while(bin.length()<6)
-            {
-                bin = "0" + bin;
-            }
-            System.out.println(bin);
-            
-            setText(coil1,bin.charAt(bin.length()-1));
-            setText(coil2,bin.charAt(bin.length()-2));
-            setText(coil3,bin.charAt(bin.length()-3));
-            setText(coil4,bin.charAt(bin.length()-4));
-            setText(coil5,bin.charAt(bin.length()-5));
-            setText(coil6,bin.charAt(bin.length()-6));
-            
             return 0;
         }
     }
@@ -102,12 +83,12 @@ public class WCMaster extends javax.swing.JFrame {
         btRefresh = new javax.swing.JButton();
         btExit = new javax.swing.JButton();
         pMain = new javax.swing.JPanel();
-        coil1 = new javax.swing.JLabel();
-        coil2 = new javax.swing.JLabel();
-        coil3 = new javax.swing.JLabel();
-        coil4 = new javax.swing.JLabel();
-        coil5 = new javax.swing.JLabel();
-        coil6 = new javax.swing.JLabel();
+        coil1 = new javax.swing.JToggleButton();
+        coil2 = new javax.swing.JToggleButton();
+        coil3 = new javax.swing.JToggleButton();
+        coil4 = new javax.swing.JToggleButton();
+        coil5 = new javax.swing.JToggleButton();
+        coil6 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,40 +112,40 @@ public class WCMaster extends javax.swing.JFrame {
 
         pMain.setLayout(new java.awt.GridBagLayout());
 
-        coil1.setText("Coil1");
+        coil1.setText("Coil 1");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
         pMain.add(coil1, gridBagConstraints);
 
         coil2.setText("Coil 2");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
         pMain.add(coil2, gridBagConstraints);
 
         coil3.setText("Coil 3");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
         pMain.add(coil3, gridBagConstraints);
 
         coil4.setText("Coil 4");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
         pMain.add(coil4, gridBagConstraints);
 
         coil5.setText("Coil 5");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
         pMain.add(coil5, gridBagConstraints);
 
         coil6.setText("Coil 6");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
         pMain.add(coil6, gridBagConstraints);
 
         getContentPane().add(pMain, java.awt.BorderLayout.CENTER);
@@ -222,12 +203,12 @@ public class WCMaster extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btExit;
     private javax.swing.JButton btRefresh;
-    private javax.swing.JLabel coil1;
-    private javax.swing.JLabel coil2;
-    private javax.swing.JLabel coil3;
-    private javax.swing.JLabel coil4;
-    private javax.swing.JLabel coil5;
-    private javax.swing.JLabel coil6;
+    private javax.swing.JToggleButton coil1;
+    private javax.swing.JToggleButton coil2;
+    private javax.swing.JToggleButton coil3;
+    private javax.swing.JToggleButton coil4;
+    private javax.swing.JToggleButton coil5;
+    private javax.swing.JToggleButton coil6;
     private javax.swing.JPanel pMain;
     private javax.swing.JPanel pSouth;
     // End of variables declaration//GEN-END:variables

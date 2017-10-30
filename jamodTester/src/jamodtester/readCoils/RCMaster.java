@@ -5,7 +5,6 @@
  */
 package jamodtester.readCoils;
 
-import jamodtester.writeCoils.WCMaster;
 import java.awt.Color;
 import java.net.InetAddress;
 import javax.swing.JLabel;
@@ -134,38 +133,38 @@ public class RCMaster extends javax.swing.JFrame {
 
         coil1.setText("Coil1");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         pMain.add(coil1, gridBagConstraints);
 
         coil2.setText("Coil 2");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         pMain.add(coil2, gridBagConstraints);
 
         coil3.setText("Coil 3");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         pMain.add(coil3, gridBagConstraints);
 
         coil4.setText("Coil 4");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         pMain.add(coil4, gridBagConstraints);
 
         coil5.setText("Coil 5");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         pMain.add(coil5, gridBagConstraints);
 
         coil6.setText("Coil 6");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         pMain.add(coil6, gridBagConstraints);
 
         getContentPane().add(pMain, java.awt.BorderLayout.CENTER);

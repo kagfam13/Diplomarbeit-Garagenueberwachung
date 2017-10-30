@@ -5,9 +5,13 @@
  */
 package jamodtester.writeCoils;
 
+import java.awt.Color;
+import javax.swing.SwingWorker;
 import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.ModbusCoupler;
 import net.wimpi.modbus.net.ModbusTCPListener;
+import net.wimpi.modbus.procimg.DigitalIn;
+import net.wimpi.modbus.procimg.SimpleDigitalIn;
 import net.wimpi.modbus.procimg.SimpleDigitalOut;
 import net.wimpi.modbus.procimg.SimpleProcessImage;
 
@@ -18,19 +22,63 @@ import net.wimpi.modbus.procimg.SimpleProcessImage;
 public class WCSlave extends javax.swing.JFrame {
     SimpleProcessImage spi;
     ModbusTCPListener listener;
+    DigitalIn coi1,coi2,coi3,coi4,coi5,coi6;
     /**
      * Creates new form RCServer
      */
+    
+    private class loop extends SwingWorker<Object, Object>
+    {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            while (true) {                
+                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(0).isSet())
+                    coil1.setForeground(Color.green);
+                else
+                    coil1.setForeground(Color.red);
+                
+                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(1).isSet())
+                    coil2.setForeground(Color.green);
+                else
+                    coil2.setForeground(Color.red);
+                
+                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(2).isSet())
+                    coil3.setForeground(Color.green);
+                else
+                    coil3.setForeground(Color.red);
+                
+                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(3).isSet())
+                    coil4.setForeground(Color.green);
+                else
+                    coil4.setForeground(Color.red);
+                
+                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(4).isSet())
+                    coil5.setForeground(Color.green);
+                else
+                    coil5.setForeground(Color.red);
+                
+                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(5).isSet())
+                    coil6.setForeground(Color.green);
+                else
+                    coil6.setForeground(Color.red);
+            }
+        }
+        
+    }
+    
     public WCSlave() {
         initComponents();
+        
         int port = Modbus.DEFAULT_PORT;
         spi = new SimpleProcessImage();
-        spi.addDigitalOut(new SimpleDigitalOut(btCoil1.isSelected()));
-        spi.addDigitalOut(new SimpleDigitalOut(btCoil2.isSelected()));
-        spi.addDigitalOut(new SimpleDigitalOut(btCoil3.isSelected()));
-        spi.addDigitalOut(new SimpleDigitalOut(btCoil4.isSelected()));
-        spi.addDigitalOut(new SimpleDigitalOut(btCoil5.isSelected()));
-        spi.addDigitalOut(new SimpleDigitalOut(btCoil6.isSelected()));
+        
+        spi.addDigitalIn(new SimpleDigitalIn());
+        spi.addDigitalIn(new SimpleDigitalIn());
+        spi.addDigitalIn(new SimpleDigitalIn());
+        spi.addDigitalIn(new SimpleDigitalIn());
+        spi.addDigitalIn(new SimpleDigitalIn());
+        spi.addDigitalIn(new SimpleDigitalIn());
         
         ModbusCoupler.getReference().setUnitID(Modbus.DEFAULT_UNIT_ID);
         ModbusCoupler.getReference().setMaster(false);
@@ -40,18 +88,10 @@ public class WCSlave extends javax.swing.JFrame {
         listener.setPort(port);
         listener.start();
         System.out.println("läuft");
+        
+        new loop().execute();
     }
     
-    private void mirFalltKaKlassenNameEin()
-    {
-        spi.setDigitalOut(0, new SimpleDigitalOut(btCoil1.isSelected()));
-        spi.setDigitalOut(1, new SimpleDigitalOut(btCoil2.isSelected()));
-        spi.setDigitalOut(2, new SimpleDigitalOut(btCoil3.isSelected()));
-        spi.setDigitalOut(3, new SimpleDigitalOut(btCoil4.isSelected()));
-        spi.setDigitalOut(4, new SimpleDigitalOut(btCoil5.isSelected()));
-        spi.setDigitalOut(5, new SimpleDigitalOut(btCoil6.isSelected()));
-        
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -66,12 +106,12 @@ public class WCSlave extends javax.swing.JFrame {
         pSouth = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         pMain = new javax.swing.JPanel();
-        btCoil1 = new javax.swing.JToggleButton();
-        btCoil2 = new javax.swing.JToggleButton();
-        btCoil3 = new javax.swing.JToggleButton();
-        btCoil4 = new javax.swing.JToggleButton();
-        btCoil5 = new javax.swing.JToggleButton();
-        btCoil6 = new javax.swing.JToggleButton();
+        coil1 = new javax.swing.JLabel();
+        coil2 = new javax.swing.JLabel();
+        coil3 = new javax.swing.JLabel();
+        coil4 = new javax.swing.JLabel();
+        coil5 = new javax.swing.JLabel();
+        coil6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,106 +129,46 @@ public class WCSlave extends javax.swing.JFrame {
 
         pMain.setLayout(new java.awt.GridBagLayout());
 
-        btCoil1.setText("Coil 1");
-        btCoil1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btCoil1ActionPerformed(evt);
-            }
-        });
+        coil1.setText("Coil 1");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(11, 11, 11, 11);
-        pMain.add(btCoil1, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        pMain.add(coil1, gridBagConstraints);
 
-        btCoil2.setText("Coil 2");
-        btCoil2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btCoil2ActionPerformed(evt);
-            }
-        });
+        coil2.setText("Coil 2");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(11, 11, 11, 11);
-        pMain.add(btCoil2, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        pMain.add(coil2, gridBagConstraints);
 
-        btCoil3.setText("Coil 3");
-        btCoil3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btCoil3ActionPerformed(evt);
-            }
-        });
+        coil3.setText("Coil 3");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(11, 11, 11, 11);
-        pMain.add(btCoil3, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        pMain.add(coil3, gridBagConstraints);
 
-        btCoil4.setText("Coil 4");
-        btCoil4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btCoil4ActionPerformed(evt);
-            }
-        });
+        coil4.setText("Coil 4");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(11, 11, 11, 11);
-        pMain.add(btCoil4, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        pMain.add(coil4, gridBagConstraints);
 
-        btCoil5.setText("Coil 5");
-        btCoil5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btCoil5ActionPerformed(evt);
-            }
-        });
+        coil5.setText("Coil 5");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(11, 11, 11, 11);
-        pMain.add(btCoil5, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        pMain.add(coil5, gridBagConstraints);
 
-        btCoil6.setText("Coil 6");
-        btCoil6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btCoil6ActionPerformed(evt);
-            }
-        });
+        coil6.setText("Coil 6");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(11, 11, 11, 11);
-        pMain.add(btCoil6, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        pMain.add(coil6, gridBagConstraints);
 
         getContentPane().add(pMain, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btCoil1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil1ActionPerformed
-        // TODO add your handling code here:
-        mirFalltKaKlassenNameEin();
-    }//GEN-LAST:event_btCoil1ActionPerformed
-
-    private void btCoil2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil2ActionPerformed
-        // TODO add your handling code here:
-        mirFalltKaKlassenNameEin();
-    }//GEN-LAST:event_btCoil2ActionPerformed
-
-    private void btCoil3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil3ActionPerformed
-        // TODO add your handling code here:
-        mirFalltKaKlassenNameEin();
-    }//GEN-LAST:event_btCoil3ActionPerformed
-
-    private void btCoil4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil4ActionPerformed
-        // TODO add your handling code here:
-        mirFalltKaKlassenNameEin();
-    }//GEN-LAST:event_btCoil4ActionPerformed
-
-    private void btCoil5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil5ActionPerformed
-        // TODO add your handling code here:
-        mirFalltKaKlassenNameEin();
-    }//GEN-LAST:event_btCoil5ActionPerformed
-
-    private void btCoil6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCoil6ActionPerformed
-        // TODO add your handling code here:
-        mirFalltKaKlassenNameEin();
-    }//GEN-LAST:event_btCoil6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -236,12 +216,12 @@ public class WCSlave extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton btCoil1;
-    private javax.swing.JToggleButton btCoil2;
-    private javax.swing.JToggleButton btCoil3;
-    private javax.swing.JToggleButton btCoil4;
-    private javax.swing.JToggleButton btCoil5;
-    private javax.swing.JToggleButton btCoil6;
+    private javax.swing.JLabel coil1;
+    private javax.swing.JLabel coil2;
+    private javax.swing.JLabel coil3;
+    private javax.swing.JLabel coil4;
+    private javax.swing.JLabel coil5;
+    private javax.swing.JLabel coil6;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel pMain;
     private javax.swing.JPanel pSouth;
