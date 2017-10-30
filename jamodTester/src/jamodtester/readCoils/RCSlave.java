@@ -38,8 +38,13 @@ public class RCSlave extends javax.swing.JFrame {
         
         listener = new ModbusTCPListener(5);
         listener.setPort(port);
+        System.out.println("Listener start");
         listener.start();
+<<<<<<< HEAD:jamodTester/src/jamodtester/readingCoils/RCSlave.java
+        System.out.println(listener.toString());
+=======
         System.out.println("läuft");
+>>>>>>> master:jamodTester/src/jamodtester/readCoils/RCSlave.java
     }
     
     private void mirFalltKaKlassenNameEin()
