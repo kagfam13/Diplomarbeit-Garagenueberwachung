@@ -39,8 +39,12 @@ public class RCSlave extends javax.swing.JFrame {
         listener = new ModbusTCPListener(5);
         listener.setPort(port);
         listener.start();
+<<<<<<< HEAD:jamodTester/src/jamodtester/readingCoils/RCSlave.java
 <<<<<<< HEAD:jamodTester/src/jamodtester/readCoils/RCSlave.java
         System.out.println("läuft");
+=======
+        System.out.println(listener.toString());
+>>>>>>> parent of 3ebab93... Merge branch 'master' into Mario:jamodTester/src/jamodtester/readingCoils/RCSlave.java
 =======
         System.out.println(listener.toString());
 >>>>>>> parent of 3ebab93... Merge branch 'master' into Mario:jamodTester/src/jamodtester/readingCoils/RCSlave.java
