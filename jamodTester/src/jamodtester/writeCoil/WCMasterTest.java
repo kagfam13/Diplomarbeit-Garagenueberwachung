@@ -53,7 +53,6 @@ public class WCMasterTest extends javax.swing.JFrame {
             transaction.execute();
             
             connection.close();
-            
         } catch (Exception ex) {
             Logger.getLogger(WCMasterTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -82,6 +81,9 @@ public class WCMasterTest extends javax.swing.JFrame {
         toSlave = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("WCSlaveTest");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        setLocation(new java.awt.Point(0, 0));
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -106,12 +108,6 @@ public class WCMasterTest extends javax.swing.JFrame {
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
         toSlave.setText("Coil 1");
-        toSlave.setActionCommand("Coil1");
-        toSlave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toSlaveActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -132,10 +128,6 @@ public class WCMasterTest extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void toSlaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toSlaveActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_toSlaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -162,14 +154,6 @@ public class WCMasterTest extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(WCMasterTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

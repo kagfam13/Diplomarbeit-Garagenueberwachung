@@ -6,60 +6,83 @@
 package jamodtester.writeCoil;
 
 import java.awt.Color;
+import javax.swing.JLabel;
 import javax.swing.SwingWorker;
-import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.ModbusCoupler;
+import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.net.ModbusTCPListener;
 import net.wimpi.modbus.procimg.DigitalIn;
 import net.wimpi.modbus.procimg.DigitalOut;
+import net.wimpi.modbus.procimg.Register;
 import net.wimpi.modbus.procimg.SimpleDigitalIn;
 import net.wimpi.modbus.procimg.SimpleDigitalOut;
+import net.wimpi.modbus.procimg.SimpleInputRegister;
 import net.wimpi.modbus.procimg.SimpleProcessImage;
-
+import net.wimpi.modbus.procimg.SimpleRegister;
 /**
  *
  * @author Fabian
  */
 public class WCSlaveTest extends javax.swing.JFrame {
-    SimpleProcessImage spi;
-    ModbusTCPListener listener;
+
+    /**
+     * Creates new form SlaveGUI01
+     */
     
-    private class loop extends SwingWorker<Object, Object>
+    ModbusTCPListener listener = null;
+    SimpleProcessImage spi = null;
+    int port = Modbus.DEFAULT_PORT;
+    
+    private class lulu extends SwingWorker<Object, Object>
     {
 
         @Override
         protected Object doInBackground() throws Exception {
-            while (true) {                
-                if (ModbusCoupler.getReference().getProcessImage().getDigitalIn(0).isSet())
-                    coil1.setForeground(Color.green);
+            while (true) {
+                if (ModbusCoupler.getReference().getProcessImage().getDigitalOut(0).isSet())
+                     msgFromMaster.setForeground(Color.green);
                 else
-                    coil1.setForeground(Color.red);
+                    msgFromMaster.setForeground(Color.red);
+                
             }
         }
         
     }
     
+    
     public WCSlaveTest() {
         initComponents();
-        
-        int port = Modbus.DEFAULT_PORT;
-        spi = new SimpleProcessImage();
-        
-        spi.addDigitalIn(new SimpleDigitalIn());
-        spi.addDigitalOut(new SimpleDigitalOut());
-        
-        ModbusCoupler.getReference().setUnitID(15);
-        ModbusCoupler.getReference().setMaster(false);
-        ModbusCoupler.getReference().setProcessImage(spi);
-        
-        listener = new ModbusTCPListener(3);
-        listener.setPort(port);
-        listener.start();
-        System.out.println("läuft");
-        
-        new loop().execute();
+        try {
+            if(listener != null)
+                listener.stop();
+            System.out.println("jModbus Modbus Slave (Server)");
+
+            // 1. prepare a process image
+            spi = new SimpleProcessImage();
+            
+            spi.addDigitalIn(new SimpleDigitalIn());
+            
+            spi.addDigitalOut(new SimpleDigitalOut());
+            
+            ModbusCoupler.getReference().setUnitID(15);
+            ModbusCoupler.getReference().setMaster(false);
+            ModbusCoupler.getReference().setProcessImage(spi);
+            
+            if (Modbus.debug)
+                    System.out.println("Listening...");
+            listener = new ModbusTCPListener(3);
+            listener.setPort(port);
+
+            System.out.println("Listening to "+listener+" on port "+port);
+            
+            listener.start();
+            new lulu().execute();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -71,43 +94,48 @@ public class WCSlaveTest extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        pSouth = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        pMain = new javax.swing.JPanel();
-        coil1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        btExit = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        msgFromMaster = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        pSouth.setLayout(new java.awt.CardLayout());
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jButton1.setText("Exit");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btExit.setText("Exit");
+        btExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                pressedExit(evt);
             }
         });
-        pSouth.add(jButton1, "card2");
+        jPanel2.add(btExit);
 
-        getContentPane().add(pSouth, java.awt.BorderLayout.PAGE_END);
+        jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
 
-        pMain.setLayout(new java.awt.GridBagLayout());
+        jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        coil1.setText("Coil 1");
+        msgFromMaster.setText("Coil 1");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        pMain.add(coil1, gridBagConstraints);
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        jPanel3.add(msgFromMaster, gridBagConstraints);
 
-        getContentPane().add(pMain, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        listener.stop();
+    private void pressedExit(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressedExit
+        if(listener != null)
+            listener.stop();
         dispose();
         System.exit(0);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_pressedExit
 
     /**
      * @param args the command line arguments
@@ -142,6 +170,14 @@ public class WCSlaveTest extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -152,9 +188,11 @@ public class WCSlaveTest extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel coil1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JPanel pMain;
-    private javax.swing.JPanel pSouth;
+    private javax.swing.JButton btExit;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel msgFromMaster;
     // End of variables declaration//GEN-END:variables
+
 }

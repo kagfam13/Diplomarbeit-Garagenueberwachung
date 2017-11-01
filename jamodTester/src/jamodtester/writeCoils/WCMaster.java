@@ -5,72 +5,65 @@
  */
 package jamodtester.writeCoils;
 
+import jamodtester.writeCoil.*;
 import java.awt.Color;
-import java.net.InetAddress;
-import javax.swing.JLabel;
+import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingWorker;
-import net.wimpi.modbus.Modbus;
-import net.wimpi.modbus.io.ModbusTCPTransaction;
-import net.wimpi.modbus.msg.ModbusRequest;
-import net.wimpi.modbus.msg.ModbusResponse;
-import net.wimpi.modbus.msg.ReadCoilsRequest;
-import net.wimpi.modbus.msg.WriteCoilRequest;
-import net.wimpi.modbus.msg.WriteMultipleCoilsRequest;
-import net.wimpi.modbus.net.TCPMasterConnection;
+import net.wimpi.modbus.*;
+import net.wimpi.modbus.msg.*;
+import net.wimpi.modbus.io.*;
+import net.wimpi.modbus.net.*;
 
 /**
  *
  * @author Fabian
  */
 public class WCMaster extends javax.swing.JFrame {
-     
+
     /**
-     * Creates new form RCMaster
+     * Creates new form MasterGUI01
      */
     public WCMaster() {
-        initComponents();
+        initComponents(); 
+        //toSlave.setFocusable(false);
     }
     
-    private class refresh extends SwingWorker<Object, Object>
+    private class connectWorker extends SwingWorker<Object, Object>
     {
-        public refresh() {
-        }
 
         @Override
         protected Object doInBackground() throws Exception {
+        try {
             int port = Modbus.DEFAULT_PORT;
+            int unitId = 15;
             InetAddress addy = InetAddress.getLocalHost();
             TCPMasterConnection connection = new TCPMasterConnection(addy);
             connection.setTimeout(3000);
             connection.setPort(port);
             System.out.println("Trying to connect to "+addy.getHostAddress()+" on port "+port);
             connection.connect();
+            
             ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-            
-            
-//            WriteMultipleCoilsRequest request= new WriteMultipleCoilsRequest(0, 6);
-//            System.out.println("test");
-//            request.setCoilStatus(0, coil1.isSelected());
-//            request.setCoilStatus(1, coil2.isSelected());
-//            request.setCoilStatus(2, coil3.isSelected());
-//            request.setCoilStatus(3, coil4.isSelected());
-//            request.setCoilStatus(4, coil5.isSelected());
-//            request.setCoilStatus(5, coil6.isSelected());
-            ModbusRequest request = new WriteCoilRequest(0,coil1.isSelected());
-            
-            request.setUnitID(Modbus.DEFAULT_UNIT_ID);
-            transaction.setRequest(request);
-            System.out.println("test2");
-            transaction.execute();
-            System.out.println("test3");
-            System.out.println(transaction.getResponse().toString());
 
+            // Coil schreiben
+            ModbusRequest request = new WriteCoilRequest(0, toSlave.isSelected());
+            request.setUnitID(unitId);
+            transaction.setRequest(request);
+            transaction.execute();
             
             connection.close();
+        } catch (Exception ex) {
+            Logger.getLogger(WCMaster.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
             return 0;
         }
     }
-    
+            
+            
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,90 +74,61 @@ public class WCMaster extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        pSouth = new javax.swing.JPanel();
-        btRefresh = new javax.swing.JButton();
-        btExit = new javax.swing.JButton();
-        pMain = new javax.swing.JPanel();
-        coil1 = new javax.swing.JToggleButton();
-        coil2 = new javax.swing.JToggleButton();
-        coil3 = new javax.swing.JToggleButton();
-        coil4 = new javax.swing.JToggleButton();
-        coil5 = new javax.swing.JToggleButton();
-        coil6 = new javax.swing.JToggleButton();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        toSlave = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("WCSlaveTest");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        setLocation(new java.awt.Point(0, 0));
 
-        btRefresh.setText("refresh");
-        btRefresh.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jButton1.setText("refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btRefreshActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
-        pSouth.add(btRefresh);
+        jPanel2.add(jButton1);
 
-        btExit.setText("exit");
-        btExit.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.setText("exit");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btExitActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
-        pSouth.add(btExit);
+        jPanel2.add(jButton2);
 
-        getContentPane().add(pSouth, java.awt.BorderLayout.PAGE_END);
+        jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
 
-        pMain.setLayout(new java.awt.GridBagLayout());
+        jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        coil1.setText("Coil 1");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        pMain.add(coil1, gridBagConstraints);
-
-        coil2.setText("Coil 2");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        pMain.add(coil2, gridBagConstraints);
-
-        coil3.setText("Coil 3");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        pMain.add(coil3, gridBagConstraints);
-
-        coil4.setText("Coil 4");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        pMain.add(coil4, gridBagConstraints);
-
-        coil5.setText("Coil 5");
+        toSlave.setText("to Slave");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        pMain.add(coil5, gridBagConstraints);
+        gridBagConstraints.gridy = 2;
+        jPanel3.add(toSlave, gridBagConstraints);
 
-        coil6.setText("Coil 6");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        pMain.add(coil6, gridBagConstraints);
+        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(pMain, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRefreshActionPerformed
-        // TODO add your handling code here:
-        new refresh().execute();
-    }//GEN-LAST:event_btRefreshActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new connectWorker().execute();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void btExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExitActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         dispose();
-        System.exit(0);
-    }//GEN-LAST:event_btExitActionPerformed
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,6 +157,36 @@ public class WCMaster extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -203,15 +197,11 @@ public class WCMaster extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btExit;
-    private javax.swing.JButton btRefresh;
-    private javax.swing.JToggleButton coil1;
-    private javax.swing.JToggleButton coil2;
-    private javax.swing.JToggleButton coil3;
-    private javax.swing.JToggleButton coil4;
-    private javax.swing.JToggleButton coil5;
-    private javax.swing.JToggleButton coil6;
-    private javax.swing.JPanel pMain;
-    private javax.swing.JPanel pSouth;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JCheckBox toSlave;
     // End of variables declaration//GEN-END:variables
 }
