@@ -15,6 +15,7 @@ import net.wimpi.modbus.*;
 import net.wimpi.modbus.msg.*;
 import net.wimpi.modbus.io.*;
 import net.wimpi.modbus.net.*;
+import net.wimpi.modbus.util.BitVector;
 
 /**
  *
@@ -47,8 +48,26 @@ public class WCMaster extends javax.swing.JFrame {
             
             ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
 
-            // Coil schreiben
-            ModbusRequest request = new WriteCoilRequest(0, toSlave.isSelected());
+//            // Coil0 schreiben
+//            ModbusRequest request = new WriteCoilRequest(0, coil0.isSelected());
+//            request.setUnitID(unitId);
+//            transaction.setRequest(request);
+//            transaction.execute();
+//            
+//            // Coil1 schreiben
+//            request = new WriteCoilRequest(1, coil1.isSelected());
+//            request.setUnitID(unitId);
+//            transaction.setRequest(request);
+//            transaction.execute();
+
+            BitVector vector = new BitVector(6);
+            vector.setBit(0, coil0.isSelected());
+            vector.setBit(1, coil1.isSelected());
+            vector.setBit(2, coil2.isSelected());
+            vector.setBit(3, coil3.isSelected());
+            vector.setBit(4, coil4.isSelected());
+            vector.setBit(5, coil5.isSelected());
+            ModbusRequest request = new WriteMultipleCoilsRequest(0, vector);
             request.setUnitID(unitId);
             transaction.setRequest(request);
             transaction.execute();
@@ -79,10 +98,15 @@ public class WCMaster extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        toSlave = new javax.swing.JCheckBox();
+        coil0 = new javax.swing.JCheckBox();
+        coil1 = new javax.swing.JCheckBox();
+        coil2 = new javax.swing.JCheckBox();
+        coil3 = new javax.swing.JCheckBox();
+        coil4 = new javax.swing.JCheckBox();
+        coil5 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("WCSlaveTest");
+        setTitle("Master");
         setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         setLocation(new java.awt.Point(0, 0));
 
@@ -108,11 +132,43 @@ public class WCMaster extends javax.swing.JFrame {
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        toSlave.setText("to Slave");
+        coil0.setText("Coil 0");
+        jPanel3.add(coil0, new java.awt.GridBagConstraints());
+
+        coil1.setText("Coil 1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        jPanel3.add(toSlave, gridBagConstraints);
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
+        jPanel3.add(coil1, gridBagConstraints);
+
+        coil2.setText("Coil 2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
+        jPanel3.add(coil2, gridBagConstraints);
+
+        coil3.setText("Coil 3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
+        jPanel3.add(coil3, gridBagConstraints);
+
+        coil4.setText("Coil 4");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
+        jPanel3.add(coil4, gridBagConstraints);
+
+        coil5.setText("Coil 5");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
+        jPanel3.add(coil5, gridBagConstraints);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -197,11 +253,16 @@ public class WCMaster extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox coil0;
+    private javax.swing.JCheckBox coil1;
+    private javax.swing.JCheckBox coil2;
+    private javax.swing.JCheckBox coil3;
+    private javax.swing.JCheckBox coil4;
+    private javax.swing.JCheckBox coil5;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JCheckBox toSlave;
     // End of variables declaration//GEN-END:variables
 }
