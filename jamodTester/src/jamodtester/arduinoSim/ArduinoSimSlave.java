@@ -5,6 +5,17 @@
  */
 package jamodtester.arduinoSim;
 
+import jamodtester.writeCoils.WCSlave;
+import java.awt.Color;
+import javax.swing.JPanel;
+import javax.swing.SwingWorker;
+import net.wimpi.modbus.Modbus;
+import net.wimpi.modbus.ModbusCoupler;
+import net.wimpi.modbus.net.ModbusTCPListener;
+import net.wimpi.modbus.procimg.SimpleDigitalIn;
+import net.wimpi.modbus.procimg.SimpleDigitalOut;
+import net.wimpi.modbus.procimg.SimpleProcessImage;
+
 /**
  *
  * @author Fabian
@@ -14,8 +25,109 @@ public class ArduinoSimSlave extends javax.swing.JFrame {
     /**
      * Creates new form ArduinoSimSlave
      */
+    
+    ModbusTCPListener listener = null;
+    SimpleProcessImage spi = null;
+    int port = Modbus.DEFAULT_PORT;
+    
+    private class motorWorker extends SwingWorker<Object, Object>
+    {
+        JPanel panel;
+        boolean auf;
+        public motorWorker(JPanel panel,boolean auf) {
+            this.panel = panel;
+            this.auf = auf;
+        }
+        
+        @Override
+        protected Object doInBackground() throws Exception {
+            panel.setBackground(Color.green);
+            Thread.sleep(5000);
+            panel.setBackground(Color.red);
+            if(auf == true)
+            {
+                jToggleButton2.setSelected(true);
+                jToggleButton3.setSelected(false);
+            }
+            else
+            {
+                jToggleButton2.setSelected(false);
+                jToggleButton3.setSelected(true);
+            }
+            spi.setDigitalOut(3, new SimpleDigitalOut(jToggleButton2.isSelected()));
+            spi.setDigitalOut(4, new SimpleDigitalOut(jToggleButton3.isSelected()));
+            return 0;
+        }
+        
+    }
+    
+    private class backgroundWorker extends SwingWorker<Object, Object>
+    {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            while(true)
+            {
+                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(0).isSet())
+                    torAufFahren();
+                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(1).isSet())
+                    torZuFahren();
+            }
+        }
+
+        private void torAufFahren() {
+            System.out.println("Tor fährt auf");
+            spi.setDigitalOut(0, new SimpleDigitalOut(false));
+            new motorWorker(jPanel3,true).execute();
+        }
+
+        private void torZuFahren() {
+            System.out.println("Tor fährt zu");
+            spi.setDigitalOut(1, new SimpleDigitalOut(false));
+            new motorWorker(jPanel4,false).execute();
+        }
+        
+    }
+    
     public ArduinoSimSlave() {
         initComponents();
+        jPanel3.setBackground(Color.red);
+        jPanel4.setBackground(Color.red);
+        try {
+            if(listener != null)
+                listener.stop();
+            System.out.println("jModbus Modbus Slave (Server)");
+
+            // 1. prepare a process image
+            spi = new SimpleProcessImage();
+            
+            spi.addDigitalIn(new SimpleDigitalIn());
+            spi.addDigitalIn(new SimpleDigitalIn());
+            
+            spi.addDigitalOut(new SimpleDigitalOut());
+            spi.addDigitalOut(new SimpleDigitalOut());
+            spi.addDigitalOut(new SimpleDigitalOut());
+            spi.addDigitalOut(new SimpleDigitalOut());
+            spi.addDigitalOut(new SimpleDigitalOut());
+            
+            ModbusCoupler.getReference().setUnitID(15);
+            ModbusCoupler.getReference().setMaster(false);
+            ModbusCoupler.getReference().setProcessImage(spi);
+            
+            if (Modbus.debug)
+                    System.out.println("Listening...");
+            listener = new ModbusTCPListener(3);
+            listener.setPort(port);
+
+            System.out.println("Listening to "+listener+" on port "+port);
+            
+            listener.start();
+            new backgroundWorker().execute();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -27,21 +139,82 @@ public class ArduinoSimSlave extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jToggleButton2 = new javax.swing.JToggleButton();
+        jToggleButton3 = new javax.swing.JToggleButton();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        jToggleButton1.setText("Sensor Auto");
+        jToggleButton1.setToolTipText("");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jToggleButton1);
+
+        jToggleButton2.setText("Sensor Tor oben");
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jToggleButton2);
+
+        jToggleButton3.setText("Sensor Tor unten");
+        jToggleButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jToggleButton3);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.SOUTH);
+
+        jPanel2.setLayout(new java.awt.GridLayout(1, 0));
+
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Tor Motor auf");
+        jPanel3.add(jLabel1, java.awt.BorderLayout.CENTER);
+
+        jPanel2.add(jPanel3);
+
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Tor Motor zu");
+        jPanel4.add(jLabel2, java.awt.BorderLayout.CENTER);
+
+        jPanel2.add(jPanel4);
+
+        getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        // TODO add your handling code here:
+        spi.setDigitalOut(2, new SimpleDigitalOut(jToggleButton1.isSelected()));
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        // TODO add your handling code here:
+        spi.setDigitalOut(3, new SimpleDigitalOut(jToggleButton2.isSelected()));
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
+
+    private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
+        // TODO add your handling code here:
+        spi.setDigitalOut(4, new SimpleDigitalOut(jToggleButton3.isSelected()));
+    }//GEN-LAST:event_jToggleButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +252,14 @@ public class ArduinoSimSlave extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JToggleButton jToggleButton3;
     // End of variables declaration//GEN-END:variables
 }
