@@ -40,7 +40,7 @@ public class RRSlave extends javax.swing.JFrame {
             spi = new SimpleProcessImage();
             
             spi.addRegister(new SimpleRegister(jSlider1.getValue()));
-            spi.addRegister(new SimpleRegister(5));
+            
             ModbusCoupler.getReference().setUnitID(15);
             ModbusCoupler.getReference().setMaster(false);
             ModbusCoupler.getReference().setProcessImage(spi);

@@ -53,9 +53,7 @@ public class RRMaster extends javax.swing.JFrame {
             ModbusRequest request = new ReadMultipleRegistersRequest(0,1);
             request.setUnitID(15);
             transaction.setRequest(request);
-            System.out.println("test");
             transaction.execute();
-            System.out.println("test2");
             ModbusResponse response = transaction.getResponse();
             System.out.println(response.getHexMessage());
             String hexString = response.getHexMessage().substring(response.getHexMessage().length()-3, response.getHexMessage().length()-1);

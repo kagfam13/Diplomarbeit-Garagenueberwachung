@@ -47,7 +47,6 @@ public class WCSlave extends javax.swing.JFrame {
                 checkfun(coil3, 3);
                 checkfun(coil4, 4);
                 checkfun(coil5, 5);
-                
             }
         }
         

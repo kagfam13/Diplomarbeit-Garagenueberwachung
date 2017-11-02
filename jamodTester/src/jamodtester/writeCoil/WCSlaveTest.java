@@ -43,10 +43,8 @@ public class WCSlaveTest extends javax.swing.JFrame {
                      msgFromMaster.setForeground(Color.green);
                 else
                     msgFromMaster.setForeground(Color.red);
-                
             }
         }
-        
     }
     
     

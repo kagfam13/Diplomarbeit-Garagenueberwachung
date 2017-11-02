@@ -28,7 +28,6 @@ public class WCMaster extends javax.swing.JFrame {
      */
     public WCMaster() {
         initComponents(); 
-        //toSlave.setFocusable(false);
     }
     
     private class connectWorker extends SwingWorker<Object, Object>
@@ -47,18 +46,6 @@ public class WCMaster extends javax.swing.JFrame {
             connection.connect();
             
             ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-
-//            // Coil0 schreiben
-//            ModbusRequest request = new WriteCoilRequest(0, coil0.isSelected());
-//            request.setUnitID(unitId);
-//            transaction.setRequest(request);
-//            transaction.execute();
-//            
-//            // Coil1 schreiben
-//            request = new WriteCoilRequest(1, coil1.isSelected());
-//            request.setUnitID(unitId);
-//            transaction.setRequest(request);
-//            transaction.execute();
 
             BitVector vector = new BitVector(6);
             vector.setBit(0, coil0.isSelected());
@@ -182,7 +169,7 @@ public class WCMaster extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -212,37 +199,7 @@ public class WCMaster extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(WCMaster.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
