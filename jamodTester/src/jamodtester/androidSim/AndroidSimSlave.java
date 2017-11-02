@@ -5,7 +5,6 @@
  */
 package jamodtester.androidSim;
 
-import jamodtester.arduinoSim.*;
 import java.awt.*;
 import javax.swing.*;
 import net.wimpi.modbus.*;
@@ -196,7 +195,7 @@ public class AndroidSimSlave extends javax.swing.JFrame
             spi.addDigitalOut(new SimpleDigitalOut());
             spi.addDigitalOut(new SimpleDigitalOut());
             spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
+            spi.addDigitalOut(new SimpleDigitalOut(tbTLF.isSelected()));
             spi.addDigitalOut(new SimpleDigitalOut());
             spi.addDigitalOut(new SimpleDigitalOut());
             spi.addDigitalOut(new SimpleDigitalOut());

@@ -18,7 +18,7 @@ import net.wimpi.modbus.net.TCPMasterConnection;
 import java.net.InetAddress;
 
 public class MainActivity extends AppCompatActivity {
-    String ip = "10.200.112.86";
+    String ip = "10.0.0.166";
     int port = Modbus.DEFAULT_PORT;
     int unitId = 15;
     TextView auto1,auto2,auto3,auto4,auto5,tor1,tor2,tor3,tor4,tor5;
@@ -138,8 +138,10 @@ public class MainActivity extends AppCompatActivity {
         {
             String res = response.getHexMessage();
             System.out.println(res);
-            String hexString = response.getHexMessage().substring(response.getHexMessage().length()-3, response.getHexMessage().length()-1);
-            return Integer.parseInt(hexString, 16);
+            System.out.println(response.getDataLength());
+            String data = res.replaceAll(" ","");
+            data = data.substring(data.length()-response.getDataLength());
+            return Integer.parseInt(data, 16);
         }
 
         @Override
@@ -157,11 +159,13 @@ public class MainActivity extends AppCompatActivity {
 
                     ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
 
-                    ModbusRequest request = new ReadMultipleRegistersRequest(0, 1);
+                    ModbusRequest request;
+                    ModbusResponse response;
+                    /*request = new ReadMultipleRegistersRequest(0, 1);
                     request.setUnitID(unitId);
                     transaction.setRequest(request);
                     transaction.execute();
-                    ModbusResponse response = transaction.getResponse();
+                    Mresponse = transaction.getResponse();
                     int min = calcInt(response);
 
 
@@ -170,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                     transaction.setRequest(request);
                     transaction.execute();
                     response = transaction.getResponse();
-                    int sec = calcInt(response);
+                    int sec = calcInt(response);*/
 
 
                     request = new ReadCoilsRequest(0,25);
@@ -201,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                     setTor(tor3, getCoil(bin, 19),getCoil(bin, 20));
                     setTor(tor4, getCoil(bin, 21),getCoil(bin, 22));
                     setTor(tor5, getCoil(bin, 23),getCoil(bin, 24));
-                    Thread.sleep(2000);
+                    Thread.sleep(10000);
                     return 0;
                 }
                 catch (Exception e)
