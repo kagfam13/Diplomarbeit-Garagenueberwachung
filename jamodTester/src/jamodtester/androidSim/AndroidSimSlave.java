@@ -5,7 +5,9 @@
  */
 package jamodtester.androidSim;
 
+import jamodtester.arduinoSim.*;
 import java.awt.*;
+import javax.swing.*;
 import net.wimpi.modbus.*;
 import net.wimpi.modbus.net.*;
 import net.wimpi.modbus.procimg.*;
@@ -25,6 +27,127 @@ public class AndroidSimSlave extends javax.swing.JFrame
   SimpleProcessImage spi = null;
   int port = Modbus.DEFAULT_PORT;
   
+  private class motorWorker extends SwingWorker<Object, Object>
+    {
+        JPanel garagenplatz;
+        boolean status;
+        JToggleButton TorSensorOben,TorSensorUnten;
+        //Constructor
+        public motorWorker(JPanel garagenplatz,boolean status, JToggleButton TorSensorOben,JToggleButton TorSensorUnten) {
+            this.garagenplatz = garagenplatz;
+            this.status = status;
+            this.TorSensorOben = TorSensorOben;
+            this.TorSensorUnten = TorSensorUnten;
+        }
+        
+        @Override
+        protected Object doInBackground() throws Exception {
+            garagenplatz.setBackground(Color.green);
+            Thread.sleep(5000);
+            garagenplatz.setBackground(Color.red);
+            if(status == true)
+            {
+                TorSensorOben.setSelected(true);
+                TorSensorUnten.setSelected(false);
+            }
+            else
+            {
+                TorSensorOben.setSelected(false);
+                TorSensorUnten.setSelected(true);
+            }
+            spi.setDigitalOut(3, new SimpleDigitalOut(TorSensorOben.isSelected()));
+            spi.setDigitalOut(4, new SimpleDigitalOut(TorSensorUnten.isSelected()));
+            return 0;
+        }
+        
+    }
+  
+  private class backgroundWorker extends SwingWorker<Object, Object>
+    {
+      
+        
+    
+        @Override
+        protected Object doInBackground() throws Exception {
+            while(true)
+            {
+                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(0).isSet())
+                    torAufFahren(0);
+                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(1).isSet())
+                    torZuFahren(1);
+                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(2).isSet())
+                    torAufFahren(2);
+                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(3).isSet())
+                    torZuFahren(3);
+                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(4).isSet())
+                    torAufFahren(4);
+                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(5).isSet())
+                    torZuFahren(5);
+                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(6).isSet())
+                    torAufFahren(6);
+                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(7).isSet())
+                    torZuFahren(7);
+                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(8).isSet())
+                    torAufFahren(8);
+                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(9).isSet())
+                    torZuFahren(9);
+            }
+        }
+
+        private void torAufFahren(int coil) {
+            System.out.println("Tor fährt auf");
+            spi.setDigitalOut(coil, new SimpleDigitalOut(false));
+            switch(coil)
+            {
+              case 0:
+                new AndroidSimSlave.motorWorker(pta1, true, tbTSO1, tbTSU1).execute();
+                break;
+              case 2:
+                new AndroidSimSlave.motorWorker(pta2, true, tbTSO2, tbTSU2).execute();
+                break;
+              case 4:
+                new AndroidSimSlave.motorWorker(pta3, true, tbTSO3, tbTSU3).execute();
+                break;
+              case 6:
+                new AndroidSimSlave.motorWorker(pta4, true, tbTSO4, tbTSU4).execute();
+                break;
+              case 8:
+                new AndroidSimSlave.motorWorker(pta5, true, tbTSO5, tbTSU5).execute();
+                break;
+              default:
+                System.out.println("ERROR");
+                break;
+            }
+        }
+
+        private void torZuFahren(int coil) {
+            System.out.println("Tor fährt zu");
+            spi.setDigitalOut(coil+1, new SimpleDigitalOut(false));
+            //new ArduinoSimSlave.motorWorker(jPanel4,false).execute();
+            switch(coil)
+            {
+              case 1:
+                new AndroidSimSlave.motorWorker(ptz1, true, tbTSO1, tbTSU1).execute();
+                break;
+              case 3:
+                new AndroidSimSlave.motorWorker(pta2, true, tbTSO2, tbTSU2).execute();
+                break;
+              case 5:
+                new AndroidSimSlave.motorWorker(pta3, true, tbTSO3, tbTSU3).execute();
+                break;
+              case 7:
+                new AndroidSimSlave.motorWorker(pta4, true, tbTSO4, tbTSU4).execute();
+                break;
+              case 9:
+                new AndroidSimSlave.motorWorker(pta5, true, tbTSO5, tbTSU5).execute();
+                break;
+              default:
+                System.out.println("ERROR 2");
+                break;
+            }
+        }
+        
+    }
   
   public AndroidSimSlave()
   {
@@ -89,6 +212,18 @@ public class AndroidSimSlave extends javax.swing.JFrame
             spi.addDigitalOut(new SimpleDigitalOut());
             spi.addDigitalOut(new SimpleDigitalOut());
             
+            ModbusCoupler.getReference().setUnitID(15);
+            ModbusCoupler.getReference().setMaster(false);
+            ModbusCoupler.getReference().setProcessImage(spi);
+            
+            if (Modbus.debug)
+                    System.out.println("Listening...");
+            listener = new ModbusTCPListener(3);
+            listener.setPort(port);
+
+            System.out.println("Listening to "+listener+" on port "+port);
+            
+            listener.start();
             
             
             
