@@ -22,7 +22,7 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
     /**
      * Creates new form ArduinoSimMaster
      */
-     String inetAdress = "10.0.0.12";
+     String inetAdress = "10.0.0.189";
      
     public ArduinoSimMaster() {
         initComponents();
@@ -88,36 +88,28 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
         {
           lTor.setText("Ist das Tor halb offen oder halb geschlossen");
         }
-        Thread.sleep(5000);
+        Thread.sleep(2000);
       }
     }
               
     }
     
-    private void manageTor(int coil)
+    private class manageTor extends SwingWorker<Object, Object>
     {
-       try
-       {
-         int port = Modbus.DEFAULT_PORT;
-         InetAddress addy = InetAddress.getByName(inetAdress);
-         TCPMasterConnection connection = new TCPMasterConnection(addy);
-         connection.setTimeout(3000);
-         connection.setPort(port);
-         System.out.println("Trying to connect to "+addy.getHostAddress()+" on port "+port);
-         connection.connect();
+       int coil;
 
-         ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-
-         ModbusRequest request = new WriteCoilRequest(coil, true);
-         request.setUnitID(Modbus.DEFAULT_UNIT_ID);
-         transaction.setRequest(request);
-         transaction.execute();
-         connection.close();
-       }
-       catch(Exception ex)
-       {
-         ex.printStackTrace();
-       }
+    public manageTor(int coil)
+    {
+      this.coil = coil;
+    }
+       
+       
+      @Override
+      protected Object doInBackground() throws Exception
+      {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      }
+       
     }
          
          /**
@@ -197,13 +189,13 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
   private void bTorAufActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bTorAufActionPerformed
   {//GEN-HEADEREND:event_bTorAufActionPerformed
     // TODO add your handling code here:
-    manageTor(0);
+    new manageTor(0).execute();
   }//GEN-LAST:event_bTorAufActionPerformed
 
   private void bTorZuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bTorZuActionPerformed
   {//GEN-HEADEREND:event_bTorZuActionPerformed
     // TODO add your handling code here:
-    manageTor(1);
+    new manageTor(1).execute();
   }//GEN-LAST:event_bTorZuActionPerformed
 
   private void bExitActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bExitActionPerformed
