@@ -18,7 +18,7 @@ import net.wimpi.modbus.net.TCPMasterConnection;
 import java.net.InetAddress;
 
 public class MainActivity extends AppCompatActivity {
-    String ip = "10.0.0.166";
+    String ip = "10.0.0.12";
     int port = Modbus.DEFAULT_PORT;
     int unitId = 15;
     TextView auto1,auto2,auto3,auto4,auto5,tor1,tor2,tor3,tor4,tor5;
