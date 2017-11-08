@@ -26,6 +26,30 @@ public class AndroidSimSlave extends javax.swing.JFrame
   SimpleProcessImage spi = null;
   int port = Modbus.DEFAULT_PORT;
   
+  //Schreiben
+  
+  
+  private void writeCoils()
+  {
+    spi.setDigitalOut(10,new SimpleDigitalOut(tbTLF.isSelected()));
+    spi.setDigitalOut(11,new SimpleDigitalOut(tbKRF.isSelected()));
+    spi.setDigitalOut(12,new SimpleDigitalOut(tbMTF.isSelected()));
+    spi.setDigitalOut(13,new SimpleDigitalOut(tbOEF.isSelected()));
+    spi.setDigitalOut(14,new SimpleDigitalOut(tbVF.isSelected()));
+    spi.setDigitalOut(15,new SimpleDigitalOut(tbTSO1.isSelected()));
+    spi.setDigitalOut(16,new SimpleDigitalOut(tbTSU1.isSelected()));
+    spi.setDigitalOut(17,new SimpleDigitalOut(tbTSO2.isSelected()));
+    spi.setDigitalOut(18,new SimpleDigitalOut(tbTSU2.isSelected()));
+    spi.setDigitalOut(19,new SimpleDigitalOut(tbTSO3.isSelected()));
+    spi.setDigitalOut(20,new SimpleDigitalOut(tbTSU3.isSelected()));
+    spi.setDigitalOut(21,new SimpleDigitalOut(tbTSO4.isSelected()));
+    spi.setDigitalOut(22,new SimpleDigitalOut(tbTSU4.isSelected()));
+    spi.setDigitalOut(23,new SimpleDigitalOut(tbTSO5.isSelected()));
+    spi.setDigitalOut(24,new SimpleDigitalOut(tbTSU5.isSelected()));
+    
+  }
+  
+  // Lesen 
   private class motorWorker extends SwingWorker<Object, Object>
     {
         JPanel garagenplatz;
@@ -224,7 +248,7 @@ public class AndroidSimSlave extends javax.swing.JFrame
             
             listener.start();
             
-            
+            new backgroundWorker().execute();
             
             
             
@@ -313,9 +337,17 @@ public class AndroidSimSlave extends javax.swing.JFrame
     tz5 = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    setTitle("ArduinoSimSlave");
     getContentPane().setLayout(new java.awt.BorderLayout(8, 8));
 
     bExit.setText("exit");
+    bExit.addActionListener(new java.awt.event.ActionListener()
+    {
+      public void actionPerformed(java.awt.event.ActionEvent evt)
+      {
+        bExitActionPerformed(evt);
+      }
+    });
     jPanel3.add(bExit);
 
     getContentPane().add(jPanel3, java.awt.BorderLayout.SOUTH);
@@ -643,77 +675,100 @@ public class AndroidSimSlave extends javax.swing.JFrame
   private void tbTLFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTLFActionPerformed
   {//GEN-HEADEREND:event_tbTLFActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbTLFActionPerformed
 
   private void tbTSO1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSO1ActionPerformed
   {//GEN-HEADEREND:event_tbTSO1ActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbTSO1ActionPerformed
 
   private void tbTSU1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSU1ActionPerformed
   {//GEN-HEADEREND:event_tbTSU1ActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbTSU1ActionPerformed
 
   private void tbKRFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbKRFActionPerformed
   {//GEN-HEADEREND:event_tbKRFActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbKRFActionPerformed
 
   private void tbTSO2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSO2ActionPerformed
   {//GEN-HEADEREND:event_tbTSO2ActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbTSO2ActionPerformed
 
   private void tbTSU2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSU2ActionPerformed
   {//GEN-HEADEREND:event_tbTSU2ActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbTSU2ActionPerformed
 
   private void tbMTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbMTFActionPerformed
   {//GEN-HEADEREND:event_tbMTFActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbMTFActionPerformed
 
   private void tbTSO3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSO3ActionPerformed
   {//GEN-HEADEREND:event_tbTSO3ActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbTSO3ActionPerformed
 
   private void tbTSU3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSU3ActionPerformed
   {//GEN-HEADEREND:event_tbTSU3ActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbTSU3ActionPerformed
 
   private void tbOEFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbOEFActionPerformed
   {//GEN-HEADEREND:event_tbOEFActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbOEFActionPerformed
 
   private void tbTSO4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSO4ActionPerformed
   {//GEN-HEADEREND:event_tbTSO4ActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbTSO4ActionPerformed
 
   private void tbTSU4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSU4ActionPerformed
   {//GEN-HEADEREND:event_tbTSU4ActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbTSU4ActionPerformed
 
   private void tbVFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbVFActionPerformed
   {//GEN-HEADEREND:event_tbVFActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbVFActionPerformed
 
   private void tbTSO5ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSO5ActionPerformed
   {//GEN-HEADEREND:event_tbTSO5ActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbTSO5ActionPerformed
 
   private void tbTSU5ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSU5ActionPerformed
   {//GEN-HEADEREND:event_tbTSU5ActionPerformed
     // TODO add your handling code here:
+    writeCoils();
   }//GEN-LAST:event_tbTSU5ActionPerformed
+
+  private void bExitActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bExitActionPerformed
+  {//GEN-HEADEREND:event_bExitActionPerformed
+    // TODO add your handling code here:
+    dispose();
+    System.exit(0);
+    listener.stop();
+  }//GEN-LAST:event_bExitActionPerformed
 
   /**
    * @param args the command line arguments
