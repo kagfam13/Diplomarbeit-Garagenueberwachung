@@ -54,6 +54,9 @@ public class easyModbusMaster {
             String h[] = hex.split(" ");
             int i;
             String doub = "" ;
+            System.out.println(len);
+            System.out.println(by);
+            System.out.println(hex);
             for(i = by-1; i>=0; i--)
             {
                 int intVal = Integer.parseInt(h[9+i]);
