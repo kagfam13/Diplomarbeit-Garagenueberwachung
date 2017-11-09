@@ -80,6 +80,17 @@ public class AndroidSimSlave extends javax.swing.JFrame
   {
     initComponents();
       slave = new easyModbusSlave(Modbus.DEFAULT_PORT, 15, 10, 15);
+      pta1.setBackground(Color.red);
+      ptz1.setBackground(Color.red);
+      pta2.setBackground(Color.red);
+      ptz2.setBackground(Color.red);
+      pta3.setBackground(Color.red);
+      ptz3.setBackground(Color.red);
+      pta4.setBackground(Color.red);
+      ptz4.setBackground(Color.red);
+      pta5.setBackground(Color.red);
+      ptz5.setBackground(Color.red);
+      
       slave.start();
       new backgroundWorker().execute();
       
@@ -92,390 +103,355 @@ public class AndroidSimSlave extends javax.swing.JFrame
    */
   
   @SuppressWarnings("unchecked")
-  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-  private void initComponents()
-  {
-
-    jPanel3 = new javax.swing.JPanel();
-    bExit = new javax.swing.JButton();
-    jPanel2 = new javax.swing.JPanel();
-    jPanel5 = new javax.swing.JPanel();
-    jLabel1 = new javax.swing.JLabel();
-    sliderMin = new javax.swing.JSlider();
-    jLabel2 = new javax.swing.JLabel();
-    jPanel4 = new javax.swing.JPanel();
-    jLabel3 = new javax.swing.JLabel();
-    sliderSec = new javax.swing.JSlider();
-    jLabel4 = new javax.swing.JLabel();
-    jPanel1 = new javax.swing.JPanel();
-    jPanel6 = new javax.swing.JPanel();
-    jLabel15 = new javax.swing.JLabel();
-    tbTLF = new javax.swing.JToggleButton();
-    tbTSO1 = new javax.swing.JToggleButton();
-    tbTSU1 = new javax.swing.JToggleButton();
-    pta1 = new javax.swing.JPanel();
-    ta1 = new javax.swing.JLabel();
-    ptz1 = new javax.swing.JPanel();
-    tz1 = new javax.swing.JLabel();
-    jPanel7 = new javax.swing.JPanel();
-    jLabel16 = new javax.swing.JLabel();
-    tbKRF = new javax.swing.JToggleButton();
-    tbTSO2 = new javax.swing.JToggleButton();
-    tbTSU2 = new javax.swing.JToggleButton();
-    pta2 = new javax.swing.JPanel();
-    ta2 = new javax.swing.JLabel();
-    ptz2 = new javax.swing.JPanel();
-    tz2 = new javax.swing.JLabel();
-    jPanel8 = new javax.swing.JPanel();
-    jLabel17 = new javax.swing.JLabel();
-    tbMTF = new javax.swing.JToggleButton();
-    tbTSO3 = new javax.swing.JToggleButton();
-    tbTSU3 = new javax.swing.JToggleButton();
-    pta3 = new javax.swing.JPanel();
-    ta3 = new javax.swing.JLabel();
-    ptz3 = new javax.swing.JPanel();
-    tz3 = new javax.swing.JLabel();
-    jPanel9 = new javax.swing.JPanel();
-    jLabel18 = new javax.swing.JLabel();
-    tbOEF = new javax.swing.JToggleButton();
-    tbTSO4 = new javax.swing.JToggleButton();
-    tbTSU4 = new javax.swing.JToggleButton();
-    pta4 = new javax.swing.JPanel();
-    ta4 = new javax.swing.JLabel();
-    ptz4 = new javax.swing.JPanel();
-    tz4 = new javax.swing.JLabel();
-    jPanel10 = new javax.swing.JPanel();
-    jLabel19 = new javax.swing.JLabel();
-    tbVF = new javax.swing.JToggleButton();
-    tbTSO5 = new javax.swing.JToggleButton();
-    tbTSU5 = new javax.swing.JToggleButton();
-    pta5 = new javax.swing.JPanel();
-    ta5 = new javax.swing.JLabel();
-    ptz5 = new javax.swing.JPanel();
-    tz5 = new javax.swing.JLabel();
-
-    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    setTitle("ArduinoSimSlave");
-    getContentPane().setLayout(new java.awt.BorderLayout(8, 8));
-
-    bExit.setText("exit");
-    bExit.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        bExitActionPerformed(evt);
-      }
-    });
-    jPanel3.add(bExit);
-
-    getContentPane().add(jPanel3, java.awt.BorderLayout.SOUTH);
-
-    jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
-    jPanel2.setLayout(new java.awt.GridLayout(2, 1, 8, 8));
-
-    jPanel5.setLayout(new java.awt.BorderLayout(8, 0));
-
-    jLabel1.setText("min");
-    jPanel5.add(jLabel1, java.awt.BorderLayout.WEST);
-
-    sliderMin.setMaximum(255);
-    sliderMin.addChangeListener(new javax.swing.event.ChangeListener()
-    {
-      public void stateChanged(javax.swing.event.ChangeEvent evt)
-      {
-        minStateChanged(evt);
-      }
-    });
-    jPanel5.add(sliderMin, java.awt.BorderLayout.CENTER);
-
-    jLabel2.setText("jLabel2");
-    jPanel5.add(jLabel2, java.awt.BorderLayout.EAST);
-
-    jPanel2.add(jPanel5);
-
-    jPanel4.setLayout(new java.awt.BorderLayout(8, 0));
-
-    jLabel3.setText("sec");
-    jPanel4.add(jLabel3, java.awt.BorderLayout.WEST);
-
-    sliderSec.setMaximum(59);
-    sliderSec.addChangeListener(new javax.swing.event.ChangeListener()
-    {
-      public void stateChanged(javax.swing.event.ChangeEvent evt)
-      {
-        sliderSecStateChanged(evt);
-      }
-    });
-    jPanel4.add(sliderSec, java.awt.BorderLayout.CENTER);
-
-    jLabel4.setText("jLabel4");
-    jPanel4.add(jLabel4, java.awt.BorderLayout.EAST);
-
-    jPanel2.add(jPanel4);
-
-    getContentPane().add(jPanel2, java.awt.BorderLayout.NORTH);
-
-    jPanel1.setLayout(new java.awt.GridLayout(5, 1));
-
-    jLabel15.setText("1");
-    jPanel6.add(jLabel15);
-
-    tbTLF.setText("TLF");
-    tbTLF.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbTLFActionPerformed(evt);
-      }
-    });
-    jPanel6.add(tbTLF);
-
-    tbTSO1.setText("TorSensor oben");
-    tbTSO1.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbTSO1ActionPerformed(evt);
-      }
-    });
-    jPanel6.add(tbTSO1);
-
-    tbTSU1.setText("TorSensor unten");
-    tbTSU1.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbTSU1ActionPerformed(evt);
-      }
-    });
-    jPanel6.add(tbTSU1);
-
-    pta1.setLayout(new java.awt.BorderLayout());
-
-    ta1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    ta1.setText("Tor auf");
-    pta1.add(ta1, java.awt.BorderLayout.CENTER);
-
-    jPanel6.add(pta1);
-
-    ptz1.setLayout(new java.awt.BorderLayout());
-
-    tz1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    tz1.setText("Tor zu");
-    ptz1.add(tz1, java.awt.BorderLayout.CENTER);
-
-    jPanel6.add(ptz1);
-
-    jPanel1.add(jPanel6);
-
-    jLabel16.setText("2");
-    jPanel7.add(jLabel16);
-
-    tbKRF.setText("KRF");
-    tbKRF.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbKRFActionPerformed(evt);
-      }
-    });
-    jPanel7.add(tbKRF);
-
-    tbTSO2.setText("TorSensor oben");
-    tbTSO2.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbTSO2ActionPerformed(evt);
-      }
-    });
-    jPanel7.add(tbTSO2);
-
-    tbTSU2.setText("TorSensor unten");
-    tbTSU2.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbTSU2ActionPerformed(evt);
-      }
-    });
-    jPanel7.add(tbTSU2);
-
-    pta2.setLayout(new java.awt.BorderLayout());
-
-    ta2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    ta2.setText("Tor auf");
-    pta2.add(ta2, java.awt.BorderLayout.CENTER);
-
-    jPanel7.add(pta2);
-
-    ptz2.setLayout(new java.awt.BorderLayout());
-
-    tz2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    tz2.setText("Tor zu");
-    ptz2.add(tz2, java.awt.BorderLayout.CENTER);
-
-    jPanel7.add(ptz2);
-
-    jPanel1.add(jPanel7);
-
-    jLabel17.setText("3");
-    jPanel8.add(jLabel17);
-
-    tbMTF.setText("MTF");
-    tbMTF.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbMTFActionPerformed(evt);
-      }
-    });
-    jPanel8.add(tbMTF);
-
-    tbTSO3.setText("TorSensor oben");
-    tbTSO3.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbTSO3ActionPerformed(evt);
-      }
-    });
-    jPanel8.add(tbTSO3);
-
-    tbTSU3.setText("TorSensor unten");
-    tbTSU3.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbTSU3ActionPerformed(evt);
-      }
-    });
-    jPanel8.add(tbTSU3);
-
-    pta3.setLayout(new java.awt.BorderLayout());
-
-    ta3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    ta3.setText("Tor auf");
-    pta3.add(ta3, java.awt.BorderLayout.CENTER);
-
-    jPanel8.add(pta3);
-
-    ptz3.setLayout(new java.awt.BorderLayout());
-
-    tz3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    tz3.setText("Tor zu");
-    ptz3.add(tz3, java.awt.BorderLayout.CENTER);
-
-    jPanel8.add(ptz3);
-
-    jPanel1.add(jPanel8);
-
-    jLabel18.setText("4");
-    jPanel9.add(jLabel18);
-
-    tbOEF.setText("ÖF");
-    tbOEF.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbOEFActionPerformed(evt);
-      }
-    });
-    jPanel9.add(tbOEF);
-
-    tbTSO4.setText("TorSensor oben");
-    tbTSO4.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbTSO4ActionPerformed(evt);
-      }
-    });
-    jPanel9.add(tbTSO4);
-
-    tbTSU4.setText("TorSensor unten");
-    tbTSU4.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbTSU4ActionPerformed(evt);
-      }
-    });
-    jPanel9.add(tbTSU4);
-
-    pta4.setLayout(new java.awt.BorderLayout());
-
-    ta4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    ta4.setText("Tor auf");
-    pta4.add(ta4, java.awt.BorderLayout.CENTER);
-
-    jPanel9.add(pta4);
-
-    ptz4.setLayout(new java.awt.BorderLayout());
-
-    tz4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    tz4.setText("Tor zu");
-    ptz4.add(tz4, java.awt.BorderLayout.CENTER);
-
-    jPanel9.add(ptz4);
-
-    jPanel1.add(jPanel9);
-
-    jLabel19.setText("5");
-    jPanel10.add(jLabel19);
-
-    tbVF.setText("VF");
-    tbVF.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbVFActionPerformed(evt);
-      }
-    });
-    jPanel10.add(tbVF);
-
-    tbTSO5.setText("TorSensor oben");
-    tbTSO5.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbTSO5ActionPerformed(evt);
-      }
-    });
-    jPanel10.add(tbTSO5);
-
-    tbTSU5.setText("TorSensor unten");
-    tbTSU5.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        tbTSU5ActionPerformed(evt);
-      }
-    });
-    jPanel10.add(tbTSU5);
-
-    pta5.setLayout(new java.awt.BorderLayout());
-
-    ta5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    ta5.setText("Tor auf");
-    pta5.add(ta5, java.awt.BorderLayout.CENTER);
-
-    jPanel10.add(pta5);
-
-    ptz5.setLayout(new java.awt.BorderLayout());
-
-    tz5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    tz5.setText("Tor zu");
-    ptz5.add(tz5, java.awt.BorderLayout.CENTER);
-
-    jPanel10.add(ptz5);
-
-    jPanel1.add(jPanel10);
-
-    getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
-
-    pack();
-  }// </editor-fold>//GEN-END:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel3 = new javax.swing.JPanel();
+        bExit = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        sliderMin = new javax.swing.JSlider();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        sliderSec = new javax.swing.JSlider();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        tbTLF = new javax.swing.JToggleButton();
+        tbTSO1 = new javax.swing.JToggleButton();
+        tbTSU1 = new javax.swing.JToggleButton();
+        pta1 = new javax.swing.JPanel();
+        ta1 = new javax.swing.JLabel();
+        ptz1 = new javax.swing.JPanel();
+        tz1 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        tbKRF = new javax.swing.JToggleButton();
+        tbTSO2 = new javax.swing.JToggleButton();
+        tbTSU2 = new javax.swing.JToggleButton();
+        pta2 = new javax.swing.JPanel();
+        ta2 = new javax.swing.JLabel();
+        ptz2 = new javax.swing.JPanel();
+        tz2 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        tbMTF = new javax.swing.JToggleButton();
+        tbTSO3 = new javax.swing.JToggleButton();
+        tbTSU3 = new javax.swing.JToggleButton();
+        pta3 = new javax.swing.JPanel();
+        ta3 = new javax.swing.JLabel();
+        ptz3 = new javax.swing.JPanel();
+        tz3 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        tbOEF = new javax.swing.JToggleButton();
+        tbTSO4 = new javax.swing.JToggleButton();
+        tbTSU4 = new javax.swing.JToggleButton();
+        pta4 = new javax.swing.JPanel();
+        ta4 = new javax.swing.JLabel();
+        ptz4 = new javax.swing.JPanel();
+        tz4 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
+        tbVF = new javax.swing.JToggleButton();
+        tbTSO5 = new javax.swing.JToggleButton();
+        tbTSU5 = new javax.swing.JToggleButton();
+        pta5 = new javax.swing.JPanel();
+        ta5 = new javax.swing.JLabel();
+        ptz5 = new javax.swing.JPanel();
+        tz5 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ArduinoSimSlave");
+        getContentPane().setLayout(new java.awt.BorderLayout(8, 8));
+
+        bExit.setText("exit");
+        bExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bExitActionPerformed(evt);
+            }
+        });
+        jPanel3.add(bExit);
+
+        getContentPane().add(jPanel3, java.awt.BorderLayout.SOUTH);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        jPanel2.setLayout(new java.awt.GridLayout(2, 1, 8, 8));
+
+        jPanel5.setLayout(new java.awt.BorderLayout(8, 0));
+
+        jLabel1.setText("min");
+        jPanel5.add(jLabel1, java.awt.BorderLayout.WEST);
+
+        sliderMin.setMaximum(255);
+        sliderMin.setValue(5);
+        sliderMin.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                minStateChanged(evt);
+            }
+        });
+        jPanel5.add(sliderMin, java.awt.BorderLayout.CENTER);
+
+        jLabel2.setText("5");
+        jPanel5.add(jLabel2, java.awt.BorderLayout.EAST);
+
+        jPanel2.add(jPanel5);
+
+        jPanel4.setLayout(new java.awt.BorderLayout(8, 0));
+
+        jLabel3.setText("sec");
+        jPanel4.add(jLabel3, java.awt.BorderLayout.WEST);
+
+        sliderSec.setMaximum(59);
+        sliderSec.setValue(0);
+        sliderSec.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderSecStateChanged(evt);
+            }
+        });
+        jPanel4.add(sliderSec, java.awt.BorderLayout.CENTER);
+
+        jLabel4.setText("0");
+        jPanel4.add(jLabel4, java.awt.BorderLayout.EAST);
+
+        jPanel2.add(jPanel4);
+
+        getContentPane().add(jPanel2, java.awt.BorderLayout.NORTH);
+
+        jPanel1.setLayout(new java.awt.GridLayout(5, 1));
+
+        jLabel15.setText("1");
+        jPanel6.add(jLabel15);
+
+        tbTLF.setText("TLF");
+        tbTLF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTLFActionPerformed(evt);
+            }
+        });
+        jPanel6.add(tbTLF);
+
+        tbTSO1.setText("TorSensor oben");
+        tbTSO1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTSO1ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(tbTSO1);
+
+        tbTSU1.setText("TorSensor unten");
+        tbTSU1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTSU1ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(tbTSU1);
+
+        pta1.setLayout(new java.awt.BorderLayout());
+
+        ta1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ta1.setText("Tor auf");
+        pta1.add(ta1, java.awt.BorderLayout.CENTER);
+
+        jPanel6.add(pta1);
+
+        ptz1.setLayout(new java.awt.BorderLayout());
+
+        tz1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tz1.setText("Tor zu");
+        ptz1.add(tz1, java.awt.BorderLayout.CENTER);
+
+        jPanel6.add(ptz1);
+
+        jPanel1.add(jPanel6);
+
+        jLabel16.setText("2");
+        jPanel7.add(jLabel16);
+
+        tbKRF.setText("KRF");
+        tbKRF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbKRFActionPerformed(evt);
+            }
+        });
+        jPanel7.add(tbKRF);
+
+        tbTSO2.setText("TorSensor oben");
+        tbTSO2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTSO2ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(tbTSO2);
+
+        tbTSU2.setText("TorSensor unten");
+        tbTSU2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTSU2ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(tbTSU2);
+
+        pta2.setLayout(new java.awt.BorderLayout());
+
+        ta2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ta2.setText("Tor auf");
+        pta2.add(ta2, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(pta2);
+
+        ptz2.setLayout(new java.awt.BorderLayout());
+
+        tz2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tz2.setText("Tor zu");
+        ptz2.add(tz2, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(ptz2);
+
+        jPanel1.add(jPanel7);
+
+        jLabel17.setText("3");
+        jPanel8.add(jLabel17);
+
+        tbMTF.setText("MTF");
+        tbMTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbMTFActionPerformed(evt);
+            }
+        });
+        jPanel8.add(tbMTF);
+
+        tbTSO3.setText("TorSensor oben");
+        tbTSO3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTSO3ActionPerformed(evt);
+            }
+        });
+        jPanel8.add(tbTSO3);
+
+        tbTSU3.setText("TorSensor unten");
+        tbTSU3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTSU3ActionPerformed(evt);
+            }
+        });
+        jPanel8.add(tbTSU3);
+
+        pta3.setLayout(new java.awt.BorderLayout());
+
+        ta3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ta3.setText("Tor auf");
+        pta3.add(ta3, java.awt.BorderLayout.CENTER);
+
+        jPanel8.add(pta3);
+
+        ptz3.setLayout(new java.awt.BorderLayout());
+
+        tz3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tz3.setText("Tor zu");
+        ptz3.add(tz3, java.awt.BorderLayout.CENTER);
+
+        jPanel8.add(ptz3);
+
+        jPanel1.add(jPanel8);
+
+        jLabel18.setText("4");
+        jPanel9.add(jLabel18);
+
+        tbOEF.setText("ÖF");
+        tbOEF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbOEFActionPerformed(evt);
+            }
+        });
+        jPanel9.add(tbOEF);
+
+        tbTSO4.setText("TorSensor oben");
+        tbTSO4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTSO4ActionPerformed(evt);
+            }
+        });
+        jPanel9.add(tbTSO4);
+
+        tbTSU4.setText("TorSensor unten");
+        tbTSU4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTSU4ActionPerformed(evt);
+            }
+        });
+        jPanel9.add(tbTSU4);
+
+        pta4.setLayout(new java.awt.BorderLayout());
+
+        ta4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ta4.setText("Tor auf");
+        pta4.add(ta4, java.awt.BorderLayout.CENTER);
+
+        jPanel9.add(pta4);
+
+        ptz4.setLayout(new java.awt.BorderLayout());
+
+        tz4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tz4.setText("Tor zu");
+        ptz4.add(tz4, java.awt.BorderLayout.CENTER);
+
+        jPanel9.add(ptz4);
+
+        jPanel1.add(jPanel9);
+
+        jLabel19.setText("5");
+        jPanel10.add(jLabel19);
+
+        tbVF.setText("VF");
+        tbVF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbVFActionPerformed(evt);
+            }
+        });
+        jPanel10.add(tbVF);
+
+        tbTSO5.setText("TorSensor oben");
+        tbTSO5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTSO5ActionPerformed(evt);
+            }
+        });
+        jPanel10.add(tbTSO5);
+
+        tbTSU5.setText("TorSensor unten");
+        tbTSU5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTSU5ActionPerformed(evt);
+            }
+        });
+        jPanel10.add(tbTSU5);
+
+        pta5.setLayout(new java.awt.BorderLayout());
+
+        ta5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ta5.setText("Tor auf");
+        pta5.add(ta5, java.awt.BorderLayout.CENTER);
+
+        jPanel10.add(pta5);
+
+        ptz5.setLayout(new java.awt.BorderLayout());
+
+        tz5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tz5.setText("Tor zu");
+        ptz5.add(tz5, java.awt.BorderLayout.CENTER);
+
+        jPanel10.add(ptz5);
+
+        jPanel1.add(jPanel10);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
 
   private void minStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_minStateChanged
   {//GEN-HEADEREND:event_minStateChanged
@@ -680,63 +656,63 @@ public class AndroidSimSlave extends javax.swing.JFrame
     });
   }
 
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JButton bExit;
-  private javax.swing.JLabel jLabel1;
-  private javax.swing.JLabel jLabel15;
-  private javax.swing.JLabel jLabel16;
-  private javax.swing.JLabel jLabel17;
-  private javax.swing.JLabel jLabel18;
-  private javax.swing.JLabel jLabel19;
-  private javax.swing.JLabel jLabel2;
-  private javax.swing.JLabel jLabel3;
-  private javax.swing.JLabel jLabel4;
-  private javax.swing.JPanel jPanel1;
-  private javax.swing.JPanel jPanel10;
-  private javax.swing.JPanel jPanel2;
-  private javax.swing.JPanel jPanel3;
-  private javax.swing.JPanel jPanel4;
-  private javax.swing.JPanel jPanel5;
-  private javax.swing.JPanel jPanel6;
-  private javax.swing.JPanel jPanel7;
-  private javax.swing.JPanel jPanel8;
-  private javax.swing.JPanel jPanel9;
-  private javax.swing.JPanel pta1;
-  private javax.swing.JPanel pta2;
-  private javax.swing.JPanel pta3;
-  private javax.swing.JPanel pta4;
-  private javax.swing.JPanel pta5;
-  private javax.swing.JPanel ptz1;
-  private javax.swing.JPanel ptz2;
-  private javax.swing.JPanel ptz3;
-  private javax.swing.JPanel ptz4;
-  private javax.swing.JPanel ptz5;
-  private javax.swing.JSlider sliderMin;
-  private javax.swing.JSlider sliderSec;
-  private javax.swing.JLabel ta1;
-  private javax.swing.JLabel ta2;
-  private javax.swing.JLabel ta3;
-  private javax.swing.JLabel ta4;
-  private javax.swing.JLabel ta5;
-  private javax.swing.JToggleButton tbKRF;
-  private javax.swing.JToggleButton tbMTF;
-  private javax.swing.JToggleButton tbOEF;
-  private javax.swing.JToggleButton tbTLF;
-  private javax.swing.JToggleButton tbTSO1;
-  private javax.swing.JToggleButton tbTSO2;
-  private javax.swing.JToggleButton tbTSO3;
-  private javax.swing.JToggleButton tbTSO4;
-  private javax.swing.JToggleButton tbTSO5;
-  private javax.swing.JToggleButton tbTSU1;
-  private javax.swing.JToggleButton tbTSU2;
-  private javax.swing.JToggleButton tbTSU3;
-  private javax.swing.JToggleButton tbTSU4;
-  private javax.swing.JToggleButton tbTSU5;
-  private javax.swing.JToggleButton tbVF;
-  private javax.swing.JLabel tz1;
-  private javax.swing.JLabel tz2;
-  private javax.swing.JLabel tz3;
-  private javax.swing.JLabel tz4;
-  private javax.swing.JLabel tz5;
-  // End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bExit;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JPanel pta1;
+    private javax.swing.JPanel pta2;
+    private javax.swing.JPanel pta3;
+    private javax.swing.JPanel pta4;
+    private javax.swing.JPanel pta5;
+    private javax.swing.JPanel ptz1;
+    private javax.swing.JPanel ptz2;
+    private javax.swing.JPanel ptz3;
+    private javax.swing.JPanel ptz4;
+    private javax.swing.JPanel ptz5;
+    private javax.swing.JSlider sliderMin;
+    private javax.swing.JSlider sliderSec;
+    private javax.swing.JLabel ta1;
+    private javax.swing.JLabel ta2;
+    private javax.swing.JLabel ta3;
+    private javax.swing.JLabel ta4;
+    private javax.swing.JLabel ta5;
+    private javax.swing.JToggleButton tbKRF;
+    private javax.swing.JToggleButton tbMTF;
+    private javax.swing.JToggleButton tbOEF;
+    private javax.swing.JToggleButton tbTLF;
+    private javax.swing.JToggleButton tbTSO1;
+    private javax.swing.JToggleButton tbTSO2;
+    private javax.swing.JToggleButton tbTSO3;
+    private javax.swing.JToggleButton tbTSO4;
+    private javax.swing.JToggleButton tbTSO5;
+    private javax.swing.JToggleButton tbTSU1;
+    private javax.swing.JToggleButton tbTSU2;
+    private javax.swing.JToggleButton tbTSU3;
+    private javax.swing.JToggleButton tbTSU4;
+    private javax.swing.JToggleButton tbTSU5;
+    private javax.swing.JToggleButton tbVF;
+    private javax.swing.JLabel tz1;
+    private javax.swing.JLabel tz2;
+    private javax.swing.JLabel tz3;
+    private javax.swing.JLabel tz4;
+    private javax.swing.JLabel tz5;
+    // End of variables declaration//GEN-END:variables
 }

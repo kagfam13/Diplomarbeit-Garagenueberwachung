@@ -37,7 +37,38 @@ public class easyModbusMaster {
         connection.setPort(port);
         connection.setTimeout(3000);
     }
-    
+    public StringCoilsResp getCoils()
+    {
+        try {
+            connection.connect();
+            
+            ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
+            
+            ModbusRequest request = new ReadCoilsRequest(0,rCoils+wCoils);
+            request.setUnitID(unitId);
+            transaction.setRequest(request);
+            transaction.execute();
+            int len = transaction.getResponse().getDataLength();
+            int by = (len/2)+(len%2);
+            String hex = transaction.getResponse().getHexMessage();
+            String h[] = hex.split(" ");
+            int i;
+            String doub = "" ;
+            for(i = by-1; i>=0; i--)
+            {
+                int intVal = Integer.parseInt(h[9+i]);
+                String bin = Integer.toBinaryString(intVal);
+                
+                while(bin.length()< 8)
+                    bin = "0" + bin;
+                doub = doub.concat(bin);
+            }
+            return new StringCoilsResp(new StringBuffer(doub).reverse().toString().substring(0, wCoils+rCoils-1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public boolean readCoil(int id)
     {
         try {
