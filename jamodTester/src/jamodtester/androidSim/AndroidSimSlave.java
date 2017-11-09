@@ -5,11 +5,15 @@
  */
 package jamodtester.androidSim;
 
+import jamodtester.easyModbus.easyModbusSlave;
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import net.wimpi.modbus.*;
 import net.wimpi.modbus.net.*;
 import net.wimpi.modbus.procimg.*;
+
 
 /**
  *
@@ -17,248 +21,68 @@ import net.wimpi.modbus.procimg.*;
  */
 public class AndroidSimSlave extends javax.swing.JFrame
 {
+    easyModbusSlave slave;
 
   /**
    * Creates new form AndroidSimSlave
    */
-  
-  ModbusTCPListener listener = null;
-  SimpleProcessImage spi = null;
-  int port = Modbus.DEFAULT_PORT;
-  
-  //Schreiben
-  
-  
-  private void writeCoils()
-  {
-    spi.setDigitalOut(10,new SimpleDigitalOut(tbTLF.isSelected()));
-    spi.setDigitalOut(11,new SimpleDigitalOut(tbKRF.isSelected()));
-    spi.setDigitalOut(12,new SimpleDigitalOut(tbMTF.isSelected()));
-    spi.setDigitalOut(13,new SimpleDigitalOut(tbOEF.isSelected()));
-    spi.setDigitalOut(14,new SimpleDigitalOut(tbVF.isSelected()));
-    spi.setDigitalOut(15,new SimpleDigitalOut(tbTSO1.isSelected()));
-    spi.setDigitalOut(16,new SimpleDigitalOut(tbTSU1.isSelected()));
-    spi.setDigitalOut(17,new SimpleDigitalOut(tbTSO2.isSelected()));
-    spi.setDigitalOut(18,new SimpleDigitalOut(tbTSU2.isSelected()));
-    spi.setDigitalOut(19,new SimpleDigitalOut(tbTSO3.isSelected()));
-    spi.setDigitalOut(20,new SimpleDigitalOut(tbTSU3.isSelected()));
-    spi.setDigitalOut(21,new SimpleDigitalOut(tbTSO4.isSelected()));
-    spi.setDigitalOut(22,new SimpleDigitalOut(tbTSU4.isSelected()));
-    spi.setDigitalOut(23,new SimpleDigitalOut(tbTSO5.isSelected()));
-    spi.setDigitalOut(24,new SimpleDigitalOut(tbTSU5.isSelected()));
     
-  }
-  
-  // Lesen 
-  private class motorWorker extends SwingWorker<Object, Object>
+    private class motorWorker extends SwingWorker<Object, Object>
     {
-        JPanel garagenplatz;
-        boolean status;
-        JToggleButton TorSensorOben,TorSensorUnten;
-        //Constructor
-        public motorWorker(JPanel garagenplatz,boolean status, JToggleButton TorSensorOben,JToggleButton TorSensorUnten) {
-            this.garagenplatz = garagenplatz;
-            this.status = status;
-            this.TorSensorOben = TorSensorOben;
-            this.TorSensorUnten = TorSensorUnten;
+        JPanel panel;
+
+        public motorWorker(JPanel panel) {
+            this.panel = panel;
         }
         
         @Override
         protected Object doInBackground() throws Exception {
-            garagenplatz.setBackground(Color.green);
+            panel.setBackground(Color.green);
             Thread.sleep(5000);
-            garagenplatz.setBackground(Color.red);
-            if(status == true)
-            {
-                TorSensorOben.setSelected(true);
-                TorSensorUnten.setSelected(false);
-            }
-            else
-            {
-                TorSensorOben.setSelected(false);
-                TorSensorUnten.setSelected(true);
-            }
-            spi.setDigitalOut(3, new SimpleDigitalOut(TorSensorOben.isSelected()));
-            spi.setDigitalOut(4, new SimpleDigitalOut(TorSensorUnten.isSelected()));
+            panel.setBackground(Color.red);
+            System.out.println("hi");
             return 0;
         }
         
     }
-  
-  private class backgroundWorker extends SwingWorker<Object, Object>
-    {
-      
-        
     
+    private class backgroundWorker extends SwingWorker<Object, Object>
+    {
+
         @Override
         protected Object doInBackground() throws Exception {
             while(true)
             {
-                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(0).isSet())
-                    torAufFahren(0);
-                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(1).isSet())
-                    torZuFahren(1);
-                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(2).isSet())
-                    torAufFahren(2);
-                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(3).isSet())
-                    torZuFahren(3);
-                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(4).isSet())
-                    torAufFahren(4);
-                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(5).isSet())
-                    torZuFahren(5);
-                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(6).isSet())
-                    torAufFahren(6);
-                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(7).isSet())
-                    torZuFahren(7);
-                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(8).isSet())
-                    torAufFahren(8);
-                if(ModbusCoupler.getReference().getProcessImage().getDigitalOut(9).isSet())
-                    torZuFahren(9);
-            }
-        }
-
-        private void torAufFahren(int coil) {
-            System.out.println("Tor fährt auf");
-            spi.setDigitalOut(coil, new SimpleDigitalOut(false));
-            switch(coil)
-            {
-              case 0:
-                new AndroidSimSlave.motorWorker(pta1, true, tbTSO1, tbTSU1).execute();
-                break;
-              case 2:
-                new AndroidSimSlave.motorWorker(pta2, true, tbTSO2, tbTSU2).execute();
-                break;
-              case 4:
-                new AndroidSimSlave.motorWorker(pta3, true, tbTSO3, tbTSU3).execute();
-                break;
-              case 6:
-                new AndroidSimSlave.motorWorker(pta4, true, tbTSO4, tbTSU4).execute();
-                break;
-              case 8:
-                new AndroidSimSlave.motorWorker(pta5, true, tbTSO5, tbTSU5).execute();
-                break;
-              default:
-                System.out.println("ERROR");
-                break;
-            }
-        }
-
-        private void torZuFahren(int coil) {
-            System.out.println("Tor fährt zu");
-            spi.setDigitalOut(coil+1, new SimpleDigitalOut(false));
-            //new ArduinoSimSlave.motorWorker(jPanel4,false).execute();
-            switch(coil)
-            {
-              case 1:
-                new AndroidSimSlave.motorWorker(ptz1, true, tbTSO1, tbTSU1).execute();
-                break;
-              case 3:
-                new AndroidSimSlave.motorWorker(pta2, true, tbTSO2, tbTSU2).execute();
-                break;
-              case 5:
-                new AndroidSimSlave.motorWorker(pta3, true, tbTSO3, tbTSU3).execute();
-                break;
-              case 7:
-                new AndroidSimSlave.motorWorker(pta4, true, tbTSO4, tbTSU4).execute();
-                break;
-              case 9:
-                new AndroidSimSlave.motorWorker(pta5, true, tbTSO5, tbTSU5).execute();
-                break;
-              default:
-                System.out.println("ERROR 2");
-                break;
+                checkMotor(0, pta1);
+                checkMotor(1, ptz1);
+                checkMotor(2, pta2);
+                checkMotor(3, ptz2);
+                checkMotor(4, pta3);
+                checkMotor(5, ptz3);
+                checkMotor(6, pta4);
+                checkMotor(7, ptz4);
+                checkMotor(8, pta5);
+                checkMotor(9, ptz5);
             }
         }
         
+        private void checkMotor(int motor, JPanel panel) throws Exception
+        {
+            if(slave.getCoil(motor))
+            {
+                slave.setCoil(motor, false);
+                new motorWorker(panel).execute();
+            }
+        }
     }
-  
+
   public AndroidSimSlave()
   {
     initComponents();
-    jLabel2.setText("" + sliderMin.getValue());
-    jLabel4.setText("" + sliderSec.getValue());
-    pta1.setBackground(Color.red);
-    ptz1.setBackground(Color.red);
-    pta2.setBackground(Color.red);
-    ptz2.setBackground(Color.red);
-    pta3.setBackground(Color.red);
-    ptz3.setBackground(Color.red);
-    pta4.setBackground(Color.red);
-    ptz4.setBackground(Color.red);
-    pta5.setBackground(Color.red);
-    ptz5.setBackground(Color.red);
-    
-    try 
-    {
-            if(listener != null)
-                listener.stop();
-            System.out.println("jModbus Modbus Slave (Server)");
-
-            // 1. prepare a process image
-            spi = new SimpleProcessImage();
-            //Inputs
-            spi.addDigitalIn(new SimpleDigitalIn());
-            spi.addDigitalIn(new SimpleDigitalIn());
-            spi.addDigitalIn(new SimpleDigitalIn());
-            spi.addDigitalIn(new SimpleDigitalIn());
-            spi.addDigitalIn(new SimpleDigitalIn());
-            spi.addDigitalIn(new SimpleDigitalIn());
-            spi.addDigitalIn(new SimpleDigitalIn());
-            spi.addDigitalIn(new SimpleDigitalIn());
-            spi.addDigitalIn(new SimpleDigitalIn());
-            spi.addDigitalIn(new SimpleDigitalIn());
-            
-            //Outputs
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut(tbTLF.isSelected()));
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            spi.addDigitalOut(new SimpleDigitalOut());
-            
-            ModbusCoupler.getReference().setUnitID(15);
-            ModbusCoupler.getReference().setMaster(false);
-            ModbusCoupler.getReference().setProcessImage(spi);
-            
-            if (Modbus.debug)
-                    System.out.println("Listening...");
-            listener = new ModbusTCPListener(3);
-            listener.setPort(port);
-
-            System.out.println("Listening to "+listener+" on port "+port);
-            
-            listener.start();
-            
-            new backgroundWorker().execute();
-            
-            
-            
-            
-    }
-    catch(Exception ex)
-    {
+      slave = new easyModbusSlave(Modbus.DEFAULT_PORT, 15, 10, 15);
+      slave.start();
+      new backgroundWorker().execute();
       
-    }
-    
   }
 
   /**
@@ -266,12 +90,6 @@ public class AndroidSimSlave extends javax.swing.JFrame
    * WARNING: Do NOT modify this code. The content of this method is always
    * regenerated by the Form Editor.
    */
-  
-
-    
-    
-    
-    
   
   @SuppressWarnings("unchecked")
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -663,7 +481,6 @@ public class AndroidSimSlave extends javax.swing.JFrame
   {//GEN-HEADEREND:event_minStateChanged
     // TODO add your handling code here:
     jLabel2.setText("" + sliderMin.getValue());
-    
   }//GEN-LAST:event_minStateChanged
 
   private void sliderSecStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_sliderSecStateChanged
@@ -674,100 +491,144 @@ public class AndroidSimSlave extends javax.swing.JFrame
 
   private void tbTLFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTLFActionPerformed
   {//GEN-HEADEREND:event_tbTLFActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(10, tbTLF.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbTLFActionPerformed
 
   private void tbTSO1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSO1ActionPerformed
   {//GEN-HEADEREND:event_tbTSO1ActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(16, tbTSO1.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbTSO1ActionPerformed
 
   private void tbTSU1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSU1ActionPerformed
   {//GEN-HEADEREND:event_tbTSU1ActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(15, tbTSU1.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbTSU1ActionPerformed
 
   private void tbKRFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbKRFActionPerformed
   {//GEN-HEADEREND:event_tbKRFActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(11, tbKRF.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbKRFActionPerformed
 
   private void tbTSO2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSO2ActionPerformed
   {//GEN-HEADEREND:event_tbTSO2ActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(18, tbTSO2.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbTSO2ActionPerformed
 
   private void tbTSU2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSU2ActionPerformed
   {//GEN-HEADEREND:event_tbTSU2ActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(17, tbTSU2.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbTSU2ActionPerformed
 
   private void tbMTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbMTFActionPerformed
   {//GEN-HEADEREND:event_tbMTFActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(12, tbMTF.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbMTFActionPerformed
 
   private void tbTSO3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSO3ActionPerformed
   {//GEN-HEADEREND:event_tbTSO3ActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(20, tbTSO3.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbTSO3ActionPerformed
 
   private void tbTSU3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSU3ActionPerformed
   {//GEN-HEADEREND:event_tbTSU3ActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(19, tbTSU3.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbTSU3ActionPerformed
 
   private void tbOEFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbOEFActionPerformed
   {//GEN-HEADEREND:event_tbOEFActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(13, tbOEF.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbOEFActionPerformed
 
   private void tbTSO4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSO4ActionPerformed
   {//GEN-HEADEREND:event_tbTSO4ActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(22, tbTSO4.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbTSO4ActionPerformed
 
   private void tbTSU4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSU4ActionPerformed
   {//GEN-HEADEREND:event_tbTSU4ActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(21, tbTSU4.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbTSU4ActionPerformed
 
   private void tbVFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbVFActionPerformed
   {//GEN-HEADEREND:event_tbVFActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(14, tbVF.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbVFActionPerformed
 
   private void tbTSO5ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSO5ActionPerformed
   {//GEN-HEADEREND:event_tbTSO5ActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(24, tbTSO5.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbTSO5ActionPerformed
 
   private void tbTSU5ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTSU5ActionPerformed
   {//GEN-HEADEREND:event_tbTSU5ActionPerformed
-    // TODO add your handling code here:
-    writeCoils();
+    try {
+        slave.setCoil(23, tbTSU5.isSelected());
+    } catch (Exception ex) {
+        Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }//GEN-LAST:event_tbTSU5ActionPerformed
 
   private void bExitActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bExitActionPerformed
   {//GEN-HEADEREND:event_bExitActionPerformed
-    // TODO add your handling code here:
+    slave.stop();
     dispose();
     System.exit(0);
-    listener.stop();
   }//GEN-LAST:event_bExitActionPerformed
 
   /**

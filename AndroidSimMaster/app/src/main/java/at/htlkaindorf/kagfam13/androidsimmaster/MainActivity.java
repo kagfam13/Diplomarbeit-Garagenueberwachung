@@ -11,22 +11,26 @@ import net.wimpi.modbus.io.ModbusTCPTransaction;
 import net.wimpi.modbus.msg.ModbusRequest;
 import net.wimpi.modbus.msg.ModbusResponse;
 import net.wimpi.modbus.msg.ReadCoilsRequest;
-import net.wimpi.modbus.msg.ReadMultipleRegistersRequest;
-import net.wimpi.modbus.msg.WriteCoilRequest;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
 import java.net.InetAddress;
 
 public class MainActivity extends AppCompatActivity {
-    String ip = "10.0.0.12";
-    int port = Modbus.DEFAULT_PORT;
-    int unitId = 15;
     TextView auto1,auto2,auto3,auto4,auto5,tor1,tor2,tor3,tor4,tor5;
-
+    EasyModbusMaster master;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        try
+        {
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.0.0.11"), 10, 15);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
         auto1 = (TextView) findViewById(R.id.twFahrzeug1);
         auto2 = (TextView) findViewById(R.id.twFahrzeug2);
         auto3 = (TextView) findViewById(R.id.twFahrzeug3);
@@ -72,22 +76,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("*************************************");
             try
             {
-                TCPMasterConnection connection = new TCPMasterConnection(InetAddress.getByName(ip));
-                connection.setTimeout(3000);
-                connection.setPort(port);
-                System.out.println("Trying to connect to "+connection.getAddress()+" on port "+connection.getPort());
-                connection.connect();
-
-                ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-
-                ModbusRequest request = new WriteCoilRequest(coil, true);
-
-                request.setUnitID(unitId);
-                transaction.setRequest(request);
-                transaction.execute();
-
-                connection.close();
-
+                master.writeCoil(coil, true);
                 return 0;
             }
             catch (Exception e)
@@ -102,12 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
     private class backgroundThread extends AsyncTask<Object,Object,Object>
     {
-        private boolean getCoil(String bin, int coil)
-        {
-            if (bin.charAt(bin.length()-coil-1)=='1')
-                return true;
-            return false;
-        }
 
         private void setCar(TextView car, boolean state)
         {
@@ -134,14 +117,11 @@ public class MainActivity extends AppCompatActivity {
             tWeinsatzdauer.setText("Dauer des Letzten einsatzes: " + min + " min " + sec + " sec");
         }
 
-        private int calcInt(ModbusResponse response)
+        private boolean readCoil(String bin,int id)
         {
-            String res = response.getHexMessage();
-            System.out.println(res);
-            System.out.println(response.getDataLength());
-            String data = res.replaceAll(" ","");
-            data = data.substring(data.length()-response.getDataLength());
-            return Integer.parseInt(data, 16);
+            if (bin.charAt(id) == '1')
+                return true;
+            return false;
         }
 
         @Override
@@ -151,61 +131,22 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("*************************************");
                 try
                 {
-                    TCPMasterConnection connection = new TCPMasterConnection(InetAddress.getByName(ip));
-                    connection.setTimeout(3000);
-                    connection.setPort(port);
-                    System.out.println("Trying to connect to "+connection.getAddress()+" on port "+connection.getPort());
-                    connection.connect();
+                    String bin = master.getCoils();
 
-                    ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
+                    setCar(auto1,readCoil(bin, 10));
+                    setCar(auto2,readCoil(bin, 11));
+                    setCar(auto3,readCoil(bin, 12));
+                    setCar(auto4,readCoil(bin, 13));
+                    setCar(auto5,readCoil(bin, 14));
 
-                    ModbusRequest request;
-                    ModbusResponse response;
-                    /*request = new ReadMultipleRegistersRequest(0, 1);
-                    request.setUnitID(unitId);
-                    transaction.setRequest(request);
-                    transaction.execute();
-                    Mresponse = transaction.getResponse();
-                    int min = calcInt(response);
+                    setTor(tor1, readCoil(bin, 15), readCoil(bin, 16));
+                    setTor(tor2, readCoil(bin, 17), readCoil(bin, 18));
+                    setTor(tor3, readCoil(bin, 19), readCoil(bin, 20));
+                    setTor(tor4, readCoil(bin, 21), readCoil(bin, 22));
+                    setTor(tor5, readCoil(bin, 23), readCoil(bin, 24));
 
 
-                    request = new ReadMultipleRegistersRequest(1, 1);
-                    request.setUnitID(unitId);
-                    transaction.setRequest(request);
-                    transaction.execute();
-                    response = transaction.getResponse();
-                    int sec = calcInt(response);*/
-
-
-                    request = new ReadCoilsRequest(0,25);
-
-                    request.setUnitID(unitId);
-                    transaction.setRequest(request);
-                    transaction.execute();
-                    response = transaction.getResponse();
-
-                    connection.close();
-
-                    int intVal = calcInt(response);
-                    String bin = Integer.toBinaryString(intVal);
-                    while(bin.length()<25)
-                    {
-                        bin = "0" + bin;
-                    }
-                    System.out.println(bin);
-
-                    setCar(auto1, getCoil(bin, 10));
-                    setCar(auto2, getCoil(bin, 11));
-                    setCar(auto3, getCoil(bin, 12));
-                    setCar(auto4, getCoil(bin, 13));
-                    setCar(auto5, getCoil(bin, 14));
-
-                    setTor(tor1, getCoil(bin, 15),getCoil(bin, 16));
-                    setTor(tor2, getCoil(bin, 17),getCoil(bin, 18));
-                    setTor(tor3, getCoil(bin, 19),getCoil(bin, 20));
-                    setTor(tor4, getCoil(bin, 21),getCoil(bin, 22));
-                    setTor(tor5, getCoil(bin, 23),getCoil(bin, 24));
-                    Thread.sleep(10000);
+                    Thread.sleep(1000);
                     return 0;
                 }
                 catch (Exception e)

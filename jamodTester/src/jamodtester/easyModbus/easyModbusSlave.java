@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jamodtester.anotherTest;
+package jamodtester.easyModbus;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -77,7 +77,7 @@ public class easyModbusSlave {
         slave.start();
         
         try {
-            slave.setCoil(23, true);
+            slave.setCoil(24, true);
         } catch (Exception ex) {
             Logger.getLogger(easyModbusSlave.class.getName()).log(Level.SEVERE, null, ex);
         }
