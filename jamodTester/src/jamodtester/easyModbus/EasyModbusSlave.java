@@ -19,12 +19,12 @@ import net.wimpi.modbus.procimg.SimpleProcessImage;
  *
  * @author Fabian
  */
-public class easyModbusSlave {
+public class EasyModbusSlave {
     private final int port, unitId, wCoils, rCoils;
     ModbusTCPListener listener;
     SimpleProcessImage spi;
 
-    public easyModbusSlave(int port, int unitId, int wCoils, int rCoils) {
+    public EasyModbusSlave(int port, int unitId, int wCoils, int rCoils) {
         this.port = port;
         this.unitId = unitId;
         this.wCoils = wCoils;
@@ -73,19 +73,19 @@ public class easyModbusSlave {
     }
     
     public static void main(String[] args) {
-        easyModbusSlave slave = new easyModbusSlave(Modbus.DEFAULT_PORT, 15, 10, 15);
+        EasyModbusSlave slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, 15, 10, 15);
         slave.start();
         
         try {
             slave.setCoil(24, true);
         } catch (Exception ex) {
-            Logger.getLogger(easyModbusSlave.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EasyModbusSlave.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
             System.in.read();
         } catch (IOException ex) {
-            Logger.getLogger(easyModbusSlave.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EasyModbusSlave.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         slave.stop();

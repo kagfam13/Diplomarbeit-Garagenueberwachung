@@ -6,7 +6,7 @@
 package jamodtester.arduinoSim;
 
 import jamodtester.easyModbus.StringCoilsResp;
-import jamodtester.easyModbus.easyModbusMaster;
+import jamodtester.easyModbus.EasyModbusMaster;
 import java.net.*;
 import java.util.logging.*;
 import javax.swing.*;
@@ -24,14 +24,14 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
     /**
      * Creates new form ArduinoSimMaster
      */
-     easyModbusMaster master;
+     EasyModbusMaster master;
      
      
      
     public ArduinoSimMaster() {
          try {
              initComponents();
-             master = new easyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 2, 3);
+             master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 2, 3);
              new manageLabels().execute();
              
          } catch (UnknownHostException ex) {
