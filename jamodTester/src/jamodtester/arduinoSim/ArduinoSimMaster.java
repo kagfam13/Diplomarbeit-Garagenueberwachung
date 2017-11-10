@@ -24,18 +24,15 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
     /**
      * Creates new form ArduinoSimMaster
      */
-<<<<<<< HEAD
      String inetAdress = "10.200.112.189";
-=======
+
      EasyModbusMaster master;
      
-     
->>>>>>> master
      
     public ArduinoSimMaster() {
          try {
              initComponents();
-             master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 2, 3);
+             master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName(inetAdress), 2, 3);
              new manageLabels().execute();
              
          } catch (UnknownHostException ex) {
@@ -52,7 +49,6 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
             while(true)
             {
                 StringCoilsResp resp = master.getCoils();
-             
                 if(resp.getCoil(2))
                 {
                   lCar.setText("Auto da");
