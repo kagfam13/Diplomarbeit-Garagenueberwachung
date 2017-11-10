@@ -29,4 +29,11 @@ public class StringCoilsResp {
     {
         return coils.length();
     }
+
+    @Override
+    public String toString() {
+        return coils;
+    }
+    
+    
 }

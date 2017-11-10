@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         try
         {
+            InetAddress address = new
             master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.215.72"), 10, 15);
         }
         catch (Exception ex)

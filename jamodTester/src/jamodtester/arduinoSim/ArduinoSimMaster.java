@@ -11,9 +11,6 @@ import java.net.*;
 import java.util.logging.*;
 import javax.swing.*;
 import net.wimpi.modbus.*;
-import net.wimpi.modbus.io.*;
-import net.wimpi.modbus.msg.*;
-import net.wimpi.modbus.net.*;
 
 /**
  *
@@ -29,10 +26,11 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
      
      
     public ArduinoSimMaster() {
-         try {
-             initComponents();
-             master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 2, 3);
-             new manageLabels().execute();
+        initComponents();
+        try {
+            // master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.112.70"), 2, 3);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.112.189"), 2, 3);
+            new manageLabels().execute();
              
          } catch (UnknownHostException ex) {
              Logger.getLogger(ArduinoSimMaster.class.getName()).log(Level.SEVERE, null, ex);
@@ -48,6 +46,7 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
             while(true)
             {
                 StringCoilsResp resp = master.getCoils();
+                System.out.println(resp.toString());
              
                 if(resp.getCoil(2))
                 {
@@ -57,11 +56,11 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
                 {
                   lCar.setText("Auto nix da");
                 }
-                if(resp.getCoil(3))// Tor offen
+                if(resp.getCoil(4))// Tor offen
                 {
                   lTor.setText("Tor offen");
                 }
-                else if(resp.getCoil(4)) // Tor geschlossen
+                else if(resp.getCoil(3)) // Tor geschlossen
                 {
                   lTor.setText("Tor geschlossen");
                 }
@@ -69,22 +68,21 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
                 {
                   lTor.setText("Ist das Tor halb offen oder halb geschlossen");
                 }
-                Thread.sleep(2000);
-              }
+                Thread.sleep(1000);
+            }
         }
               
     }
     
     private class manageTor extends SwingWorker<Object, Object>
     {
-       int coil;
+        int coil;
 
-    public manageTor(int coil)
-    {
-      this.coil = coil;
-    }
-       
-       
+        public manageTor(int coil)
+        {
+          this.coil = coil;
+        }
+    
       @Override
       protected Object doInBackground() throws Exception
       {
