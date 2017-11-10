@@ -20,13 +20,13 @@ import net.wimpi.modbus.net.TCPMasterConnection;
  *
  * @author Fabian
  */
-public class easyModbusMaster {
+public class EasyModbusMaster {
     private final int port,unitId;
     private final InetAddress address;
     private final int wCoils, rCoils;
     private TCPMasterConnection connection;
 
-    public easyModbusMaster(int port, int unitId, InetAddress address, int wCoils, int rCoils) throws UnknownHostException {
+    public EasyModbusMaster(int port, int unitId, InetAddress address, int wCoils, int rCoils) throws UnknownHostException {
         this.port = port;
         this.unitId = unitId;
         this.address = address;
@@ -54,6 +54,9 @@ public class easyModbusMaster {
             String h[] = hex.split(" ");
             int i;
             String doub = "" ;
+            System.out.println(len);
+            System.out.println(by);
+            System.out.println(hex);
             for(i = by-1; i>=0; i--)
             {
                 int intVal = Integer.parseInt(h[9+i]);
@@ -106,7 +109,7 @@ public class easyModbusMaster {
             return false;
 
         } catch (Exception ex) {
-            Logger.getLogger(easyModbusMaster.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EasyModbusMaster.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -132,7 +135,7 @@ public class easyModbusMaster {
     }
     public static void main(String[] args) {
         try {
-            easyModbusMaster master = new easyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.0.0.11"), 10, 15);
+            EasyModbusMaster master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.0.0.11"), 10, 15);
             
             master.writeCoil(2, true);
             
@@ -142,7 +145,7 @@ public class easyModbusMaster {
             
             
         } catch (UnknownHostException ex) {
-            Logger.getLogger(easyModbusMaster.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EasyModbusMaster.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

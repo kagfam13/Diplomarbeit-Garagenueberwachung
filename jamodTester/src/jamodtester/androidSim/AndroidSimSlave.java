@@ -5,7 +5,7 @@
  */
 package jamodtester.androidSim;
 
-import jamodtester.easyModbus.easyModbusSlave;
+import jamodtester.easyModbus.EasyModbusSlave;
 import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +21,7 @@ import net.wimpi.modbus.procimg.*;
  */
 public class AndroidSimSlave extends javax.swing.JFrame
 {
-    easyModbusSlave slave;
+    EasyModbusSlave slave;
 
   /**
    * Creates new form AndroidSimSlave
@@ -79,7 +79,7 @@ public class AndroidSimSlave extends javax.swing.JFrame
   public AndroidSimSlave()
   {
     initComponents();
-      slave = new easyModbusSlave(Modbus.DEFAULT_PORT, 15, 10, 15);
+      slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, 15, 10, 15);
       pta1.setBackground(Color.red);
       ptz1.setBackground(Color.red);
       pta2.setBackground(Color.red);

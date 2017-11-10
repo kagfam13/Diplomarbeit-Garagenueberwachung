@@ -5,6 +5,8 @@
  */
 package jamodtester.arduinoSim;
 
+import jamodtester.easyModbus.StringCoilsResp;
+import jamodtester.easyModbus.EasyModbusMaster;
 import java.net.*;
 import java.util.logging.*;
 import javax.swing.*;
@@ -22,75 +24,58 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
     /**
      * Creates new form ArduinoSimMaster
      */
+<<<<<<< HEAD
      String inetAdress = "10.200.112.189";
+=======
+     EasyModbusMaster master;
+     
+     
+>>>>>>> master
      
     public ArduinoSimMaster() {
-        initComponents();
-        new manageLabels(inetAdress).execute();
+         try {
+             initComponents();
+             master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 2, 3);
+             new manageLabels().execute();
+             
+         } catch (UnknownHostException ex) {
+             Logger.getLogger(ArduinoSimMaster.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }
     
     private class manageLabels extends SwingWorker<Object, Object>
     {
-      String Address;
-    public manageLabels(String address)
-    {
-      this.Address = address;
-    }
-      
-    @Override
-    protected Object doInBackground() throws Exception
-    {
-      int port = Modbus.DEFAULT_PORT;
-      InetAddress addy = InetAddress.getByName(Address);
-      while(true)
-      {
-        TCPMasterConnection connection = new TCPMasterConnection(addy);
-        connection.setTimeout(3000);
-        connection.setPort(port);
-        System.out.println("Trying to connect to "+addy.getHostAddress()+" on port "+port);
-        connection.connect();
         
-        ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-        // set Request
-        ModbusRequest request = new ReadCoilsRequest(0,5); // 0= von diesem Coil wird begonnen 5= Anzahl an Coils die gelesen wird
-        request.setUnitID(Modbus.DEFAULT_UNIT_ID);
-        transaction.setRequest(request);
-        transaction.execute();
-        // get Response
-        ModbusResponse response = transaction.getResponse();
-        
-        connection.close();
-        
-        String hexString = response.getHexMessage().substring(response.getHexMessage().length()-3, response.getHexMessage().length()-1);
-        int intVal = Integer.parseInt(hexString, 16);
-        String bin = Integer.toBinaryString(intVal);
-        while(bin.length()<5)
+        @Override
+        protected Object doInBackground() throws Exception
         {
-            bin = "0" + bin;
+            while(true)
+            {
+                StringCoilsResp resp = master.getCoils();
+             
+                if(resp.getCoil(2))
+                {
+                  lCar.setText("Auto da");
+                }
+                else
+                {
+                  lCar.setText("Auto nix da");
+                }
+                if(resp.getCoil(3))// Tor offen
+                {
+                  lTor.setText("Tor offen");
+                }
+                else if(resp.getCoil(4)) // Tor geschlossen
+                {
+                  lTor.setText("Tor geschlossen");
+                }
+                else
+                {
+                  lTor.setText("Ist das Tor halb offen oder halb geschlossen");
+                }
+                Thread.sleep(2000);
+              }
         }
-        if(bin.charAt(bin.length()-3)=='1')
-        {
-          lCar.setText("Auto da");
-        }
-        else
-        {
-          lCar.setText("Auto nix da");
-        }
-        if(bin.charAt(bin.length()-4)=='1')// Tor offen
-        {
-          lTor.setText("Tor offen");
-        }
-        else if(bin.charAt(bin.length()-5)=='1') // Tor geschlossen
-        {
-          lTor.setText("Tor geschlossen");
-        }
-        else
-        {
-          lTor.setText("Ist das Tor halb offen oder halb geschlossen");
-        }
-        Thread.sleep(2000);
-      }
-    }
               
     }
     
@@ -107,7 +92,8 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
       @Override
       protected Object doInBackground() throws Exception
       {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        master.writeCoil(coil, true);
+        return 0;
       }
        
     }

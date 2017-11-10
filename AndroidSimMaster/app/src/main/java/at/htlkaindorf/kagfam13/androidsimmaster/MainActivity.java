@@ -7,12 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import net.wimpi.modbus.Modbus;
-import net.wimpi.modbus.io.ModbusTCPTransaction;
-import net.wimpi.modbus.msg.ModbusRequest;
-import net.wimpi.modbus.msg.ModbusResponse;
-import net.wimpi.modbus.msg.ReadCoilsRequest;
-import net.wimpi.modbus.net.TCPMasterConnection;
-
 import java.net.InetAddress;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         try
         {
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.0.0.11"), 10, 15);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.215.72"), 10, 15);
         }
         catch (Exception ex)
         {
@@ -43,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
         tor4 = (TextView) findViewById(R.id.twTor4);
         tor5 = (TextView) findViewById(R.id.twTor5);
 
+        //new backgroundThread().execute();
+    }
+
+    public void onButton2(View view) {
         new backgroundThread().execute();
     }
 
@@ -117,36 +115,30 @@ public class MainActivity extends AppCompatActivity {
             tWeinsatzdauer.setText("Dauer des Letzten einsatzes: " + min + " min " + sec + " sec");
         }
 
-        private boolean readCoil(String bin,int id)
-        {
-            if (bin.charAt(id) == '1')
-                return true;
-            return false;
-        }
-
         @Override
         protected Object doInBackground(Object... objects) {
-            while(true)
+            //while(true)
             {
                 System.out.println("*************************************");
                 try
                 {
-                    String bin = master.getCoils();
+                    StringCoilsResp resp = master.getCoils();
 
-                    setCar(auto1,readCoil(bin, 10));
-                    setCar(auto2,readCoil(bin, 11));
-                    setCar(auto3,readCoil(bin, 12));
-                    setCar(auto4,readCoil(bin, 13));
-                    setCar(auto5,readCoil(bin, 14));
+                    setCar(auto1, resp.getCoil(10));
+                    setCar(auto2, resp.getCoil(11));
+                    setCar(auto3, resp.getCoil(12));
+                    setCar(auto4, resp.getCoil(13));
+                    setCar(auto5, resp.getCoil(14));
 
-                    setTor(tor1, readCoil(bin, 15), readCoil(bin, 16));
-                    setTor(tor2, readCoil(bin, 17), readCoil(bin, 18));
-                    setTor(tor3, readCoil(bin, 19), readCoil(bin, 20));
-                    setTor(tor4, readCoil(bin, 21), readCoil(bin, 22));
-                    setTor(tor5, readCoil(bin, 23), readCoil(bin, 24));
+                    setTor(tor1, resp.getCoil(15), resp.getCoil(16));
+                    setTor(tor2, resp.getCoil(17), resp.getCoil(18));
+
+                    setTor(tor3, resp.getCoil(19), resp.getCoil(20));
+                    setTor(tor4, resp.getCoil(21), resp.getCoil(22));
+                    setTor(tor5, resp.getCoil(23), resp.getCoil(24));
 
 
-                    Thread.sleep(1000);
+                    //Thread.sleep(1000);
                     return 0;
                 }
                 catch (Exception e)
@@ -154,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+            return 0;
         }
     }
 }
