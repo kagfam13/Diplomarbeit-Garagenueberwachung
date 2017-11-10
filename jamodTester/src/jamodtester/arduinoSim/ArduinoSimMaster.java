@@ -22,7 +22,7 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
     /**
      * Creates new form ArduinoSimMaster
      */
-     String inetAdress = "10.0.0.189";
+     String inetAdress = "10.200.112.189";
      
     public ArduinoSimMaster() {
         initComponents();
