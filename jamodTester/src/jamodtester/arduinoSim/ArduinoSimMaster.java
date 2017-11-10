@@ -5,8 +5,10 @@
  */
 package jamodtester.arduinoSim;
 
-import jamodtester.easyModbus.StringCoilsResp;
+
+
 import jamodtester.easyModbus.EasyModbusMaster;
+import jamodtester.easyModbus.StringCoilsResp;
 import java.net.*;
 import java.util.logging.*;
 import javax.swing.*;

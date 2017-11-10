@@ -5,21 +5,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import net.wimpi.modbus.Modbus;
 import java.net.InetAddress;
 
 public class MainActivity extends AppCompatActivity {
     TextView auto1,auto2,auto3,auto4,auto5,tor1,tor2,tor3,tor4,tor5;
     EasyModbusMaster master;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         try
         {
-            InetAddress address = new
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.215.72"), 10, 15);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.211.96"), 10, 15);
         }
         catch (Exception ex)
         {
@@ -93,19 +92,19 @@ public class MainActivity extends AppCompatActivity {
 
         private void setCar(TextView car, boolean state)
         {
-            if (state == true)
+            if (state)
                 car.setText("Fahrzeug ist da");
             else
-                car.setText("Fahrzeug ist nicht da");
+                car.setText("Fahrzeug ist nix da");
         }
 
         private void setTor(TextView tor, boolean sensorUnten,boolean sensorOben)
         {
-            if (sensorOben == false && sensorUnten == false)
+            if (!sensorOben && !sensorUnten)
                 tor.setText("Tor in der Mitte");
-            else if (sensorOben == true && sensorUnten == false)
+            else if (sensorOben && !sensorUnten)
                 tor.setText("Tor ist geöffnet");
-            else if (sensorOben == false && sensorUnten == true)
+            else if (!sensorOben)
                 tor.setText("Tor ist geschlossen");
             else
                 tor.setText("WTF ist los??");
@@ -124,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 try
                 {
                     StringCoilsResp resp = master.getCoils();
-
+                    System.out.print(resp.toString());
                     setCar(auto1, resp.getCoil(10));
                     setCar(auto2, resp.getCoil(11));
                     setCar(auto3, resp.getCoil(12));
