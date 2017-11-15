@@ -51,6 +51,7 @@ public class EasyModbusMaster {
             transaction.setRequest(request);
             transaction.execute();
             connection.close();
+
             String hexMessage = transaction.getResponse().getHexMessage();
             
             hexMessage = hexMessage.replaceAll(" ", "");

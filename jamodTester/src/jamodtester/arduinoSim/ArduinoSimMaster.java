@@ -8,7 +8,7 @@ package jamodtester.arduinoSim;
 
 
 import jamodtester.easyModbus.EasyModbusMaster;
-import jamodtester.easyModbus.StringCoilsResp;
+import jamodtester.easyModbus.GetCoilsResp;
 import java.net.*;
 import java.util.logging.*;
 import javax.swing.*;
@@ -47,7 +47,7 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
         {
             while(true)
             {
-                StringCoilsResp resp = master.getCoils();
+                GetCoilsResp resp = master.getCoils();
                 System.out.println(resp.toString());
              
                 if(resp.getCoil(2))

@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         try
         {
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.211.96"), 10, 15);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.0.0.10"), 10, 15);
         }
         catch (Exception ex)
         {
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Object doInBackground(Object... objects) {
-            System.out.println("*************************************");
+            System.out.println("writing coil: " + coil);
             try
             {
                 master.writeCoil(coil, true);
@@ -93,9 +93,9 @@ public class MainActivity extends AppCompatActivity {
         private void setCar(TextView car, boolean state)
         {
             if (state)
-                car.setText("Fahrzeug ist da");
+                car.setText("+");
             else
-                car.setText("Fahrzeug ist nix da");
+                car.setText("-");
         }
 
         private void setTor(TextView tor, boolean sensorUnten,boolean sensorOben)
@@ -119,11 +119,10 @@ public class MainActivity extends AppCompatActivity {
         protected Object doInBackground(Object... objects) {
             //while(true)
             {
-                System.out.println("*************************************");
                 try
                 {
                     StringCoilsResp resp = master.getCoils();
-                    System.out.print(resp.toString());
+                    System.out.print("received new data: " + resp.toString());
                     setCar(auto1, resp.getCoil(10));
                     setCar(auto2, resp.getCoil(11));
                     setCar(auto3, resp.getCoil(12));

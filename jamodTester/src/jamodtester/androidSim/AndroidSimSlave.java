@@ -11,8 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import net.wimpi.modbus.*;
-import net.wimpi.modbus.net.*;
-import net.wimpi.modbus.procimg.*;
 
 
 /**

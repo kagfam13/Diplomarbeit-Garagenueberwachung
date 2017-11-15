@@ -38,7 +38,8 @@ public class EasyModbusMaster {
         connection.setTimeout(3000);
     }
     
-    public StringCoilsResp getCoils()
+
+    public GetCoilsResp getCoils()
     {
         try {
             while(connection.isConnected());
@@ -56,80 +57,18 @@ public class EasyModbusMaster {
             hexMessage = hexMessage.replaceAll(" ", "");
             
             hexMessage = hexMessage.substring(18);
-            
-            String bin = "";
-            int i=0;
-            while(i<hexMessage.length())
+            String orderedHex = "";
+            while(!hexMessage.isEmpty())
             {
-                int intwert = Integer.parseInt(hexMessage.charAt(i+1) + "",16);
-                String binwert = Integer.toBinaryString(intwert);
-                while(binwert.length()<4)
-                    binwert = String.format("0" + binwert);
-                bin = binwert+bin;
+                orderedHex = hexMessage.charAt(1) + hexMessage.charAt(0) + orderedHex;
                 
-                intwert = Integer.parseInt(hexMessage.charAt(i) + "");
-                binwert = Integer.toBinaryString(intwert);
-                while(binwert.length()<4)
-                    binwert = String.format("0" + binwert);
-                bin = binwert+bin;
-                
-                
-                i+=2;
+                orderedHex = orderedHex.substring(2);
             }
-            
-            return new StringCoilsResp(new StringBuffer(bin).reverse().toString().substring(0, wCoils+rCoils));
+            return new GetCoilsResp(new HexToBin(orderedHex, rCoils+wCoils).getCoils());
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-    }
-    
-    public boolean readCoil(int id)
-    {
-        try {
-            while(connection.isConnected());
-            connection.connect();
-            
-            ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-            
-            ModbusRequest request = new ReadCoilsRequest(0,rCoils+wCoils);
-            request.setUnitID(unitId);
-            transaction.setRequest(request);
-            transaction.execute();
-            connection.close();
-            String hexMessage = transaction.getResponse().getHexMessage();
-            
-            hexMessage = hexMessage.replaceAll(" ", "");
-            
-            hexMessage = hexMessage.substring(18);
-            
-            String bin = "";
-            int i=0;
-            while(i<hexMessage.length())
-            {
-                int intwert = Integer.parseInt(hexMessage.charAt(i+1) + "",16);
-                String binwert = Integer.toBinaryString(intwert);
-                while(binwert.length()<4)
-                    binwert = String.format("0" + binwert);
-                bin = binwert+bin;
-                
-                intwert = Integer.parseInt(hexMessage.charAt(i) + "");
-                binwert = Integer.toBinaryString(intwert);
-                while(binwert.length()<4)
-                    binwert = String.format("0" + binwert);
-                bin = binwert+bin;
-                
-                
-                i+=2;
-            }
-            String coils = new StringBuffer(bin).reverse().toString().substring(0, wCoils+rCoils);
-            if(coils.charAt(id) == '1')
-                return true;
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
     
     public void writeCoil(int id, boolean state)
@@ -155,9 +94,6 @@ public class EasyModbusMaster {
     public static void main(String[] args) {
         try {
             EasyModbusMaster master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 10, 15);
-            
-            System.out.println(master.readCoil(0));
-            System.out.println(master.readCoil(24));
             
         } catch (UnknownHostException ex) {
             Logger.getLogger(EasyModbusMaster.class.getName()).log(Level.SEVERE, null, ex);
