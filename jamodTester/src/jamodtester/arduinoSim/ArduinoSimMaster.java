@@ -31,7 +31,7 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
         initComponents();
         try {
             // master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.112.70"), 2, 3);
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.112.189"), 2, 3);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 2, 3);
             new manageLabels().execute();
              
          } catch (UnknownHostException ex) {
@@ -47,7 +47,8 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
         {
             while(true)
             {
-                GetCoilsResp resp = master.getCoils();
+                System.out.println("*********************************");
+                GetCoilsResp resp = new GetCoilsResp(master.getCoils());
                 System.out.println(resp.toString());
              
                 if(resp.getCoil(2))
@@ -70,7 +71,7 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
                 {
                   lTor.setText("Ist das Tor halb offen oder halb geschlossen");
                 }
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             }
         }
               

@@ -24,7 +24,7 @@ public class EasyModbusMaster {
     private final int port,unitId;
     private final InetAddress address;
     private final int wCoils, rCoils;
-    private TCPMasterConnection connection;
+    private final TCPMasterConnection connection;
 
     public EasyModbusMaster(int port, int unitId, InetAddress address, int wCoils, int rCoils) throws UnknownHostException {
         this.port = port;
@@ -39,7 +39,7 @@ public class EasyModbusMaster {
     }
     
 
-    public GetCoilsResp getCoils()
+    public Boolean[] getCoils()
     {
         try {
             while(connection.isConnected());
@@ -53,18 +53,20 @@ public class EasyModbusMaster {
             transaction.execute();
             connection.close();
             String hexMessage = transaction.getResponse().getHexMessage();
-            
+            System.out.println(hexMessage);
             hexMessage = hexMessage.replaceAll(" ", "");
             
-            hexMessage = hexMessage.substring(18);
+            hexMessage = hexMessage.substring(18); // Extracted the Data
+            System.out.println(hexMessage);
             String orderedHex = "";
             while(!hexMessage.isEmpty())
             {
-                orderedHex = hexMessage.charAt(1) + hexMessage.charAt(0) + orderedHex;
-                
-                orderedHex = orderedHex.substring(2);
+                orderedHex = String.format("%s%s%s",hexMessage.charAt(0),hexMessage.charAt(1),orderedHex);
+
+                hexMessage = hexMessage.substring(2);
             }
-            return new GetCoilsResp(new HexToBin(orderedHex, rCoils+wCoils).getCoils());
+            System.out.println(orderedHex);
+            return new HexToBin(orderedHex, rCoils+wCoils).getCoils();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,9 +95,11 @@ public class EasyModbusMaster {
     }
     public static void main(String[] args) {
         try {
-            EasyModbusMaster master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 10, 15);
+            EasyModbusMaster master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 0, 1);
             
         } catch (UnknownHostException ex) {
+            Logger.getLogger(EasyModbusMaster.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(EasyModbusMaster.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

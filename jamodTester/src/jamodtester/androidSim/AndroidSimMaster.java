@@ -68,8 +68,8 @@ public class AndroidSimMaster extends javax.swing.JFrame {
         protected Object doInBackground() throws Exception {
             while(true)
             {
-                GetCoilsResp resp = master.getCoils();
-                
+                GetCoilsResp resp = new GetCoilsResp(master.getCoils());
+                System.out.println(resp.toString());
                 setCar(car1, resp.getCoil(10));
                 setCar(car2, resp.getCoil(11));
                 setCar(car3, resp.getCoil(12));
@@ -82,7 +82,7 @@ public class AndroidSimMaster extends javax.swing.JFrame {
                 setTor(tor4, resp.getCoil(21), resp.getCoil(22));
                 setTor(tor5, resp.getCoil(23), resp.getCoil(24));
                 
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             }
         }
         
@@ -159,9 +159,19 @@ public class AndroidSimMaster extends javax.swing.JFrame {
         jPanel3.add(jPanel4, java.awt.BorderLayout.PAGE_START);
 
         jButton2.setText("auf");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel5.add(jButton2);
 
         jButton3.setText("zu");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel5.add(jButton3);
 
         jPanel3.add(jPanel5, java.awt.BorderLayout.CENTER);
@@ -182,9 +192,19 @@ public class AndroidSimMaster extends javax.swing.JFrame {
         jPanel7.add(jPanel8, java.awt.BorderLayout.PAGE_START);
 
         jButton4.setText("auf");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel9.add(jButton4);
 
         jButton5.setText("zu");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel9.add(jButton5);
 
         jPanel7.add(jPanel9, java.awt.BorderLayout.CENTER);
@@ -205,9 +225,19 @@ public class AndroidSimMaster extends javax.swing.JFrame {
         jPanel11.add(jPanel12, java.awt.BorderLayout.PAGE_START);
 
         jButton6.setText("auf");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         jPanel13.add(jButton6);
 
         jButton7.setText("zu");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
         jPanel13.add(jButton7);
 
         jPanel11.add(jPanel13, java.awt.BorderLayout.CENTER);
@@ -228,9 +258,19 @@ public class AndroidSimMaster extends javax.swing.JFrame {
         jPanel15.add(jPanel16, java.awt.BorderLayout.PAGE_START);
 
         jButton8.setText("auf");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
         jPanel17.add(jButton8);
 
         jButton9.setText("zu");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
         jPanel17.add(jButton9);
 
         jPanel15.add(jPanel17, java.awt.BorderLayout.CENTER);
@@ -251,9 +291,19 @@ public class AndroidSimMaster extends javax.swing.JFrame {
         jPanel19.add(jPanel20, java.awt.BorderLayout.PAGE_START);
 
         jButton10.setText("auf");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
         jPanel21.add(jButton10);
 
         jButton11.setText("zu");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
         jPanel21.add(jButton11);
 
         jPanel19.add(jPanel21, java.awt.BorderLayout.CENTER);
@@ -269,6 +319,56 @@ public class AndroidSimMaster extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        master.writeCoil(0, true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        master.writeCoil(1, true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        master.writeCoil(2, true);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        master.writeCoil(3, true);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        master.writeCoil(4, true);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        master.writeCoil(5, true);
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        master.writeCoil(6, true);
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+        master.writeCoil(7, true);
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+        master.writeCoil(8, true);
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+        master.writeCoil(9, true);
+    }//GEN-LAST:event_jButton11ActionPerformed
 
     /**
      * @param args the command line arguments

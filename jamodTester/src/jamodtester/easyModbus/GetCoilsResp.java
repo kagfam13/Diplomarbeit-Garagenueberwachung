@@ -6,6 +6,7 @@
 package jamodtester.easyModbus;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
+import java.util.Arrays;
 
 /**
  *
@@ -24,4 +25,11 @@ public class GetCoilsResp {
             throw new Exception("Wrong index");
         return b[index];
     }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(b);
+    }
+    
+    
 }

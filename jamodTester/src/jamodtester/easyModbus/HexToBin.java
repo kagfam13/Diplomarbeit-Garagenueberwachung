@@ -20,22 +20,24 @@ public class HexToBin {
     private Boolean[] coils;
 
     public HexToBin(String data,int length) {
-        this.data = data;
+        this.data = data; // Coil 0 at the end of the hex String
         this.length = length;
         calc();
     }
-
+    
     private void calc() {
-        String daten = new StringBuffer(data).reverse().toString();
+        String daten = new StringBuffer(data).reverse().toString(); 
         String coilsss = "";
         while(!daten.isEmpty())
         {
-            int intVal = Integer.parseInt(""+data.charAt(0), 16);
+            System.out.println(daten);
+            int intVal = Integer.parseInt(""+daten.charAt(0), 16);
             String bin = Integer.toBinaryString(intVal);
             while(bin.length()<4)
                 bin = "0" + bin;
             daten = daten.substring(1);
             coilsss += new StringBuffer(bin).reverse().toString();
+            System.out.println(coilsss);
         }
         coils = new Boolean[length];
         int i;
@@ -55,5 +57,7 @@ public class HexToBin {
     
     
     public static void main(String[] args) {
+        GetCoilsResp coilsResp = new GetCoilsResp(new HexToBin("0f0",12).getCoils());
+        System.out.println(coilsResp.toString());
     }
 }

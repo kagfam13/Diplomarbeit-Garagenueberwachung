@@ -73,11 +73,11 @@ public class EasyModbusSlave {
     }
     
     public static void main(String[] args) {
-        EasyModbusSlave slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, 15, 10, 15);
+        EasyModbusSlave slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, 15, 0, 1);
         slave.start();
         
         try {
-            slave.setCoil(24, true);
+            slave.setCoil(0, true);
         } catch (Exception ex) {
             Logger.getLogger(EasyModbusSlave.class.getName()).log(Level.SEVERE, null, ex);
         }
