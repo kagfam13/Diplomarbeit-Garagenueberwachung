@@ -16,7 +16,6 @@ public class WriteToDatabase
 {
   private final Connection conn;
   private final String typId,objektId;
-  boolean status = false;
 
   
   Statement stmt,stmt1;
@@ -41,15 +40,12 @@ public class WriteToDatabase
       System.out.println("x");
       int id = getId(); // letze id Abfragen <- Problem !!!!
       System.out.println("x");
-      id++;
-      String strId = String.format("%d", id);
-      conn.setAutoCommit(false);
+      String strId = String.format("%d", id++);
       stmt= conn.createStatement();
       System.out.println("x");
       String sql = "INSERT INTO GARAGENUEBERWACHUNG (ID,ZEIT,TYPID,OBJEKTID) "
             + "VALUES (strId,curTime,typId,objektId);";
       stmt.executeUpdate(sql);
-      status = true;
     }
     catch (SQLException ex)
     {
@@ -71,10 +67,10 @@ public class WriteToDatabase
             "remote", "1234");
          c.setAutoCommit(false);
       System.out.println("x");
-      stmt = c.createStatement();
+      stmt1 = c.createStatement();
       System.out.println("x");
       // holt die letzte id
-      try (ResultSet rs = stmt.executeQuery( "SELECT * FROM GARAGENUEBERWACHUNG;" )) 
+      try (ResultSet rs = stmt1.executeQuery( "SELECT * FROM EREIGNIS;" )) 
       {
         // holt die letzte id
         while ( rs.next() )
@@ -82,7 +78,7 @@ public class WriteToDatabase
           id = rs.getInt("ereignisId");
         }
       }
-      stmt.close();
+      stmt1.close();
     } 
     catch ( Exception e ) 
     {
@@ -93,8 +89,4 @@ public class WriteToDatabase
     return id;
   }
   
-  public boolean isStatus()
-  {
-    return status;
-  }
 }

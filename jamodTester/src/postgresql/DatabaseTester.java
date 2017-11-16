@@ -19,9 +19,10 @@ public class DatabaseTester
   
   public static void main(String[] args)
   { 
+      Connection conn;
       int id=0;
       
-        final ConnectToDatabase connectToDatabase= new ConnectToDatabase("remote", "pw");
+        final ConnectToDatabase connectToDatabase= new ConnectToDatabase("remote", "1234");
         connectToDatabase.connect();
         
             

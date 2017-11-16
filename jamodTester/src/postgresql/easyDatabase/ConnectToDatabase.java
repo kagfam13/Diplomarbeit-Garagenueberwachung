@@ -6,6 +6,7 @@
 package postgresql.easyDatabase;
 
 import java.sql.*;
+import java.time.*;
 import java.util.logging.*;
 import postgresql.*;
 
@@ -38,20 +39,26 @@ public class ConnectToDatabase
         Statement stmt = c.createStatement();
         System.out.println("x");
         // holt die letzte id
-        try (ResultSet rs = stmt.executeQuery( "SELECT * FROM EREIGNIS;" ))
-        {
+          ResultSet rs = stmt.executeQuery( "SELECT * FROM EREIGNIS;" );
           // holt die letzte id
           while ( rs.next() )
           {
             id = rs.getInt("ereignisId");
           }
-        }
+          
+        System.out.println("x");
+        Timestamp time = new Timestamp(0);
+        System.out.println("x");
+        String curTime= time.toString();
+        System.out.println("x");
+        System.out.println("x");
+        id++;
+        String strId = String.format("%d", id++);
+        System.out.println("x");
+        String sql = "INSERT INTO EREIGNIS (EREIGNISID,ZEIT,TYPID,OBJEKTID) "
+              + "VALUES (4,time,0,1);";
+        stmt.executeUpdate(sql);
         stmt.close();
-        /*final WriteToDatabase writeToDatabase = new WriteToDatabase(conn, "0", "1");
-        writeToDatabase.write();
-        boolean status = writeToDatabase.isStatus();
-        System.out.println(""+status);
-        */
         c.close();
       }
     catch (SQLException ex)
