@@ -13,6 +13,8 @@ import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.io.ModbusTCPTransaction;
 import net.wimpi.modbus.msg.ModbusRequest;
 import net.wimpi.modbus.msg.ReadCoilsRequest;
+import net.wimpi.modbus.msg.ReadInputRegistersRequest;
+import net.wimpi.modbus.msg.ReadMultipleRegistersRequest;
 import net.wimpi.modbus.msg.WriteCoilRequest;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
@@ -23,21 +25,50 @@ import net.wimpi.modbus.net.TCPMasterConnection;
 public class EasyModbusMaster {
     private final int port,unitId;
     private final InetAddress address;
-    private final int wCoils, rCoils;
+    private final int wCoils, rCoils, wRegisters, rRegisters;
     private final TCPMasterConnection connection;
 
-    public EasyModbusMaster(int port, int unitId, InetAddress address, int wCoils, int rCoils) throws UnknownHostException {
+    public EasyModbusMaster(int port, int unitId, InetAddress address, int wCoils, int rCoils, int wRegisters, int rRegisters) throws UnknownHostException {
         this.port = port;
         this.unitId = unitId;
         this.address = address;
         this.wCoils = wCoils;
         this.rCoils = rCoils;
+        this.wRegisters = wRegisters;
+        this.rRegisters = rRegisters;
         
         connection = new TCPMasterConnection(address);
         connection.setPort(port);
         connection.setTimeout(3000);
     }
     
+    public EasyModbusMaster(int port, int unitId, InetAddress address, int wCoils, int rCoils) throws UnknownHostException {
+        this.port = port;
+        this.unitId = unitId;
+        this.address = address;
+        this.wCoils = wCoils;
+        this.rCoils = rCoils;
+        this.wRegisters = 0;
+        this.rRegisters = 0;
+        
+        connection = new TCPMasterConnection(address);
+        connection.setPort(port);
+        connection.setTimeout(3000);
+    }
+    
+    public int getRegister(int index) throws Exception
+    {
+        while(connection.isConnected());
+        connection.connect();
+        ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
+        ModbusRequest request = new ReadMultipleRegistersRequest(index, 1);
+        request.setUnitID(unitId);
+        transaction.setRequest(request);
+        transaction.execute();
+        connection.close();
+        transaction.getResponse().
+        
+    }
 
     public Boolean[] getCoils()
     {

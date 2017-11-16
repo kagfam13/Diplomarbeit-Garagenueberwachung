@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import net.wimpi.modbus.Modbus;
 import java.net.InetAddress;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     TextView auto1,auto2,auto3,auto4,auto5,tor1,tor2,tor3,tor4,tor5;
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         try
         {
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.0.0.10"), 10, 15);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.0.0.20"), 10, 15);
         }
         catch (Exception ex)
         {
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
         //new backgroundThread().execute();
     }
+
+
 
     public void onButton2(View view) {
         new backgroundThread().execute();
@@ -93,9 +96,9 @@ public class MainActivity extends AppCompatActivity {
         private void setCar(TextView car, boolean state)
         {
             if (state)
-                car.setText("+");
+                car.setText("Da");
             else
-                car.setText("-");
+                car.setText("Weg");
         }
 
         private void setTor(TextView tor, boolean sensorUnten,boolean sensorOben)
@@ -121,24 +124,11 @@ public class MainActivity extends AppCompatActivity {
             {
                 try
                 {
-                    StringCoilsResp resp = master.getCoils();
+                    GetCoilsResp resp = new GetCoilsResp(master.getCoils());
                     System.out.print("received new data: " + resp.toString());
-                    setCar(auto1, resp.getCoil(10));
-                    setCar(auto2, resp.getCoil(11));
-                    setCar(auto3, resp.getCoil(12));
-                    setCar(auto4, resp.getCoil(13));
-                    setCar(auto5, resp.getCoil(14));
-
-                    setTor(tor1, resp.getCoil(15), resp.getCoil(16));
-                    setTor(tor2, resp.getCoil(17), resp.getCoil(18));
-
-                    setTor(tor3, resp.getCoil(19), resp.getCoil(20));
-                    setTor(tor4, resp.getCoil(21), resp.getCoil(22));
-                    setTor(tor5, resp.getCoil(23), resp.getCoil(24));
-
 
                     //Thread.sleep(1000);
-                    return 0;
+                    return resp;
                 }
                 catch (Exception e)
                 {
@@ -146,6 +136,31 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             return 0;
+        }
+
+
+        @Override
+        protected void onPostExecute(Object o) {
+            try {
+                GetCoilsResp resp = (GetCoilsResp) get();
+
+                setCar(auto1, resp.getCoil(10));
+                setCar(auto2, resp.getCoil(11));
+                setCar(auto3, resp.getCoil(12));
+                setCar(auto4, resp.getCoil(13));
+                setCar(auto5, resp.getCoil(14));
+
+                setTor(tor1, resp.getCoil(15), resp.getCoil(16));
+                setTor(tor2, resp.getCoil(17), resp.getCoil(18));
+
+                setTor(tor3, resp.getCoil(19), resp.getCoil(20));
+                setTor(tor4, resp.getCoil(21), resp.getCoil(22));
+                setTor(tor5, resp.getCoil(23), resp.getCoil(24));
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

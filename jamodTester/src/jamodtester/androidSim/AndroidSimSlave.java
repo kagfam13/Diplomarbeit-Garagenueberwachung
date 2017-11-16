@@ -38,7 +38,6 @@ public class AndroidSimSlave extends javax.swing.JFrame
             panel.setBackground(Color.green);
             Thread.sleep(5000);
             panel.setBackground(Color.red);
-            System.out.println("hi");
             return 0;
         }
         
