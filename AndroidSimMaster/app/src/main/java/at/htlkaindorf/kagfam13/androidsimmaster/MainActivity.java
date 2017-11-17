@@ -5,20 +5,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import net.wimpi.modbus.Modbus;
 import java.net.InetAddress;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     TextView auto1,auto2,auto3,auto4,auto5,tor1,tor2,tor3,tor4,tor5;
     EasyModbusMaster master;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         try
         {
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.215.72"), 10, 15);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.0.0.20"), 10, 15);
         }
         catch (Exception ex)
         {
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
         //new backgroundThread().execute();
     }
+
+
 
     public void onButton2(View view) {
         new backgroundThread().execute();
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Object doInBackground(Object... objects) {
-            System.out.println("*************************************");
+            System.out.println("writing coil: " + coil);
             try
             {
                 master.writeCoil(coil, true);
@@ -92,19 +95,19 @@ public class MainActivity extends AppCompatActivity {
 
         private void setCar(TextView car, boolean state)
         {
-            if (state == true)
-                car.setText("Fahrzeug ist da");
+            if (state)
+                car.setText("Da");
             else
-                car.setText("Fahrzeug ist nicht da");
+                car.setText("Weg");
         }
 
         private void setTor(TextView tor, boolean sensorUnten,boolean sensorOben)
         {
-            if (sensorOben == false && sensorUnten == false)
+            if (!sensorOben && !sensorUnten)
                 tor.setText("Tor in der Mitte");
-            else if (sensorOben == true && sensorUnten == false)
+            else if (sensorOben && !sensorUnten)
                 tor.setText("Tor ist geöffnet");
-            else if (sensorOben == false && sensorUnten == true)
+            else if (!sensorOben)
                 tor.setText("Tor ist geschlossen");
             else
                 tor.setText("WTF ist los??");
@@ -119,27 +122,13 @@ public class MainActivity extends AppCompatActivity {
         protected Object doInBackground(Object... objects) {
             //while(true)
             {
-                System.out.println("*************************************");
                 try
                 {
-                    StringCoilsResp resp = master.getCoils();
-
-                    setCar(auto1, resp.getCoil(10));
-                    setCar(auto2, resp.getCoil(11));
-                    setCar(auto3, resp.getCoil(12));
-                    setCar(auto4, resp.getCoil(13));
-                    setCar(auto5, resp.getCoil(14));
-
-                    setTor(tor1, resp.getCoil(15), resp.getCoil(16));
-                    setTor(tor2, resp.getCoil(17), resp.getCoil(18));
-
-                    setTor(tor3, resp.getCoil(19), resp.getCoil(20));
-                    setTor(tor4, resp.getCoil(21), resp.getCoil(22));
-                    setTor(tor5, resp.getCoil(23), resp.getCoil(24));
-
+                    GetCoilsResp resp = new GetCoilsResp(master.getCoils());
+                    System.out.print("received new data: " + resp.toString());
 
                     //Thread.sleep(1000);
-                    return 0;
+                    return resp;
                 }
                 catch (Exception e)
                 {
@@ -147,6 +136,31 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             return 0;
+        }
+
+
+        @Override
+        protected void onPostExecute(Object o) {
+            try {
+                GetCoilsResp resp = (GetCoilsResp) get();
+
+                setCar(auto1, resp.getCoil(10));
+                setCar(auto2, resp.getCoil(11));
+                setCar(auto3, resp.getCoil(12));
+                setCar(auto4, resp.getCoil(13));
+                setCar(auto5, resp.getCoil(14));
+
+                setTor(tor1, resp.getCoil(15), resp.getCoil(16));
+                setTor(tor2, resp.getCoil(17), resp.getCoil(18));
+
+                setTor(tor3, resp.getCoil(19), resp.getCoil(20));
+                setTor(tor4, resp.getCoil(21), resp.getCoil(22));
+                setTor(tor5, resp.getCoil(23), resp.getCoil(24));
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
