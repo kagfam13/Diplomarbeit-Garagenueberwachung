@@ -109,14 +109,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     private class BackgroundWorker implements Runnable
     {
         private void setCar(TextView car, boolean state)
         {
             if (state)
-                car.setText("Da");
+                car.setText("Fahrzeug in der Garage");
             else
-                car.setText("Weg");
+                car.setText("Fahrzeug nicht in der Garage");
         }
 
         private void setTor(TextView tor, boolean sensorUnten,boolean sensorOben)

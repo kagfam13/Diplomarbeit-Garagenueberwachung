@@ -70,7 +70,7 @@ public class EasyModbusSlave {
         ModbusCoupler.getReference().setMaster(false);
         ModbusCoupler.getReference().setProcessImage(spi);
         
-        listener = new ModbusTCPListener(3);
+        listener = new ModbusTCPListener(300);
         listener.setPort(port);
         listener.start();
     }

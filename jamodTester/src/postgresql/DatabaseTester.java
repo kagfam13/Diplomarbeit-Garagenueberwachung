@@ -6,8 +6,6 @@
 package postgresql;
 
 import java.sql.*;
-import java.util.logging.*;
-import org.postgresql.util.*;
 import postgresql.easyDatabase.*;
 
 /**
