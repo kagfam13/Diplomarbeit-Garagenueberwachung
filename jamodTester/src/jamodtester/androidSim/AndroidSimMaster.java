@@ -29,7 +29,7 @@ public class AndroidSimMaster extends javax.swing.JFrame {
         initComponents();
         
         try {
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 10, 15);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 10, 15, 0, 1);
             new backgroundWorker().execute();
         } catch (UnknownHostException ex) {
             Logger.getLogger(AndroidSimMaster.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,6 +81,10 @@ public class AndroidSimMaster extends javax.swing.JFrame {
                 setTor(tor3, resp.getCoil(19), resp.getCoil(20));
                 setTor(tor4, resp.getCoil(21), resp.getCoil(22));
                 setTor(tor5, resp.getCoil(23), resp.getCoil(24));
+                
+                int zeit = master.getRegister(0);
+                
+                dauer.setText("Reaktionszeit des letzten Einsatzes: " + zeit/60 + " Minuten und " + zeit%60 + " Sekunden");
                 
                 Thread.sleep(1000);
             }
@@ -140,6 +144,8 @@ public class AndroidSimMaster extends javax.swing.JFrame {
         jButton11 = new javax.swing.JButton();
         jPanel22 = new javax.swing.JPanel();
         tor5 = new javax.swing.JLabel();
+        jPanel23 = new javax.swing.JPanel();
+        dauer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -153,7 +159,7 @@ public class AndroidSimMaster extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_END);
 
-        jPanel2.setLayout(new java.awt.GridLayout(0, 1));
+        jPanel2.setLayout(new java.awt.GridLayout());
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Auto 1"));
         jPanel3.setLayout(new java.awt.BorderLayout());
@@ -322,6 +328,11 @@ public class AndroidSimMaster extends javax.swing.JFrame {
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
+        dauer.setText("Reaktionszeit des letzten Einsatzes: ");
+        jPanel23.add(dauer);
+
+        getContentPane().add(jPanel23, java.awt.BorderLayout.PAGE_START);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -422,6 +433,7 @@ public class AndroidSimMaster extends javax.swing.JFrame {
     private javax.swing.JLabel car3;
     private javax.swing.JLabel car4;
     private javax.swing.JLabel car5;
+    private javax.swing.JLabel dauer;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -448,6 +460,7 @@ public class AndroidSimMaster extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;

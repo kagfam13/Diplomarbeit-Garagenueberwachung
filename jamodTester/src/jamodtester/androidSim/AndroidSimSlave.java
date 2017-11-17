@@ -40,7 +40,6 @@ public class AndroidSimSlave extends javax.swing.JFrame
             panel.setBackground(Color.red);
             return 0;
         }
-        
     }
     
     private class backgroundWorker extends SwingWorker<Object, Object>
@@ -76,7 +75,7 @@ public class AndroidSimSlave extends javax.swing.JFrame
   public AndroidSimSlave()
   {
     initComponents();
-      slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, 15, 10, 15);
+      slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, 15, 10, 15, 0, 1);
       pta1.setBackground(Color.red);
       ptz1.setBackground(Color.red);
       pta2.setBackground(Color.red);
@@ -450,16 +449,23 @@ public class AndroidSimSlave extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void slidersChanged()
+    {
+        slave.setRegister(0, sliderMin.getValue()*60 + sliderSec.getValue());
+    }
+    
   private void minStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_minStateChanged
   {//GEN-HEADEREND:event_minStateChanged
     // TODO add your handling code here:
     jLabel2.setText("" + sliderMin.getValue());
+    slidersChanged();
   }//GEN-LAST:event_minStateChanged
 
   private void sliderSecStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_sliderSecStateChanged
   {//GEN-HEADEREND:event_sliderSecStateChanged
     // TODO add your handling code here:
     jLabel4.setText("" + sliderSec.getValue());
+    slidersChanged();
   }//GEN-LAST:event_sliderSecStateChanged
 
   private void tbTLFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tbTLFActionPerformed
