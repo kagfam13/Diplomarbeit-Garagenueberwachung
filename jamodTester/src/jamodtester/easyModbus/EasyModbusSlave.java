@@ -111,7 +111,7 @@ public class EasyModbusSlave {
     public static void main(String[] args) {
         EasyModbusSlave slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, 15, 0, 0, 1, 1);
         slave.start();
-        slave.setRegister(1, 50);
+        slave.setRegister(1, 500);
         System.out.println(slave.getRegisterCount());
         System.out.println(slave.getRegister(1));
         try {

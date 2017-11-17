@@ -66,8 +66,17 @@ public class EasyModbusMaster {
         transaction.setRequest(request);
         transaction.execute();
         connection.close();
-        transaction.getResponse().
-        
+        transaction.getResponse();
+        String hexMessage = transaction.getResponse().getHexMessage();
+        System.out.println(hexMessage);
+        hexMessage = hexMessage.replaceAll(" ", "");
+
+        hexMessage = hexMessage.substring(18); // Extracted the Data
+
+        System.out.println(hexMessage);
+        int regValue = Integer.parseInt(hexMessage, 16);
+        System.out.println(regValue);
+        return regValue;
     }
 
     public Boolean[] getCoils()
@@ -126,7 +135,11 @@ public class EasyModbusMaster {
     }
     public static void main(String[] args) {
         try {
+            
             EasyModbusMaster master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 0, 1);
+            
+            System.out.println(master.getRegister(1));
+            
             
         } catch (UnknownHostException ex) {
             Logger.getLogger(EasyModbusMaster.class.getName()).log(Level.SEVERE, null, ex);
