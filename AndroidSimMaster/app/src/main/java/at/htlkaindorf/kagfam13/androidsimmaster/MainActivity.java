@@ -8,10 +8,18 @@ import android.widget.TextView;
 import net.wimpi.modbus.Modbus;
 import java.net.InetAddress;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
-    TextView auto1,auto2,auto3,auto4,auto5,tor1,tor2,tor3,tor4,tor5;
-    EasyModbusMaster master;
+    private TextView auto1,auto2,auto3,auto4,auto5,tor1,tor2,tor3,tor4,tor5, reaktionszeit;
+    private EasyModbusMaster master;
+    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledFuture future;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         try
         {
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.0.0.20"), 10, 15);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.211.94"), 10, 15);
         }
         catch (Exception ex)
         {
@@ -38,10 +46,21 @@ public class MainActivity extends AppCompatActivity {
         tor4 = (TextView) findViewById(R.id.twTor4);
         tor5 = (TextView) findViewById(R.id.twTor5);
 
-        //new backgroundThread().execute();
+        reaktionszeit = (TextView) findViewById(R.id.twEinsatzdauer);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        future = executorService
+                .scheduleWithFixedDelay(new BackgroundWorker(), 1, 2000, TimeUnit.MILLISECONDS);
+    }
 
+    @Override
+    protected void onStop() {
+        future.cancel(true);
+        super.onStop();
+    }
 
     public void onButton2(View view) {
         new backgroundThread().execute();
@@ -87,6 +106,90 @@ public class MainActivity extends AppCompatActivity {
 
             return null;
         }
+    }
+
+
+    private class BackgroundWorker implements Runnable
+    {
+        private void setCar(TextView car, boolean state)
+        {
+            if (state)
+                car.setText("Da");
+            else
+                car.setText("Weg");
+        }
+
+        private void setTor(TextView tor, boolean sensorUnten,boolean sensorOben)
+        {
+            if (!sensorOben && !sensorUnten)
+                tor.setText("Tor in der Mitte");
+            else if (sensorOben && !sensorUnten)
+                tor.setText("Tor ist geöffnet");
+            else if (!sensorOben)
+                tor.setText("Tor ist geschlossen");
+            else
+                tor.setText("WTF ist los??");
+        }
+
+        private void setTime(TextView tWeinsatzdauer,int min,int sec)
+        {
+            tWeinsatzdauer.setText("Dauer des Letzten einsatzes: " + min + " min " + sec + " sec");
+        }
+
+
+        @Override
+        public void run() {
+            System.out.println("***** START");
+            try {
+                final GetCoilsResp resp = new GetCoilsResp(master.getCoils());
+                System.out.println("***** "+resp.toString());
+
+                auto1.post(
+                  new Runnable()
+                  {
+                      @Override
+                      public void run()
+                      {
+                          try {
+
+                              setCar(auto1, resp.getCoil(10));
+                              setCar(auto2, resp.getCoil(11));
+                              setCar(auto3, resp.getCoil(12));
+                              setCar(auto4, resp.getCoil(13));
+                              setCar(auto5, resp.getCoil(14));
+
+                              setTor(tor1, resp.getCoil(15), resp.getCoil(16));
+                              setTor(tor2, resp.getCoil(17), resp.getCoil(18));
+
+                              setTor(tor3, resp.getCoil(19), resp.getCoil(20));
+                              setTor(tor4, resp.getCoil(21), resp.getCoil(22));
+                              setTor(tor5, resp.getCoil(23), resp.getCoil(24));
+
+
+
+                          } catch (Exception e) {
+                              e.printStackTrace();
+                          }
+                      }
+                  }
+                );
+
+                final int dauer = master.getRegister(0);
+
+                reaktionszeit.post(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                setTime(reaktionszeit, dauer/60, dauer%60);
+                            }
+                        }
+                );
+            }
+            catch (Exception ex)
+            {
+                System.out.println("***** "+ex.toString());
+            }
+       }
     }
 
 
