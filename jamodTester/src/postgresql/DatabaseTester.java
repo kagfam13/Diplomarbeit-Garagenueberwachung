@@ -22,7 +22,7 @@ public class DatabaseTester
       Connection conn;
       int id=0;
       
-        final ConnectToDatabase connectToDatabase= new ConnectToDatabase("remote", "1234",1,2);
+        final ConnectToDatabase connectToDatabase= new ConnectToDatabase(1,2);
         connectToDatabase.connect();
         
             

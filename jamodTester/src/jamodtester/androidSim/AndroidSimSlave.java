@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import net.wimpi.modbus.*;
+import postgresql.easyDatabase.*;
 
 
 /**
@@ -472,6 +473,14 @@ public class AndroidSimSlave extends javax.swing.JFrame
   {//GEN-HEADEREND:event_tbTLFActionPerformed
     try {
         slave.setCoil(10, tbTLF.isSelected());
+//        if(tbTLF.isSelected()==true)
+//        {
+//          final ConnectToDatabase connectToDatabase= new ConnectToDatabase(1,0);
+//        }
+//        else
+//        {
+//          final ConnectToDatabase connectToDatabase= new ConnectToDatabase(0,0);
+//        }
     } catch (Exception ex) {
         Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
     }
@@ -499,6 +508,14 @@ public class AndroidSimSlave extends javax.swing.JFrame
   {//GEN-HEADEREND:event_tbKRFActionPerformed
     try {
         slave.setCoil(11, tbKRF.isSelected());
+//        if(tbKRF.isSelected()==true)
+//        {
+//          final ConnectToDatabase connectToDatabase= new ConnectToDatabase(1,2);
+//        }
+//        else
+//        {
+//          final ConnectToDatabase connectToDatabase= new ConnectToDatabase(0,2);
+//        }
     } catch (Exception ex) {
         Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
     }
@@ -526,6 +543,14 @@ public class AndroidSimSlave extends javax.swing.JFrame
   {//GEN-HEADEREND:event_tbMTFActionPerformed
     try {
         slave.setCoil(12, tbMTF.isSelected());
+//        if(tbMTF.isSelected()==true)
+//        {
+//          final ConnectToDatabase connectToDatabase= new ConnectToDatabase(1,3);
+//        }
+//        else
+//        {
+//          final ConnectToDatabase connectToDatabase= new ConnectToDatabase(0,3);
+//        }
     } catch (Exception ex) {
         Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
     }
@@ -553,6 +578,14 @@ public class AndroidSimSlave extends javax.swing.JFrame
   {//GEN-HEADEREND:event_tbOEFActionPerformed
     try {
         slave.setCoil(13, tbOEF.isSelected());
+//        if(tbOEF.isSelected()==true)
+//        {
+//          final ConnectToDatabase connectToDatabase= new ConnectToDatabase(1,1);
+//        }
+//        else
+//        {
+//          final ConnectToDatabase connectToDatabase= new ConnectToDatabase(0,1);
+//        }
     } catch (Exception ex) {
         Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
     }
@@ -580,6 +613,14 @@ public class AndroidSimSlave extends javax.swing.JFrame
   {//GEN-HEADEREND:event_tbVFActionPerformed
     try {
         slave.setCoil(14, tbVF.isSelected());
+//        if(tbVF.isSelected()==true)
+//        {
+//          final ConnectToDatabase connectToDatabase= new ConnectToDatabase(1,4);
+//        }
+//        else
+//        {
+//          final ConnectToDatabase connectToDatabase= new ConnectToDatabase(0,4);
+//        }
     } catch (Exception ex) {
         Logger.getLogger(AndroidSimSlave.class.getName()).log(Level.SEVERE, null, ex);
     }
