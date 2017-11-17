@@ -6,6 +6,7 @@
 package postgresql.easyDatabase;
 
 import java.sql.*;
+import java.text.*;
 import java.time.*;
 import java.util.logging.*;
 import postgresql.*;
@@ -17,46 +18,51 @@ import postgresql.*;
 public class ConnectToDatabase
 {
   private final String user,pw;
+  private final int typId, objektId;
   Connection c;
-  public ConnectToDatabase(String user, String pw)
+  public ConnectToDatabase(String user, String pw, int typId, int objektId)
   {
     this.user = user;
     this.pw = pw;
-    
+    this.typId = typId;
+    this.objektId = objektId;
   }
   
   
   public void connect()
   {
     int id=0;
+    int oldTypId=0,oldObjektId=0;
+    Timestamp zeit = null;
+    String strId=null;
     Connection c = null;
       try {
          Class.forName("org.postgresql.Driver");
          c = DriverManager
             .getConnection("jdbc:postgresql://localhost:5432/garagenueberwachung",
             user, pw);
-      System.out.println("x");
         Statement stmt = c.createStatement();
-        System.out.println("x");
         // holt die letzte id
           ResultSet rs = stmt.executeQuery( "SELECT * FROM EREIGNIS;" );
           // holt die letzte id
           while ( rs.next() )
           {
             id = rs.getInt("ereignisId");
+            zeit = rs.getTimestamp("zeit");
+            oldTypId = rs.getInt("typId");
+            oldObjektId = rs.getInt("objektId");
           }
           
-        System.out.println("x");
-        Timestamp time = new Timestamp(0);
-        System.out.println("x");
-        String curTime= time.toString();
-        System.out.println("x");
-        System.out.println("x");
+//        Timestamp time = new Timestamp(0);
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+//        String srTime  = dateFormat.toString();
+        
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
+        //long time = System.currentTimeMillis();
+        strId = String.format("%d", id);
         id++;
-        String strId = String.format("%d", id++);
-        System.out.println("x");
         String sql = "INSERT INTO EREIGNIS (EREIGNISID,ZEIT,TYPID,OBJEKTID) "
-              + "VALUES (4,time,0,1);";
+              + "VALUES (\'"+id+"\',\'"+timeStamp+"\',\'"+typId+"\',\'"+objektId+"\');";
         stmt.executeUpdate(sql);
         stmt.close();
         c.close();
@@ -69,7 +75,7 @@ public class ConnectToDatabase
     {
       Logger.getLogger(ConnectToDatabase.class.getName()).log(Level.SEVERE, null, ex);
     }
-      System.out.println(""+id);
+      System.out.println(strId);
       System.out.println("Opened database successfully");
   }
 
