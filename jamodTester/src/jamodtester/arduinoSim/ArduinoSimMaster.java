@@ -13,6 +13,7 @@ import java.net.*;
 import java.util.logging.*;
 import javax.swing.*;
 import net.wimpi.modbus.*;
+import postgresql.easyDatabase.*;
 
 /**
  *

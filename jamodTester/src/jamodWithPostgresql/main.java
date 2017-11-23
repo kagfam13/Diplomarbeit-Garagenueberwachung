@@ -5,11 +5,27 @@
  */
 package jamodWithPostgresql;
 
+import java.net.*;
+import java.util.logging.*;
+
 /**
  *
  * @author User
  */
 public class main
 {
-  
+  public static void main(String[] args) throws InterruptedException 
+  {
+    while(true)
+    {
+      try
+      {
+        final ArduinoMaster master = new ArduinoMaster(InetAddress.getLocalHost(), 0);
+      }
+      catch (UnknownHostException ex)
+      {
+        Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+      }
+    }
+  }
 }

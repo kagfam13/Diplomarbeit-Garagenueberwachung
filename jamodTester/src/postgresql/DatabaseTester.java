@@ -22,8 +22,7 @@ public class DatabaseTester
       Connection conn;
       int id=0;
       
-        final ConnectToDatabase connectToDatabase= new ConnectToDatabase(1,2);
-        connectToDatabase.connect();
+        final ConnectToDatabase connectToDatabase= new ConnectToDatabase(0,2);
         
             
   

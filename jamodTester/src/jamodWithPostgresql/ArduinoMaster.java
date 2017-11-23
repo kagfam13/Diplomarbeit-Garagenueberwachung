@@ -77,13 +77,14 @@ public class ArduinoMaster
         {
             while(true)
             {
-                System.out.println("*********************************");
+                //System.out.println("*********************************");
                 GetCoilsResp resp = new GetCoilsResp(master.getCoils());
-                System.out.println(resp.toString());
+                //System.out.println(resp.toString());
              
                 if(resp.getCoil(2))
                 {
                   //lCar.setText("Auto da");
+                  System.out.println("auto da");
                   final ConnectToDatabase connectToDatabase0= new ConnectToDatabase();
                   if(connectToDatabase0.getOldTypId()==0)
                   {
@@ -94,6 +95,7 @@ public class ArduinoMaster
                 else
                 {
                   //lCar.setText("Auto nix da");
+                  System.out.println("auto nix da");
                   final ConnectToDatabase connectToDatabase0= new ConnectToDatabase();
                   if(connectToDatabase0.getOldTypId()==1 )
                   {
@@ -150,5 +152,6 @@ public class ArduinoMaster
       }
        
     }
+    
 }
   
