@@ -22,7 +22,10 @@ public class DatabaseTester
       Connection conn;
       int id=0;
       
-        final ConnectToDatabase connectToDatabase= new ConnectToDatabase(0,2);
+        //final ConnectToDatabase connectToDatabase= new ConnectToDatabase(0,2);
+        
+        final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(0,1);
+        final GetInformationFromDatabase getInfo = new GetInformationFromDatabase();
         
             
   

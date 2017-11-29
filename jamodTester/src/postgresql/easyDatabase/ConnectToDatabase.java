@@ -51,7 +51,6 @@ public class ConnectToDatabase
     protected Object doInBackground() throws Exception
     {
       String strId=null,strZeit=null,strOldTypId=null,strOldObjektId=null;
-      
         try {
            Class.forName("org.postgresql.Driver");
            c = DriverManager

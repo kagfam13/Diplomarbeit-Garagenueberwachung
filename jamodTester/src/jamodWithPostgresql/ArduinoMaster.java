@@ -85,49 +85,66 @@ public class ArduinoMaster
                 {
                   //lCar.setText("Auto da");
                   System.out.println("auto da");
-                  final ConnectToDatabase connectToDatabase0= new ConnectToDatabase();
-                  if(connectToDatabase0.getOldTypId()==0)
+                  final GetInformationFromDatabase getInfo = new GetInformationFromDatabase();
+                  if(getInfo.getOldTypId()==0) // überprüft ob auto nicht da ist 
                   {
-                    final ConnectToDatabase connectToDatabase1= new ConnectToDatabase(1,carnumber);
+                    if(getInfo.getOldObjektId()==carnumber)
+                    {
+                      final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(1,carnumber);
+                    }
                   }
-                  
                 }
                 else
                 {
                   //lCar.setText("Auto nix da");
                   System.out.println("auto nix da");
-                  final ConnectToDatabase connectToDatabase0= new ConnectToDatabase();
-                  if(connectToDatabase0.getOldTypId()==1 )
+                  final GetInformationFromDatabase getInfo = new GetInformationFromDatabase();
+                  if(getInfo.getOldTypId()==1) //überprüft ob auto da ist
                   {
-                    final ConnectToDatabase connectToDatabase1= new ConnectToDatabase(0,carnumber);
+                    if(getInfo.getOldObjektId()==carnumber)
+                    {
+                      final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(0,carnumber);
+                    }
                   }
                 }
                 if(resp.getCoil(4))// Tor offen
                 {
                   //lTor.setText("Tor offen");
-                  final ConnectToDatabase connectToDatabase0= new ConnectToDatabase();
-                  if(connectToDatabase0.getOldTypId()==4 || connectToDatabase0.getOldTypId()==5)
+                  final GetInformationFromDatabase getInfo = new GetInformationFromDatabase();
+                  if(getInfo.getOldTypId()==4 || getInfo.getOldTypId()==5)
                   {
-                    final ConnectToDatabase connectToDatabase1= new ConnectToDatabase(3,gatenumber);
+                    if(getInfo.getOldObjektId()==gatenumber)
+                    {
+                      final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(3,gatenumber);
+                    }
                   }
+                  
                 }
                 else if(resp.getCoil(3)) // Tor geschlossen
                 {
                   //lTor.setText("Tor geschlossen");
-                  final ConnectToDatabase connectToDatabase0= new ConnectToDatabase();
-                  if(connectToDatabase0.getOldTypId()==3 || connectToDatabase0.getOldTypId()==5)
+                  final GetInformationFromDatabase getInfo = new GetInformationFromDatabase();
+                  if(getInfo.getOldTypId()==3 || getInfo.getOldTypId()==5)
                   {
-                    final ConnectToDatabase connectToDatabase1= new ConnectToDatabase(4,gatenumber);
+                    if(getInfo.getOldObjektId()==gatenumber)
+                    {
+                      final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(4,gatenumber);
+                    }
                   }
+                  
                 }
                 else
                 {
                   //lTor.setText("Ist das Tor halb offen oder halb geschlossen");
-                  final ConnectToDatabase connectToDatabase0= new ConnectToDatabase();
-                  if(connectToDatabase0.getOldTypId()==4 || connectToDatabase0.getOldTypId()==3)
+                  final GetInformationFromDatabase getInfo = new GetInformationFromDatabase();
+                  if(getInfo.getOldTypId()==3 || getInfo.getOldTypId()==4)
                   {
-                    final ConnectToDatabase connectToDatabase1= new ConnectToDatabase(5,gatenumber);
+                    if(getInfo.getOldObjektId()==gatenumber)
+                    {
+                      final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(5,gatenumber);
+                    }
                   }
+                  
                 }
                 Thread.sleep(5000);
             }
