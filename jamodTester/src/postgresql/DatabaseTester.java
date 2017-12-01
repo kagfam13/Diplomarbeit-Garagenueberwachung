@@ -24,7 +24,7 @@ public class DatabaseTester
       
         //final ConnectToDatabase connectToDatabase= new ConnectToDatabase(0,2);
         
-        final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(0,1);
+//        final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(0,1);
         final GetInformationFromDatabase getInfo = new GetInformationFromDatabase();
         id= getInfo.getId();
         System.out.format("%d",id);
