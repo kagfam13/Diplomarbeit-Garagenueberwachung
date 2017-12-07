@@ -8,10 +8,12 @@ package jamodWithPostgresql;
 import jamodtester.arduinoSim.*;
 import jamodtester.easyModbus.*;
 import java.net.*;
+import java.time.*;
 import java.util.logging.*;
 import javax.swing.*;
 import net.wimpi.modbus.*;
 import static org.postgresql.hostchooser.HostRequirement.master;
+import postgresql.data.*;
 import postgresql.easyDatabase.*;
 
 /**
@@ -75,76 +77,46 @@ public class ArduinoMaster
         @Override
         protected Object doInBackground() throws Exception
         {
+          
             while(true)
             {
                 //System.out.println("*********************************");
                 GetCoilsResp resp = new GetCoilsResp(master.getCoils());
                 //System.out.println(resp.toString());
-             
+                final GaragenDb db = GaragenDb.getInstance();
+                final int ereignisID = db.getLastId();
+                final Objekt objekt = db.getObjekt(carnumber);
+                final Objekt torobjekt = db.getObjekt(gatenumber);
                 if(resp.getCoil(2))
                 {
-                  //lCar.setText("Auto da");
                   System.out.println("auto da");
-                  final GetInformationFromDatabase getInfo = new GetInformationFromDatabase();
-                  if(getInfo.getOldTypId()==0) // überprüft ob auto nicht da ist 
-                  {
-                    if(getInfo.getOldObjektId()==carnumber)
-                    {
-                      final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(1,carnumber);
-                    }
-                  }
+                  final Ereignistyp typ = db.getEreignistyp(1);
+                  Ereignis ereignis = new Ereignis(ereignisID+1, typ, objekt, LocalDateTime.now());
                 }
                 else
                 {
-                  //lCar.setText("Auto nix da");
+                  
                   System.out.println("auto nix da");
-                  final GetInformationFromDatabase getInfo = new GetInformationFromDatabase();
-                  if(getInfo.getOldTypId()==1) //überprüft ob auto da ist
-                  {
-                    if(getInfo.getOldObjektId()==carnumber)
-                    {
-                      final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(0,carnumber);
-                    }
-                  }
+                  final Ereignistyp typ = db.getEreignistyp(0);
+                  Ereignis ereignis = new Ereignis(ereignisID+1, typ, objekt, LocalDateTime.now());
                 }
                 if(resp.getCoil(4))// Tor offen
                 {
-                  //lTor.setText("Tor offen");
-                  final GetInformationFromDatabase getInfo = new GetInformationFromDatabase();
-                  if(getInfo.getOldTypId()==4 || getInfo.getOldTypId()==5)
-                  {
-                    if(getInfo.getOldObjektId()==gatenumber)
-                    {
-                      final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(3,gatenumber);
-                    }
-                  }
-                  
+                  System.out.println("Tor offen");
+                  final Ereignistyp typ = db.getEreignistyp(3);
+                  Ereignis ereignis = new Ereignis(ereignisID+1, typ, torobjekt, LocalDateTime.now());
                 }
                 else if(resp.getCoil(3)) // Tor geschlossen
                 {
-                  //lTor.setText("Tor geschlossen");
-                  final GetInformationFromDatabase getInfo = new GetInformationFromDatabase();
-                  if(getInfo.getOldTypId()==3 || getInfo.getOldTypId()==5)
-                  {
-                    if(getInfo.getOldObjektId()==gatenumber)
-                    {
-                      final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(4,gatenumber);
-                    }
-                  }
-                  
+                  System.out.println("Tor geschlossen");
+                  final Ereignistyp typ = db.getEreignistyp(4);
+                  Ereignis ereignis = new Ereignis(ereignisID+1, typ, torobjekt, LocalDateTime.now());
                 }
-                else
+                else // Tor halb offen oder geschlossen
                 {
-                  //lTor.setText("Ist das Tor halb offen oder halb geschlossen");
-                  final GetInformationFromDatabase getInfo = new GetInformationFromDatabase();
-                  if(getInfo.getOldTypId()==3 || getInfo.getOldTypId()==4)
-                  {
-                    if(getInfo.getOldObjektId()==gatenumber)
-                    {
-                      final postgresql.easyDatabase.UpdateDatabase connecter = new postgresql.easyDatabase.UpdateDatabase(5,gatenumber);
-                    }
-                  }
-                  
+                  System.out.println("Tor is halb offen oder halb geschlossen");
+                  final Ereignistyp typ = db.getEreignistyp(5);
+                  Ereignis ereignis = new Ereignis(ereignisID+1, typ, torobjekt, LocalDateTime.now());
                 }
                 Thread.sleep(5000);
             }

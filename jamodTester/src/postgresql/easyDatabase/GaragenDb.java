@@ -7,7 +7,9 @@ package postgresql.easyDatabase;
 
 import java.sql.*;
 import java.time.*;
+import java.time.format.*;
 import java.util.*;
+import jdk.nashorn.internal.objects.*;
 import postgresql.data.*;
 
 /**
@@ -101,7 +103,7 @@ public class GaragenDb extends Database
       // make LocalDateTime to long 
       final LocalDateTime ldt = ereignis.getZeit();
       final ZonedDateTime zdt = ldt.atZone(TimeZone.getDefault().toZoneId());
-      final long ms = zdt.toInstant().toEpochMilli();
+      final long ms = zdt.toEpochSecond();
       
       final int typId = ereignis.getEreignsityp().getTypId();
       final int objektId = ereignis.getObjekt().getObjektId();
@@ -117,39 +119,75 @@ public class GaragenDb extends Database
     }
   }
   
+  public int getLastId() throws Exception
+  {
+    int id=0;
+    final Map<Integer,Ereignis> ereignisse = getEreignisse();
+      for(Ereignis ereignis : ereignisse.values())
+      {
+        System.out.println(ereignis);
+        id = ereignis.getId();
+      }
+    return id;
+  }
+  
+  public Ereignistyp getEreignistyp(int typID) throws Exception
+  {
+    final Map<Integer,Ereignistyp> ereignistypen = getEreignistypen();
+    for(Ereignistyp typ : ereignistypen.values())
+      {
+        if(typ.getTypId() == typID)
+        {
+          return typ;
+        }
+      }
+    return null;
+  }
+  
+  public Objekt getObjekt(int objektID) throws Exception
+  {
+    final Map<Integer,Objekt> objekte = getObjekte();
+    for(Objekt objekt : objekte.values())
+      {
+        if(objekt.getObjektId() == objektID)
+          return objekt;
+      }
+    return null;
+  }
   public static void main(String[] args)
   {
     try
     {
-      final GaragenDb db = GaragenDb.getInstance();
-      final Map<Integer,Ereignistyp> ereignistypen = db.getEreignistypen();
-      final Map<Integer,Objekt> objekte = db.getObjekte();
-      final Map<Integer,Ereignis> ereignisse = db.getEreignisse();
-      for(Ereignistyp typ : ereignistypen.values())
-      {
-        System.out.println(typ);
-        if(typ.getTypId()==2)
-        {
-          for(Objekt objekt : objekte.values())
-          {
-            System.out.println(objekt);
-            if(objekt.getObjektId()==0)
-            {
-              Ereignis ereignis = new Ereignis(0, typ, objekt, LocalDateTime.MIN);
-            }
-          }
-        }
-      }
+//      final GaragenDb db = GaragenDb.getInstance();
+//      final Map<Integer,Ereignistyp> ereignistypen = db.getEreignistypen();
+//      final Map<Integer,Objekt> objekte = db.getObjekte();
+//      final Map<Integer,Ereignis> ereignisse = db.getEreignisse();
+//      for(Ereignis ereignis : ereignisse.values())
+//      {
+//        System.out.println(ereignis);
+//      }
+//      for(Ereignistyp typ : ereignistypen.values())
+//      {
+//        System.out.println(typ);
+//          
+//      }
 //      for(Objekt objekt : objekte.values())
 //      {
 //        System.out.println(objekt);
+//        Ereignis ereignis = new Ereignis(id+1, typ, objekt, LocalDateTime.MIN);
+//        db.schreibeEreignis(ereignis);
 //      }
-      for(Ereignis ereignis : ereignisse.values())
-      {
-        System.out.println(ereignis);
-      }
+      final GaragenDb db = GaragenDb.getInstance();
       
       
+//    Ein Ereignis schreiben 
+      int ereignisID = db.getLastId();
+      System.out.println(ereignisID); 
+      final Ereignistyp typ = db.getEreignistyp(0);
+      final Objekt objekt = db.getObjekt(2);
+      Ereignis ereignis = new Ereignis(ereignisID++, typ, objekt, LocalDateTime.now());
+      db.schreibeEreignis(ereignis);
+      System.out.println(ereignis);
     }
     catch (Exception e)
     {

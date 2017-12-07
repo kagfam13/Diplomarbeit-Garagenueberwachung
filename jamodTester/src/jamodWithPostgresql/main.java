@@ -16,14 +16,16 @@ public class main
 {
   public static void main(String[] args) 
   {
-    
-    try
-    {
-      final ArduinoMaster master = new ArduinoMaster(InetAddress.getLocalHost(), 0);
-    }
-    catch (UnknownHostException ex)
-    {
-      Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
-    }
+//    while(true)
+//    {
+      try
+      {
+        final ArduinoMaster master = new ArduinoMaster(InetAddress.getLocalHost(), 0);
+      }
+      catch (UnknownHostException ex)
+      {
+        Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+      }
+//    }
   }
 }
