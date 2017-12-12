@@ -84,11 +84,12 @@ public class GaragenDb extends Database
         while(rs.next())
         {
           final int id = rs.getInt("ereignisId");
-          final Timestamp zeit = rs.getTimestamp("zeit");
-          final long ms = zeit.getTime();
-          final LocalDateTime dt = LocalDateTime.ofInstant(Instant.ofEpochSecond(ms/1000), TimeZone.getDefault().toZoneId());
           final Ereignistyp ereignistyp = ereignistypen.get(rs.getInt("typId"));
           final Objekt objekt = objekte.get(rs.getInt("objektId"));
+          final Timestamp zeit = rs.getTimestamp("zeit");
+//          final long ms = zeit.getTime();
+//          final LocalDateTime dt = LocalDateTime.ofInstant(Instant.ofEpochSecond(ms/1000), TimeZone.getDefault().toZoneId());
+          final LocalDateTime dt = zeit.toLocalDateTime();
           final Ereignis ereignis = new Ereignis(id, ereignistyp, objekt, dt);
           ereignisse.put(id, ereignis);
         }
@@ -111,16 +112,19 @@ public class GaragenDb extends Database
       LocalDateTime ldt = ereignis.getZeit();
       ZonedDateTime zdt = ldt.atZone(ZoneId.systemDefault());
       long ms = zdt.toInstant().toEpochMilli();
-      String conDate = ldt.toString();
-      
+      final Timestamp ts = new Timestamp(ms);
+      System.out.println(ts.toString());
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      sdf.setTimeZone(TimeZone.getDefault());
+      String tsString = sdf.format(ts.getTime());
       final String sql = String.format(
-        "INSERT INTO EREIGNIS (ZEIT,TYPID,OBJEKTID)" +
+        "INSERT INTO EREIGNIS (TYPID,OBJEKTID,ZEIT)" +
         "  VALUES (" +
-        " to_timestamp(%d)" +
-//        " current_timestamp "+
-        " %d" + 
-        " %d)" ,ms,typId,objektId);
-      System.out.println(conDate);
+        "'%d'," + 
+        " '%d'," + 
+        " '%s')",typId,objektId,tsString);
+      
+      System.out.println(tsString);
       System.out.println(sql);
       db.open();
       db.executeUpdate(sql);
@@ -193,7 +197,9 @@ public class GaragenDb extends Database
       final Ereignistyp typ = db.getEreignistyp(0);
       final Objekt objekt = db.getObjekt(2);
       ereignisID = ereignisID + 1;
+      
       final Ereignis ereignis = new Ereignis(ereignisID, typ, objekt, LocalDateTime.now());
+      
       System.out.println(ereignis);
       db.schreibeEreignis(ereignis);
     }
