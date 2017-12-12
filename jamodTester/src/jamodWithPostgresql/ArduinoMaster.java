@@ -12,7 +12,6 @@ import java.time.*;
 import java.util.logging.*;
 import javax.swing.*;
 import net.wimpi.modbus.*;
-import static org.postgresql.hostchooser.HostRequirement.master;
 import postgresql.data.*;
 import postgresql.easyDatabase.*;
 

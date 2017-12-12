@@ -6,10 +6,11 @@
 package postgresql.easyDatabase;
 
 import java.sql.*;
+import java.text.*;
 import java.time.*;
 import java.time.format.*;
+import java.time.temporal.*;
 import java.util.*;
-import jdk.nashorn.internal.objects.*;
 import postgresql.data.*;
 
 /**
@@ -101,19 +102,26 @@ public class GaragenDb extends Database
     try (GaragenDb db = GaragenDb.getInstance())
     {
       // make LocalDateTime to long 
-      final LocalDateTime ldt = ereignis.getZeit();
-      final ZonedDateTime zdt = ldt.atZone(TimeZone.getDefault().toZoneId());
-      final long ms = zdt.toEpochSecond();
+//      final LocalDateTime ldt = ereignis.getZeit();
+//      final ZonedDateTime zdt = ldt.atZone(TimeZone.getDefault().toZoneId());
+//      final long ms = zdt.toEpochSecond();
       
       final int typId = ereignis.getEreignsityp().getTypId();
       final int objektId = ereignis.getObjekt().getObjektId();
+      LocalDateTime ldt = ereignis.getZeit();
+      ZonedDateTime zdt = ldt.atZone(ZoneId.systemDefault());
+      long ms = zdt.toInstant().toEpochMilli();
+      String conDate = ldt.toString();
       
       final String sql = String.format(
-        "INSERT INTO EREIGNIS (EREIGNISID,ZEIT,TYPID,OBJEKTID)" +
+        "INSERT INTO EREIGNIS (ZEIT,TYPID,OBJEKTID)" +
         "  VALUES (" +
-        "  TO_TIMESTAMP(%ld)" +
+        " to_timestamp(%d)" +
+//        " current_timestamp "+
         " %d" + 
-        " &d" ,ms,typId,objektId);
+        " %d)" ,ms,typId,objektId);
+      System.out.println(conDate);
+      System.out.println(sql);
       db.open();
       db.executeUpdate(sql);
     }
@@ -158,7 +166,6 @@ public class GaragenDb extends Database
   {
     try
     {
-//      final GaragenDb db = GaragenDb.getInstance();
 //      final Map<Integer,Ereignistyp> ereignistypen = db.getEreignistypen();
 //      final Map<Integer,Objekt> objekte = db.getObjekte();
 //      final Map<Integer,Ereignis> ereignisse = db.getEreignisse();
@@ -185,9 +192,10 @@ public class GaragenDb extends Database
       System.out.println(ereignisID); 
       final Ereignistyp typ = db.getEreignistyp(0);
       final Objekt objekt = db.getObjekt(2);
-      Ereignis ereignis = new Ereignis(ereignisID++, typ, objekt, LocalDateTime.now());
-      db.schreibeEreignis(ereignis);
+      ereignisID = ereignisID + 1;
+      final Ereignis ereignis = new Ereignis(ereignisID, typ, objekt, LocalDateTime.now());
       System.out.println(ereignis);
+      db.schreibeEreignis(ereignis);
     }
     catch (Exception e)
     {
