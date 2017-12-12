@@ -133,6 +133,7 @@ public class EasyModbusMaster {
         } catch (Exception e) {
         }
     }
+    
     public static void main(String[] args) {
         try {
             
