@@ -16,8 +16,8 @@ public class main
 {
   public static void main(String[] args) 
   {
-//    while(true)
-//    {
+    while(true)
+    {
       try
       {
         final ArduinoMaster master = new ArduinoMaster(InetAddress.getLocalHost(), 0);
@@ -26,6 +26,7 @@ public class main
       {
         Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
       }
-//    }
+      
+    }
   }
 }

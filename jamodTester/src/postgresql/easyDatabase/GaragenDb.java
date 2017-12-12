@@ -195,7 +195,7 @@ public class GaragenDb extends Database
       int ereignisID = db.getLastId();
       System.out.println(ereignisID); 
       final Ereignistyp typ = db.getEreignistyp(0);
-      final Objekt objekt = db.getObjekt(2);
+      final Objekt objekt = db.getObjekt(1);
       ereignisID = ereignisID + 1;
       
       final Ereignis ereignis = new Ereignis(ereignisID, typ, objekt, LocalDateTime.now());
