@@ -89,6 +89,7 @@ public class AndroidSimSlave extends javax.swing.JFrame
       ptz5.setBackground(Color.red);
       
       slave.start();
+      slidersChanged();
       new backgroundWorker().execute();
       
   }

@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         try
         {
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.211.94"), 10, 15);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.215.84"), 10, 15);
         }
         catch (Exception ex)
         {
@@ -60,10 +60,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         future.cancel(true);
         super.onStop();
-    }
-
-    public void onButton2(View view) {
-        new backgroundThread().execute();
     }
 
     public void onButton(View view)
@@ -109,14 +105,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     private class BackgroundWorker implements Runnable
     {
         private void setCar(TextView car, boolean state)
         {
             if (state)
-                car.setText("Da");
+                car.setText("Fahrzeug in der Garage");
             else
-                car.setText("Weg");
+                car.setText("Fahrzeug nicht in der Garage");
         }
 
         private void setTor(TextView tor, boolean sensorUnten,boolean sensorOben)
@@ -190,80 +187,5 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("***** "+ex.toString());
             }
        }
-    }
-
-
-    private class backgroundThread extends AsyncTask<Object,Object,Object>
-    {
-
-        private void setCar(TextView car, boolean state)
-        {
-            if (state)
-                car.setText("Da");
-            else
-                car.setText("Weg");
-        }
-
-        private void setTor(TextView tor, boolean sensorUnten,boolean sensorOben)
-        {
-            if (!sensorOben && !sensorUnten)
-                tor.setText("Tor in der Mitte");
-            else if (sensorOben && !sensorUnten)
-                tor.setText("Tor ist geöffnet");
-            else if (!sensorOben)
-                tor.setText("Tor ist geschlossen");
-            else
-                tor.setText("WTF ist los??");
-        }
-
-        private void setTime(TextView tWeinsatzdauer,int min,int sec)
-        {
-            tWeinsatzdauer.setText("Dauer des Letzten einsatzes: " + min + " min " + sec + " sec");
-        }
-
-        @Override
-        protected Object doInBackground(Object... objects) {
-            //while(true)
-            {
-                try
-                {
-                    GetCoilsResp resp = new GetCoilsResp(master.getCoils());
-                    System.out.print("received new data: " + resp.toString());
-
-                    //Thread.sleep(1000);
-                    return resp;
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            return 0;
-        }
-
-
-        @Override
-        protected void onPostExecute(Object o) {
-            try {
-                GetCoilsResp resp = (GetCoilsResp) get();
-
-                setCar(auto1, resp.getCoil(10));
-                setCar(auto2, resp.getCoil(11));
-                setCar(auto3, resp.getCoil(12));
-                setCar(auto4, resp.getCoil(13));
-                setCar(auto5, resp.getCoil(14));
-
-                setTor(tor1, resp.getCoil(15), resp.getCoil(16));
-                setTor(tor2, resp.getCoil(17), resp.getCoil(18));
-
-                setTor(tor3, resp.getCoil(19), resp.getCoil(20));
-                setTor(tor4, resp.getCoil(21), resp.getCoil(22));
-                setTor(tor5, resp.getCoil(23), resp.getCoil(24));
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 }
