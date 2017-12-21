@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jamodWithPostgresql;
+package jamodWithPostgresql.data;
 
 /**
  *
  * @author User
  */
-public class DataVonFink
+public class ArduinoData
 {
   private boolean Auto, sensorOben,sensorUnten;
 
-  public DataVonFink(boolean Auto, boolean sensorOben, boolean sensorUnten)
+  public ArduinoData(boolean Auto, boolean sensorOben, boolean sensorUnten)
   {
     this.Auto = Auto;
     this.sensorOben = sensorOben;

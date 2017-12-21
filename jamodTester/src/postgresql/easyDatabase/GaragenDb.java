@@ -213,7 +213,7 @@ public class GaragenDb extends Database
     }
     return false;
   }
-  public void HandleDatabase(int typId, int objektId)
+  public boolean HandleDatabase(int typId, int objektId)
   {
     try
     {
@@ -229,13 +229,14 @@ public class GaragenDb extends Database
         {
 //          System.out.format("Neues Ereignis mit der ID = %d wurde gerschrieben \n",);
           db.schreibeEreignis(ereignis);
-          
+          return true;
         }
     }
     catch (Exception e)
     {
       e.printStackTrace();
     }
+    return false;
   }
   
   

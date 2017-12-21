@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jamodWithPostgresql;
+package jamodWithPostgresql.src;
 
+import jamodWithPostgresql.data.ArduinoData;
 import jamodtester.easyModbus.*;
 import java.net.*;
 import java.time.*;
@@ -32,7 +33,7 @@ public class TestArduino
   private static class BackgroundWorker extends SwingWorker<Object, Object> {
     
     private void handleDB(EasyModbusMaster master,int arduinoNumber) {
-      DataVonFink data = getDataVonArduino(master);
+      ArduinoData data = getDataVonArduino(master);
       
       
       int carId=0, torId=0;
@@ -91,10 +92,10 @@ public class TestArduino
     }
     
     
-    private DataVonFink getDataVonArduino(EasyModbusMaster master)
+    private ArduinoData getDataVonArduino(EasyModbusMaster master)
     {
       Boolean[] coils = master.getCoils();
-      return new DataVonFink(coils[0],coils[1],coils[2]);
+      return new ArduinoData(coils[0],coils[1],coils[2]);
     }
     
     @Override
@@ -113,7 +114,7 @@ public class TestArduino
   */
   
   public void handleDB(EasyModbusMaster master,int arduinoNumber) {
-      DataVonFink data = getDataVonArduino(master);
+      ArduinoData data = getDataVonArduino(master);
       
       int carId=0, torId=0;
       
@@ -172,13 +173,16 @@ public class TestArduino
     }
     
     
-    private DataVonFink getDataVonArduino(EasyModbusMaster master)
+    private ArduinoData getDataVonArduino(EasyModbusMaster master)
     {
       Boolean[] coils = master.getCoils();
-      return new DataVonFink(coils[0],coils[1],coils[2]);
+      return new ArduinoData(coils[0],coils[1],coils[2]);
     }
     
-  
+  public void getDataFromAndroid(EasyModbusSlave slave)
+  {
+    
+  }
   public static void main(String[] args)
   {
     try
