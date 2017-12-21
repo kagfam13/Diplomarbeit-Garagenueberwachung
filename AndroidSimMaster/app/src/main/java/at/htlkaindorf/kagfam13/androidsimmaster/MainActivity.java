@@ -7,13 +7,13 @@ import android.view.View;
 import android.widget.TextView;
 import net.wimpi.modbus.Modbus;
 import java.net.InetAddress;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import at.htlkaindorf.kagfam13.androidsimmaster.easyModbus.EasyModbusMaster;
+import at.htlkaindorf.kagfam13.androidsimmaster.easyModbus.GetCoilsResp;
 
 public class MainActivity extends AppCompatActivity {
     private TextView auto1,auto2,auto3,auto4,auto5,tor1,tor2,tor3,tor4,tor5, reaktionszeit;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btZu4: new writeCoilTask(7).execute(); break;
             case R.id.btAuf5: new writeCoilTask(8).execute(); break;
             case R.id.btZu5: new writeCoilTask(9).execute(); break;
-        }
+    }
     }
 
     private class writeCoilTask extends AsyncTask<Object,Object,Object>
@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
                       public void run()
                       {
                           try {
-
                               setCar(auto1, resp.getCoil(10));
                               setCar(auto2, resp.getCoil(11));
                               setCar(auto3, resp.getCoil(12));

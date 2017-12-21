@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package at.htlkaindorf.kagfam13.androidsimmaster;
+package at.htlkaindorf.kagfam13.androidsimmaster.easyModbus;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -70,7 +70,7 @@ public class EasyModbusSlave {
         ModbusCoupler.getReference().setMaster(false);
         ModbusCoupler.getReference().setProcessImage(spi);
         
-        listener = new ModbusTCPListener(3);
+        listener = new ModbusTCPListener(300);
         listener.setPort(port);
         listener.start();
     }
@@ -109,11 +109,14 @@ public class EasyModbusSlave {
     }
     
     public static void main(String[] args) {
-        EasyModbusSlave slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, 15, 0, 0, 1, 1);
+        EasyModbusSlave slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, 15, 0, 1, 0, 0);
         slave.start();
-        slave.setRegister(1, 500);
-        System.out.println(slave.getRegisterCount());
-        System.out.println(slave.getRegister(1));
+        System.out.println("Slave gestartet");
+        try {
+            slave.setCoil(0, true);
+        } catch (Exception ex) {
+            Logger.getLogger(EasyModbusSlave.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
             System.in.read();
         } catch (IOException ex) {

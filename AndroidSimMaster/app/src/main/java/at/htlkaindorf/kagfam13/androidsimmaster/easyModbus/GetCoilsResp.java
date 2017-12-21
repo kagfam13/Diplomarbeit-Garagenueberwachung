@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package at.htlkaindorf.kagfam13.androidsimmaster;
-
+package at.htlkaindorf.kagfam13.androidsimmaster.easyModbus;
 
 import java.util.Arrays;
 
