@@ -22,7 +22,7 @@ import postgresql.easyDatabase.*;
  */
 public class TestArduino
 {
-  private static int typID;
+  private static int typIdGate, typIdCar;
   private static EasyModbusMaster master0;
   private final static String IP1 = "10.200.112.71";
   private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
@@ -144,28 +144,29 @@ public class TestArduino
       }
       
       if(data.isAuto())
-        typID=1;
+        typIdCar=1;
       else 
-        typID=0;
+        typIdCar=0;
       if(data.isSensorOben())
-        typID=3;
+        typIdGate=3;
       else
       {
         if(data.isSensorUnten())
-          typID=4;
+          typIdGate=4;
         else
-          typID=5;
+          typIdGate=5;
       }
         
       // create Database
       try
       {
         final GaragenDb db = GaragenDb.getInstance();
-        db.HandleDatabase(typID,carId);
-        db.HandleDatabase(typID,torId);
+        db.HandleDatabase(typIdCar,carId);
+        db.HandleDatabase(typIdGate,torId);
       }
       catch (Exception e)
       {
+        e.printStackTrace();
       }
       
     }

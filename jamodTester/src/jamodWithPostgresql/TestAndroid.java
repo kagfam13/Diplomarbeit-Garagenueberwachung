@@ -5,11 +5,40 @@
  */
 package jamodWithPostgresql;
 
+import postgresql.data.*;
+import postgresql.easyDatabase.*;
+
 /**
  *
  * @author User
  */
 public class TestAndroid
 {
-  
+  public void handleDataFromDatabase(int objektId)
+  {
+    try(GaragenDb db = GaragenDb.getInstance())
+    {
+      Ereignis ereignis = db.getLastEreignis(objektId);
+      int typId = ereignis.getEreignistyp().getTypId();
+      switch(typId)
+      {
+        case 1: 
+          break;
+        case 2:
+          break;
+        case 3:
+          break;
+        case 4: 
+          break;
+        case 5:
+          break;
+        default:
+          break;
+      }
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+  }
 }
