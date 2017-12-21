@@ -89,6 +89,7 @@ public class ArduinoMaster
                 if(resp.getCoil(2))
                 {
                   System.out.println("auto da");
+                  
                   final Ereignistyp typ = db.getEreignistyp(1);
                   Ereignis ereignis = new Ereignis(ereignisID+1, typ, objekt, LocalDateTime.now());
                 }

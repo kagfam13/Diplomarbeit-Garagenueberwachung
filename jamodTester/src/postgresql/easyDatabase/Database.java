@@ -45,6 +45,18 @@ public class Database implements AutoCloseable
     }
   }
   
+  public int executeUpdateReturnLastVal(String sql) throws SQLException
+  {
+    try (Statement statement = connection.createStatement())
+    {
+      statement.executeUpdate(sql);
+      try (final ResultSet resultSet = statement.executeQuery("SELECT LASTVAL()"))
+      {
+        resultSet.next();
+        return resultSet.getInt(1);
+      }
+    }
+  }
   public Statement createStatement() throws SQLException
   {
     return connection.createStatement();

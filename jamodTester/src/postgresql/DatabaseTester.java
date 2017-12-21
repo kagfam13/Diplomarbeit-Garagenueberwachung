@@ -6,11 +6,7 @@
 package postgresql;
 
 import java.sql.*;
-<<<<<<< HEAD
 import java.util.logging.*;
-
-=======
->>>>>>> master
 import postgresql.easyDatabase.*;
 
 /**

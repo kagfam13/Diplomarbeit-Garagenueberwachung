@@ -107,27 +107,30 @@ public class GaragenDb extends Database
 //      final ZonedDateTime zdt = ldt.atZone(TimeZone.getDefault().toZoneId());
 //      final long ms = zdt.toEpochSecond();
       
-      final int typId = ereignis.getEreignsityp().getTypId();
+      final int typId = ereignis.getEreignistyp().getTypId();
       final int objektId = ereignis.getObjekt().getObjektId();
       LocalDateTime ldt = ereignis.getZeit();
       ZonedDateTime zdt = ldt.atZone(ZoneId.systemDefault());
       long ms = zdt.toInstant().toEpochMilli();
       final Timestamp ts = new Timestamp(ms);
-      System.out.println(ts.toString());
+//      System.out.println(ts.toString());
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
       sdf.setTimeZone(TimeZone.getDefault());
       String tsString = sdf.format(ts.getTime());
       final String sql = String.format(
-        "INSERT INTO EREIGNIS (TYPID,OBJEKTID,ZEIT)" +
+        "INSERT INTO ereignis (typid,objektid,zeit)" +
         "  VALUES (" +
         "'%d'," + 
         " '%d'," + 
         " '%s')",typId,objektId,tsString);
       
-      System.out.println(tsString);
-      System.out.println(sql);
+//      System.out.println(tsString);
+//      System.out.println(sql);
       db.open();
-      db.executeUpdate(sql);
+      int lastID = db.executeUpdateReturnLastVal(sql);
+//      System.out.format("%d%n",lastID);
+      ereignis.setId(lastID);
+//      System.out.format("%s",ereignis.toString());
     }
   }
   
@@ -155,7 +158,6 @@ public class GaragenDb extends Database
       }
     return null;
   }
-  
   public Objekt getObjekt(int objektID) throws Exception
   {
     final Map<Integer,Objekt> objekte = getObjekte();
@@ -166,12 +168,82 @@ public class GaragenDb extends Database
       }
     return null;
   }
+  
+  public Ereignis getLastEreignis(int objektID ) throws Exception
+  {
+    try(GaragenDb db = GaragenDb.getInstance())
+    {
+      final Map<Integer,Ereignistyp> ereignistypen = db.getEreignistypen();
+      final Map<Integer,Objekt> objekte = db.getObjekte();
+      String sql =  String.format("SELECT * FROM ereignis WHERE objektid = %d ORDER BY zeit DESC LIMIT 1", objektID);
+      db.open();
+      try (Statement statement = db.createStatement();final ResultSet rs = statement.executeQuery(sql))
+      {
+        
+        if (!rs.next())
+          return null;
+        final int id = rs.getInt("ereignisid");
+        final Ereignistyp ereignistyp = ereignistypen.get(rs.getInt("typid"));
+        final Objekt objekt = objekte.get(rs.getInt("objektid"));
+        final Timestamp zeit = rs.getTimestamp("zeit");
+        final LocalDateTime dt = zeit.toLocalDateTime();
+        final Ereignis ereignis = new Ereignis(id, ereignistyp, objekt, dt);
+        return ereignis;
+      }
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+    return null;
+  }
+  public boolean checkTypId(int typId,int objektId)
+  {
+    try(GaragenDb db = GaragenDb.getInstance())
+    {
+      final Ereignis lastEreignis = db.getLastEreignis(objektId);
+      if(lastEreignis!=null && lastEreignis.getEreignistyp().getTypId() == typId)
+        return false;
+      else
+        return true;
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+    return false;
+  }
+  public void HandleDatabase(int typId, int objektId)
+  {
+    try
+    {
+      final GaragenDb db = GaragenDb.getInstance();
+//        final Map<Integer,Ereignis> ereignisse = db.getEreignisse();
+        final Ereignistyp typ = db.getEreignistyp(typId); //TODO GET VALUE FROM COILS
+        final Objekt objekt = db.getObjekt(objektId);
+        boolean isOk = db.checkTypId(typId, objektId);
+        Ereignis ereignis = new Ereignis(0,typ, objekt, LocalDateTime.now());
+        System.out.println("neues Ereignis erzeugt");
+        System.out.println(ereignis);
+        if(isOk)
+        {
+//          System.out.format("Neues Ereignis mit der ID = %d wurde gerschrieben \n",);
+          db.schreibeEreignis(ereignis);
+          
+        }
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+  }
   public static void main(String[] args)
   {
     try
     {
 //      final Map<Integer,Ereignistyp> ereignistypen = db.getEreignistypen();
 //      final Map<Integer,Objekt> objekte = db.getObjekte();
+//      final GaragenDb db = GaragenDb.getInstance();
 //      final Map<Integer,Ereignis> ereignisse = db.getEreignisse();
 //      for(Ereignis ereignis : ereignisse.values())
 //      {
@@ -188,20 +260,33 @@ public class GaragenDb extends Database
 //        Ereignis ereignis = new Ereignis(id+1, typ, objekt, LocalDateTime.MIN);
 //        db.schreibeEreignis(ereignis);
 //      }
-      final GaragenDb db = GaragenDb.getInstance();
+
       
       
 //    Ein Ereignis schreiben 
-      int ereignisID = db.getLastId();
-      System.out.println(ereignisID); 
-      final Ereignistyp typ = db.getEreignistyp(0);
-      final Objekt objekt = db.getObjekt(1);
-      ereignisID = ereignisID + 1;
-      
-      final Ereignis ereignis = new Ereignis(ereignisID, typ, objekt, LocalDateTime.now());
-      
-      System.out.println(ereignis);
-      db.schreibeEreignis(ereignis);
+        final GaragenDb db = GaragenDb.getInstance();
+//        int ereignisID = db.getLastId();
+//        final Map<Integer,Ereignis> ereignisse = db.getEreignisse();
+//        final Ereignistyp typ = db.getEreignistyp(0); //TODO GET VALUE FROM COILS
+//        int typID = typ.getTypId(); 
+//        final Objekt objekt = db.getObjekt(1);
+//        int objektID = objekt.getObjektId();
+//        ereignisID ++;
+//        boolean isOk = db.getEreignisfromTypId(typ, objekt);
+//        Ereignis ereignis = new Ereignis(ereignisID, typ, objekt, LocalDateTime.now());
+//        System.out.println("neues Ereignis erzeugt");
+//        System.out.println(ereignis);
+//        if(isOk)
+//        {
+//          System.out.println("Funzt");
+//          db.schreibeEreignis(ereignis);
+//        }
+//        else
+//        {
+//          System.out.println("gaxi");
+//        }
+      db.HandleDatabase(0, 2);
+      //db.schreibeEreignis(ereignis);
     }
     catch (Exception e)
     {

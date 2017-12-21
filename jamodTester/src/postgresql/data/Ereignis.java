@@ -13,15 +13,20 @@ import java.time.*;
  */
 public class Ereignis
 {
-  private final int id;
-  private final Ereignistyp ereignsityp;
+  private int id;
+
+  public void setId(int id)
+  {
+    this.id = id;
+  }
+  private final Ereignistyp ereignistyp;
   private final Objekt objekt;
   private final LocalDateTime zeit; 
 
-  public Ereignis(int id, Ereignistyp ereignsityp, Objekt objekt, LocalDateTime zeit)
+  public Ereignis(int id, Ereignistyp ereignistyp, Objekt objekt, LocalDateTime zeit)
   {
     this.id = id;
-    this.ereignsityp = ereignsityp;
+    this.ereignistyp = ereignistyp;
     this.objekt = objekt;
     this.zeit = zeit;
   }
@@ -31,9 +36,9 @@ public class Ereignis
     return id;
   }
 
-  public Ereignistyp getEreignsityp()
+  public Ereignistyp getEreignistyp()
   {
-    return ereignsityp;
+    return ereignistyp;
   }
 
   public Objekt getObjekt()
@@ -49,7 +54,7 @@ public class Ereignis
   @Override
   public String toString()
   {
-    return "Ereignis{" + "id=" + id + ", ereignsityp=" + ereignsityp + ", objekt=" + objekt + ", zeit=" + zeit + '}';
+    return "Ereignis{" + "id=" + id + ", ereignsityp=" + ereignistyp + ", objekt=" + objekt + ", zeit=" + zeit + '}';
   }
   
   
