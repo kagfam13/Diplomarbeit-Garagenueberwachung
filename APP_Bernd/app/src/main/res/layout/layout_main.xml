@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent" android:orientation="horizontal"
+              android:layout_height="match_parent"
+              tools:context=".MainActivity"
+              android:id="@+id/container_main"
+              android:baselineAligned="false">
+
+    <LinearLayout
+    android:orientation="vertical"
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        style="@style/ButtonLayoutStyle"
+        android:background="@drawable/gradient_lights_on"
+        android:id="@+id/lights_on_button">
+
+        <ImageView
+            style="@style/ButtonIconStyle"
+            android:src="@drawable/ic_lights_on"/>
+
+        <TextView
+            android:text="@string/button_lights_on"
+            style="@style/ButtonTextStyle"/>
+    </RelativeLayout>
+
+        <RelativeLayout
+            style="@style/ButtonLayoutStyle"
+            android:background="@drawable/gradient_open_door"
+            android:id="@+id/door">
+
+            <ImageView
+                style="@style/ButtonIconStyle"
+                android:src="@drawable/ic_open_door"/>
+
+            <TextView
+                android:text="@string/button_door"
+                style="@style/ButtonTextStyle"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            style="@style/ButtonLayoutStyle"
+            android:background="@drawable/gradient_send_history"
+            android:id="@+id/mailHistoryOrErrors">
+
+            <ImageView
+                style="@style/ButtonIconStyle"
+                android:src="@drawable/ic_mail_history"/>
+
+            <TextView
+                android:text="@string/button_mail_history"
+                style="@style/ButtonTextStyle"/>
+        </RelativeLayout>
+</LinearLayout>
+
+<LinearLayout
+android:orientation="vertical"
+android:layout_weight="1"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+>
+
+    <RelativeLayout
+        style="@style/ButtonLayoutStyle"
+        android:background="@drawable/gradient_lights_off"
+        android:id="@+id/lights_off_button">
+
+        <ImageView
+            style="@style/ButtonIconStyle"
+            android:src="@drawable/ic_lights_off"/>
+
+        <TextView
+            android:text="@string/button_lights_off"
+            style="@style/ButtonTextStyle"/>
+
+    </RelativeLayout>
+<RelativeLayout
+    style="@style/ButtonLayoutStyle"
+    android:background="@drawable/gradient_stop_all"
+    android:id="@+id/stop_all">
+
+    <ImageView
+        style="@style/ButtonIconStyle"
+        android:src="@drawable/ic_stop_all"/>
+
+    <TextView
+        android:text="@string/button_stop_all"
+        style="@style/ButtonTextStyle"/>
+</RelativeLayout>
+    <RelativeLayout
+        style="@style/ButtonLayoutStyle"
+        android:background="@drawable/gradient_light_test_page"
+        android:id="@+id/lightTestPage">
+
+        <ImageView
+            style="@style/ButtonIconStyle"
+            android:src="@drawable/ic_light_test_page"/>
+
+        <TextView
+            android:text="@string/button_light_test_page"
+            style="@style/ButtonTextStyle"/>
+    </RelativeLayout>
+</LinearLayout>
+
+   </LinearLayout>

@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="standard_margin">18dp</dimen>
+    <dimen name="button_textSize">17sp</dimen>
+    <dimen name="about_dialog_margin">25dp</dimen>
+</resources>

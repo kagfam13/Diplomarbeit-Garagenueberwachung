@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RadioGroup
+    android:layout_width="match_parent"
+    android:id="@+id/lightsOnGroup"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <RadioButton android:id="@+id/lights_on"
+        android:text="@string/lights"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dialog_margin"
+        android:layout_marginRight="@dimen/dialog_margin"/>
+
+    <!--<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    android:layout_marginTop="-15dp"
+    android:layout_marginStart="52dp"
+    android:layout_marginEnd="@dimen/dialog_margin"/>-->
+
+    <RadioButton android:id="@+id/halle_on"
+            android:text="@string/halle"
+            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/dialog_margin"
+            android:layout_marginRight="@dimen/dialog_margin"/>
+
+    <RadioButton android:id="@+id/mtf_on"
+        android:text="@string/mtf"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/dialog_margin"
+            android:layout_marginRight="@dimen/dialog_margin"/>
+
+    <RadioButton android:id="@+id/kdo_on"
+        android:text="@string/kdo"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dialog_margin"
+        android:layout_marginRight="@dimen/dialog_margin"/>
+
+
+    <RadioButton android:id="@+id/herren_on"
+        android:text="@string/herren"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dialog_margin"
+        android:layout_marginRight="@dimen/dialog_margin"/>
+
+
+    <RadioButton android:id="@+id/damen_on"
+        android:text="@string/damen"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dialog_margin"
+        android:layout_marginRight="@dimen/dialog_margin"/>
+
+
+    <RadioButton android:id="@+id/vorraum_on"
+        android:text="@string/vorraum"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dialog_margin"
+        android:layout_marginRight="@dimen/dialog_margin"/>
+
+</RadioGroup>

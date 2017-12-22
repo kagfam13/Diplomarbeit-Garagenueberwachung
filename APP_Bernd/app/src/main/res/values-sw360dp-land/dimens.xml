@@ -1,0 +1,3 @@
+<resources>
+    <dimen name="button_textMarginBottom">15dp</dimen>
+</resources>

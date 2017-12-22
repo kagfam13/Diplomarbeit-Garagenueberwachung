@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Blaulichtsteuerung</string>
+    <string name="action_changeMail">E-Mail-Adresse ändern</string>
+
+    <string name="sirenAlarm">Sirenenalarm</string>
+    <string name="silentAlarm">Stiller Alarm</string>
+
+    <string name="too_short">Die eingegebene Nummer ist zu kurz.</string>
+    <string name="too_long">Die eingegebene Nummer ist zu lang.</string>
+    <string name="wrong_format">Bitte eine gültige Nummer eingeben.</string>
+    <string name="invalid_email">Bitte eine gültige E-Mail-Adresse eingeben.</string>
+
+    <string name="button_test_leds">Dauerlicht</string>
+    <string name="button_test_blink">Blinklicht</string>
+    <string name="button_test_circle">Lauflicht</string>
+    <string name="button_test_all">Alle Lichttests durchführen</string>
+    <string name="button_lights_on">Licht einschalten</string>
+    <string name="button_lights_off">Licht ausschalten</string>
+    <string name="open_door">Tür vorübergehend öffnen</string>
+    <string name="button_reset_rspi">Raspberry neustarten</string>
+    <string name="button_stop_all">Alle Programme stoppen</string>
+    <string name="button_mail_history">Verlauf senden</string>
+    <string name="button_light_test_page">Lichttests</string>
+    <string name="button_simulations">Alarm simulieren</string>
+
+    <string name="mail_history">Befehlsverlauf senden</string>
+    <string name="mail_errors">Fehlerverlauf senden</string>
+
+    <string name="sms_sent">SMS gesendet - warten auf Antwort</string>
+    <string name="sms_failure">Senden fehlgeschlagen!</string>
+    <string name="sms_no_service">Senden fehlgeschlagen - Kein Empfang!</string>
+    <string name="sms_null_pdu">Senden fehlgeschlagen - null PDU!</string>
+    <string name="sms_radio_off">Bitte Flugmodus deaktivieren!</string>
+
+    <string name="action_changeNumber">Nummer des Blaulichts ändern</string>
+    <string name="dialog_changeNumber">Telefonnummer</string>
+    <string name="dialog_changeNumberDescription">Die Telefonnummer des Blaulichts eingeben:</string>
+    <string name="dialog_restartDescription">Soll der Raspberry Pi wirklich neu gestartet werden? Das kann mehrere Minuten dauern.</string>
+    <string name="dialog_restart">Neustarten</string>
+    <string name="dialog_chooseContact">Aus Kontakten wählen</string>
+    <string name="dialog_mailDescription">Welcher Verlauf soll gesendet werden?</string>
+    <string name="dialog_enterEmail">E-Mail-Adresse eingeben</string>
+    <string name="dialog_enterEmailDescription">Bitte jene E-Mail-Adresse eingeben, an die der Befehlsverlauf oder Fehlerverlauf gesendet werden soll:</string>
+
+    <string name="dialog_alarmTitle">Art des Alarms</string>
+    <string name="dialog_alarmDescription">Welcher Alarm soll simuliert werden?</string>
+
+    <string name="dialog_cancel">Abbrechen</string>
+    <string name="dialog_save">Speichern</string>
+    <string name="dialog_send">Senden</string>
+    <string name="dialog_close">Schließen</string>
+    <string name="back">Zurück</string>
+
+    <string name="about">Über</string>
+    <string name="about_text">Entwickler: Marcel Höller &#8212; marcel.hoeller97@gmail.com\n\nDiese App wurde im Rahmen der Diplomarbeit <i>Intelligentes Blaulicht</i> entwickelt.\n\nDas App-Icon und die innerhalb der App verwendeten Icons wurden freundlicherweise von Florian Lackner erstellt und zur Verfügung gestellt: www.florianlackner.at</string>
+
+    <string name="help_siren">Simuliert einen eingehenden Alarm. Dadurch wird das Blaulicht und das Licht im Feuerwehrhaus eingeschaltet.</string>
+    <string name="help_silent">Simuliert einen stillen Alarm.</string>
+    <string name="help_leds">Schaltet zur Überprüfung der LEDs alle LEDs für 20 Sekunden ein.</string>
+    <string name="help_blink">Alle LEDs blinken gleichzeitig.</string>
+    <string name="help_circle">Die LED-Reihen leuchten wie bei einem Lauflicht alle hintereinander.</string>
+    <string name="help_all">Führt <i>Dauerlicht, Lauflicht</i> und <i>Blinklicht</i> hintereinander aus.</string>
+    <string name="help_lights_on">Schaltet das Licht im Feuerwehrhaus ein.</string>
+    <string name="help_lights_off">Schaltet das Licht im Feuerwehrhaus aus.</string>
+    <string name="help_open_door">Öffnet die Tür zum Feuerwehrhaus vorübergehend.</string>
+    <string name="help_stop">Stoppt alle laufenden Programme.</string>
+    <string name="help_mail_history">Sendet eine E-Mail mit den zuletzt ausgeführten Befehlen.</string>
+    <string name="help_mail_errors">Sendet eine E-Mail mit den zuletzt aufgetretenen Fehlern.</string>
+
+    <string name="error_contacts">Beim Lesen der Kontakte ist ein Fehler aufgetreten!</string>
+    <string name="error_permission_contacts">Keine Berechtigung zum Auswählen eines Kontakts!</string>
+    <string name="error_permission_sms">Keine Berechtigung zum Senden einer SMS!</string>
+    <string name="error_version_name">Fehler beim Abrufen der Versionsnummer.</string>
+    <string name="response">Antwort des Blaulichts</string>
+    <string name="wait_for_answer">Bitte auf Antwort des Blaulichts warten.</string>
+    <string name="send_again">Erneut senden</string>
+    <string name="button_prepaid_credit">Guthaben abfragen</string>
+    <string name="dialog_prepaid_creditDescription">Überprüft das Guthaben des Blaulichts.</string>
+    <string name="dialog_prepaid_credit">Guthaben überprüfen</string>
+    <string name="dialog_shutdown">Herunterfahren</string>
+    <string name="dialog_shutdownDescription">Soll der Raspberry Pi wirklich heruntergefahren werden?</string>
+    <string name="button_shutdown_rspi">Raspberry herunterfahren</string>
+    <string name="button_door">Tür steuern</string>
+    <string name="door_unlock">Entsperren der Tür</string>
+    <string name="door_lock">Versperren der Tür</string>
+    <string name="help_door_unlock">Entsperrt die Tür dauerhaft.</string>
+    <string name="help_door_lock">Versperrt die Tür.</string>
+    <string name="dialog_doorDescription">Wie soll die Tür angesteuert werden? </string>
+
+    <!-- Licht-Strings -->
+    <string name="lights">Gesamtbeleuchtung</string>
+    <string name="halle">Große Garage</string>
+    <string name="mtf">MTF-Garage</string>
+    <string name="kdo">Kommandoraum und Vorhof</string>
+    <string name="herren">Herrenumkleide</string>
+    <string name="damen">Damenumkleide</string>
+    <string name="vorraum">Vorraum</string>
+
+    <string name="dialog_lights_onDescription">Welches Licht soll eingeschaltet werden?</string>
+    <string name="dialog_lights_offDescription">Welches Licht soll ausgeschaltet werden?</string>
+
+    <!-- Tür vorübergehend öffnen-Dialog -->
+    <string name="dialog_door_temporary">Tür vorübergehend öffnen</string>
+    <string name="dialog_door_temporaryDescription">Wie lange soll die Tür geöffnet werden?</string>
+    <string name="button_blaulicht_on">Blaulicht einschalten</string>
+    <string name="button_blaulicht_off">Blaulicht ausschalten</string>
+    <string name="dialog_blaulicht_onDescription">Schaltet das Blaulicht ein.</string>
+    <string name="dialog_blaulicht_offDescription">Schaltet das Blaulicht aus.</string>
+    <string name="button_test_connection">Kommunikation testen</string>
+    <string name="dialog_test_connectionDescription">Testet die Kommunikation mit der Steuerung.</string>
+    <string name="button_nicht_belegt">Nicht belegt</string>
+</resources>

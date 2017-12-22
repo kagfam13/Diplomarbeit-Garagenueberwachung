@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <EditText android:id="@+id/input"
+        android:inputType="phone"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dialog_margin"
+        android:layout_marginRight="@dimen/dialog_margin"/>
+
+    <Button android:id="@+id/contactButton"
+        android:text="@string/dialog_chooseContact"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/dialog_margin"
+            android:layout_marginRight="@dimen/dialog_margin"/>
+
+    <!-- http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog -->
+</LinearLayout>

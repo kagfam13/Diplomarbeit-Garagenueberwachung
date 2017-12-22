@@ -1,0 +1,43 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+
+
+    <item android:id="@+id/reset_rspi"
+        android:title="@string/button_reset_rspi"
+        app:showAsAction="never"
+        android:onClick="reset_rspi" />
+
+
+    <item android:id="@+id/shutdown_rspi"
+        android:title="@string/button_shutdown_rspi"
+        app:showAsAction="never"
+        android:onClick="shutdown_rspi" />
+
+    <item android:id="@+id/prepaid_credit"
+        android:title="@string/button_prepaid_credit"
+        app:showAsAction="never"
+        android:onClick="prepaid_credit" />
+    <item
+        android:id="@+id/change_number"
+        android:title="@string/action_changeNumber"
+        app:showAsAction="never"
+        android:onClick="changeNumber"/>
+
+    <item
+        android:id="@+id/menu_change_mail"
+        android:title="@string/action_changeMail"
+        app:showAsAction="never"
+        android:onClick="changeMail"/>
+
+    <item
+        android:id="@+id/about"
+        android:title="@string/about"
+        app:showAsAction="never"
+        android:onClick="showAboutDialog"/>
+    <item
+        android:id="@+id/ip-mi"
+        android:onClick="onIpMi"
+        android:title="Ip-Einstellen" />
+
+</menu>

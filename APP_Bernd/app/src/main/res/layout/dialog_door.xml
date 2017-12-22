@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RadioGroup
+    android:layout_width="match_parent"
+    android:id="@+id/doorGroup"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RadioButton android:id="@+id/open_door"
+            android:text="@string/open_door"
+            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/dialog_margin"
+            android:layout_marginRight="@dimen/dialog_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/help_open_door"
+        android:layout_marginTop="-15dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="@dimen/dialog_margin"/>
+
+    <RadioButton android:id="@+id/door_unlock"
+        android:text="@string/door_unlock"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/dialog_margin"
+            android:layout_marginRight="@dimen/dialog_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/help_door_unlock"
+        android:layout_marginTop="-15dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="@dimen/dialog_margin"/>
+
+
+    <RadioButton android:id="@+id/door_lock"
+        android:text="@string/door_lock"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dialog_margin"
+        android:layout_marginRight="@dimen/dialog_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/help_door_lock"
+        android:layout_marginTop="-15dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="@dimen/dialog_margin"/>
+</RadioGroup>
