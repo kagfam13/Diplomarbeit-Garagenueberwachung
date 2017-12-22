@@ -158,9 +158,9 @@ public class MainActivity extends AppCompatActivity //implements AdapterView.OnI
         }
         else if (view.getId() == R.id.nicht_belegt)
         {
-            // Toast.makeText(getBaseContext(), "Test", Toast.LENGTH_LONG).show();
+            // Toast.makeText(getBaseContext(), address.toString(), Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, GateControllingActivity.class);
-            intent.putExtra("ADRESS",address.getAddress());
+            intent.putExtra("ADDRESS",address.getAddress());
             startActivity(intent);
         }
         else

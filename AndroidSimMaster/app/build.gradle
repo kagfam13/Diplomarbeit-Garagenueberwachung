@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "at.htlkaindorf.kagfam13.androidsimmaster"
         minSdkVersion 19
@@ -27,5 +27,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-    compile files('libs/jamod-1.2-SNAPSHOT - Kopie - Kopie.jar')
+    implementation files('libs/jamod-1.2-SNAPSHOT.jar')
 }

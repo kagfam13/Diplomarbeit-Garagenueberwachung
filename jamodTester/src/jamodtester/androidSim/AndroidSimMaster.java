@@ -29,7 +29,7 @@ public class AndroidSimMaster extends javax.swing.JFrame {
         initComponents();
         
         try {
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 10, 15, 0, 1);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.0.0.39"), 10, 15, 0, 1);
             new backgroundWorker().execute();
         } catch (UnknownHostException ex) {
             Logger.getLogger(AndroidSimMaster.class.getName()).log(Level.SEVERE, null, ex);
