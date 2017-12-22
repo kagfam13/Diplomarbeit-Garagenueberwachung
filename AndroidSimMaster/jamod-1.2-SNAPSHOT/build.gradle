@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('jamod-1.2-SNAPSHOT.jar'))
