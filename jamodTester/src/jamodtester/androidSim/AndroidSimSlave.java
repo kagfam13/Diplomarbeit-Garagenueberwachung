@@ -75,7 +75,7 @@ public class AndroidSimSlave extends javax.swing.JFrame
   public AndroidSimSlave()
   {
     initComponents();
-      slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, 15, 10, 15, 0, 1);
+      slave = new EasyModbusSlave(5555, 15, 10, 15, 0, 1);
       pta1.setBackground(Color.red);
       ptz1.setBackground(Color.red);
       pta2.setBackground(Color.red);
