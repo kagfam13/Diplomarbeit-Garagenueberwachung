@@ -28,7 +28,7 @@ public class ArduinoSimSlave extends javax.swing.JFrame {
     
     ModbusTCPListener listener = null;
     SimpleProcessImage spi = null;
-    int port = Modbus.DEFAULT_PORT;
+    int port = 4444;
     
     private class motorWorker extends SwingWorker<Object, Object>
     {

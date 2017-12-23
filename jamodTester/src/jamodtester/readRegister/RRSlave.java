@@ -23,7 +23,7 @@ public class RRSlave extends javax.swing.JFrame {
 
     ModbusTCPListener listener = null;
     SimpleProcessImage spi = null;
-    int port = Modbus.DEFAULT_PORT;
+    int port = 6666;
     /**
      * Creates new form RRSlave
      */

@@ -9,11 +9,11 @@ package jamodWithPostgresql.data;
  *
  * @author User
  */
-public class ArduinoData
+public class DataFromArduino
 {
   private boolean Auto, sensorOben,sensorUnten;
 
-  public ArduinoData(boolean Auto, boolean sensorOben, boolean sensorUnten)
+  public DataFromArduino(boolean Auto, boolean sensorOben, boolean sensorUnten)
   {
     this.Auto = Auto;
     this.sensorOben = sensorOben;

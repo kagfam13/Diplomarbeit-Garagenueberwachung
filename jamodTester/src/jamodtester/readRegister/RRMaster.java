@@ -40,7 +40,7 @@ public class RRMaster extends javax.swing.JFrame {
 
         @Override
         protected Object doInBackground() throws Exception {
-            int port = Modbus.DEFAULT_PORT;
+            int port = 6666;
             InetAddress addy = InetAddress.getLocalHost();
             TCPMasterConnection connection = new TCPMasterConnection(addy);
             connection.setTimeout(3000);

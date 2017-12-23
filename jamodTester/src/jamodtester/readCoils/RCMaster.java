@@ -46,7 +46,7 @@ public class RCMaster extends javax.swing.JFrame {
         @Override
         protected Object doInBackground() throws Exception {
             int port = Modbus.DEFAULT_PORT;
-            InetAddress addy = InetAddress.getLocalHost();
+            InetAddress addy = InetAddress.getByName("10.0.0.9");
             TCPMasterConnection connection = new TCPMasterConnection(addy);
             connection.setTimeout(3000);
             connection.setPort(port);

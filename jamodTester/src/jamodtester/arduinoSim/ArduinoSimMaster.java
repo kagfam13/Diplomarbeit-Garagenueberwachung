@@ -32,7 +32,7 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
         initComponents();
         try {
             // master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.112.70"), 2, 3);
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.112.71"), 2, 3);
+            master = new EasyModbusMaster(4444, 15, InetAddress.getByName("10.200.112.71"), 2, 3);
             new manageLabels().execute();
              
          } catch (UnknownHostException ex) {
