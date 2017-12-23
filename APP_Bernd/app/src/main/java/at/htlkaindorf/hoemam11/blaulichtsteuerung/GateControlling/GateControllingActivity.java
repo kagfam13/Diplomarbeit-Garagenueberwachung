@@ -1,10 +1,15 @@
 package at.htlkaindorf.hoemam11.blaulichtsteuerung.GateControlling;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -189,6 +194,30 @@ public class GateControllingActivity extends AppCompatActivity {
             catch (Exception ex)
             {
                 System.out.println("***** "+ex.toString());
+
+                /*
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(getBaseContext(), android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(getBaseContext());
+                }
+                builder.setTitle("Verbindungsfehler")
+                        .setMessage(ex.getMessage())
+                        .setPositiveButton("Refresh", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                            }
+                        })
+                        .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                                finish();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();*/
+
             }
         }
     }

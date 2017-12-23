@@ -436,11 +436,6 @@ public class MainActivity extends AppCompatActivity //implements AdapterView.OnI
     }
     public void onIpMi(MenuItem mi)
     {
-        showToast(R.id.about);
-    }
-
-    private void showToast(int resId)
-    {
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         alert.setTitle("Bitte geben sie die Addresse ein");
@@ -468,6 +463,12 @@ public class MainActivity extends AppCompatActivity //implements AdapterView.OnI
         });
 
         alert.show();
+    }
+
+    private void showToast(int resId)
+    {
+        Toast toast = Toast.makeText(this, getString(resId), Toast.LENGTH_LONG);
+        toast.show();
     }
 
     public class IncomingSms extends BroadcastReceiver
