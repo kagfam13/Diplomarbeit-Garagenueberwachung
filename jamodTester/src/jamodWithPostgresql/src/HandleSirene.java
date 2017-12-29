@@ -42,9 +42,6 @@ public class HandleSirene
   {
     try
     {
-      // TODO Signal von Sirenensteuerung auslesen 
-      
-      
       // Write Sirenen Ereignis into Database
       db.HandleDatabase(2, sirnenobjektID);
       int lastSirenenID = db.getLastId();

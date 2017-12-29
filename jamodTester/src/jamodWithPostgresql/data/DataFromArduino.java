@@ -50,7 +50,5 @@ public class DataFromArduino
   public void setSensorUnten(boolean sensorUnten)
   {
     this.sensorUnten = sensorUnten;
-  }
-  
-  
+  }  
 }

@@ -5,6 +5,8 @@
  */
 package jamodWithPostgresql.src;
 
+import com.pi4j.io.gpio.*;
+import com.pi4j.io.gpio.event.*;
 import jamodWithPostgresql.data.DataFromArduino;
 import static jamodWithPostgresql.src.Constants.*;
 import jamodtester.easyModbus.*;
@@ -25,13 +27,19 @@ import postgresql.easyDatabase.*;
 public class MainProgramm
 {
   private static int typIdGate, typIdCar;
-  private static EasyModbusMaster master0;//,master1,master2,master3,master4;
+  private static EasyModbusMaster master0,master1;//master2,master3,master4;
   private static EasyModbusSlave slave;
   public static boolean newCarEreignis;
   
   private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
   private ScheduledFuture future;
   
+  
+    
+        /* Clamp 1 */
+//  private static GpioController gpio;
+//  private static GpioPinDigitalInput clamp1;
+//  private boolean active1 = false;
   
   public void handleDB(EasyModbusMaster master,int arduinoNumber) {
       DataFromArduino data = getDataVonArduino(master);
@@ -105,7 +113,6 @@ public class MainProgramm
           slave.setCoil(gateSensorId, data.isSensorUnten());
         }
         
-        // Sirne 
         
         
       }
@@ -129,17 +136,24 @@ public class MainProgramm
     if(slave.getCoil(TOR1AUF)) {
       master0.writeCoil(ARDUINOTORAUF, true);
       slave.setCoil(TOR1AUF, false);
+      System.out.println("slave geschrieben");
     }
     if(slave.getCoil(TOR1ZU)) {
       master0.writeCoil(ARDUINOTORZU, true);
       slave.setCoil(TOR1ZU, false);
+      System.out.println("slave geschrieben");
     }
-    /*if(slave.getCoil(TOR2AUF)) {
+    if(slave.getCoil(TOR2AUF)) {
       master1.writeCoil(ARDUINOTORAUF, true);
+      slave.setCoil(TOR2AUF, false);
+      System.out.println("slave geschrieben");
     }
     if(slave.getCoil(TOR2ZU)) {
       master1.writeCoil(ARDUINOTORZU, true);
+      slave.setCoil(TOR2ZU, false);
+      System.out.println("slave geschrieben");
     }
+    /*
     if(slave.getCoil(TOR3AUF)) {
       master2.writeCoil(ARDUINOTORAUF, true);
     }
@@ -185,14 +199,40 @@ public class MainProgramm
     slave.setRegister(0, (int) totalSec);
     
   }
+  
+//  private void handle()
+//  {
+//    /* Clamp 1 */ 
+//        GpioPinListenerDigital clamp1Listener = new GpioPinListenerDigital() {
+//            @Override
+//            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
+//                try {
+//                    if(event.getState() == PinState.HIGH && !active1) {
+//                        active1=true; 
+//                        handleSecondsOfLastSirenenalarm();
+//                        active1=false;                    
+//                    }
+//                }
+//                catch (Exception e) { 
+////                    log.error("failed to send alarm");
+////                    log.fatal(e.toString());
+//                    active1=false;    
+//                }
+//            }
+//        };
+//        clamp1.addListener(clamp1Listener);
+//  }
   public static void main(String[] args)
   {
     try
     {
-      master0 = new EasyModbusMaster(4444, Modbus.DEFAULT_UNIT_ID, InetAddress.getLocalHost(), 2, 3);
-      /*
+//      gpio = GpioFactory.getInstance();
+//      clamp1 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_01, PinPullResistance.PULL_DOWN);
+      master0 = new EasyModbusMaster(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID, InetAddress.getByName(IP1), 2, 3);
       master1 = new EasyModbusMaster(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID, InetAddress.getByName(IP2), 2, 3);
+      /*
       master2 = new EasyModbusMaster(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID, InetAddress.getByName(IP3), 2, 3);
+      
       master3 = new EasyModbusMaster(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID, InetAddress.getByName(IP4), 2, 3);
       master4 = new EasyModbusMaster(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID, InetAddress.getByName(IP5), 2, 3);
       */
@@ -200,19 +240,20 @@ public class MainProgramm
       // new BackgroundWorker().execute();
       slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID,10,15,0,1);
       slave.start();
+      System.out.println("Slave gestartet: "+slave.toString());
       slave.setRegister(0, 0);
       while(true) {
         new MainProgramm().handleDB(master0, 0);
-        /*
         new MainProgramm().handleDB(master1, 1);
+        /*
         new MainProgramm().handleDB(master2, 2);
         new MainProgramm().handleDB(master3, 3);
         new MainProgramm().handleDB(master4, 4);
 */      
-        new MainProgramm().handleSecondsOfLastSirenenalarm();
+//        new MainProgramm().handle();
         new MainProgramm().handleDataFromAndroid(slave);
         
-        Thread.sleep(2000);
+        Thread.sleep(10000);
       }
 
     }
