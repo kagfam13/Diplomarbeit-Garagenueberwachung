@@ -136,22 +136,18 @@ public class MainProgramm
     if(slave.getCoil(TOR1AUF)) {
       master0.writeCoil(ARDUINOTORAUF, true);
       slave.setCoil(TOR1AUF, false);
-      System.out.println("slave geschrieben");
     }
     if(slave.getCoil(TOR1ZU)) {
       master0.writeCoil(ARDUINOTORZU, true);
       slave.setCoil(TOR1ZU, false);
-      System.out.println("slave geschrieben");
     }
     if(slave.getCoil(TOR2AUF)) {
       master1.writeCoil(ARDUINOTORAUF, true);
       slave.setCoil(TOR2AUF, false);
-      System.out.println("slave geschrieben");
     }
     if(slave.getCoil(TOR2ZU)) {
       master1.writeCoil(ARDUINOTORZU, true);
       slave.setCoil(TOR2ZU, false);
-      System.out.println("slave geschrieben");
     }
     /*
     if(slave.getCoil(TOR3AUF)) {
@@ -249,7 +245,7 @@ public class MainProgramm
         new MainProgramm().handleDB(master2, 2);
         new MainProgramm().handleDB(master3, 3);
         new MainProgramm().handleDB(master4, 4);
-*/      
+        */      
 //        new MainProgramm().handle();
         new MainProgramm().handleDataFromAndroid(slave);
         
