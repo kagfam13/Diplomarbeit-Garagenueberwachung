@@ -49,6 +49,7 @@ public class HandleSirene
     }
     catch (Exception e)
     {
+      e.printStackTrace();
     }
   }
 
