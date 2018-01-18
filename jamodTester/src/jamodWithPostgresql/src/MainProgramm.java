@@ -107,7 +107,6 @@ public class MainProgramm
         }
         if(isOkGate)
         {
-          
           System.out.println(slave);
           slave.setCoil(gateSensorId+1,data.isSensorOben());
           slave.setCoil(gateSensorId, data.isSensorUnten());
@@ -136,7 +135,13 @@ public class MainProgramm
     // TODO: Daten vom Android lesen und an Arduino weiterleiten 
     if(slave.getCoil(TOR1AUF)) {
       master0.writeCoil(ARDUINOTORAUF, true);
-      slave.setCoil(TOR1AUF, false);
+      // tryout Abbruchbedingung durch Torsteurung Tablet
+//      if(slave.getCoil(TOR1AUF) || slave.getCoil(TOR1AUF) && slave.getCoil(TOR1ZU))
+//      {
+//        slave.setCoil(TOR1AUF, false);
+//      }
+      slave.setCoil(TOR1AUF,false);
+      
     }
     if(slave.getCoil(TOR1ZU)) {
       master0.writeCoil(ARDUINOTORZU, true);
@@ -259,11 +264,9 @@ public class MainProgramm
         ex.printStackTrace();
       }
     }
-    
   }
   private static class HandleSireneWorker implements Runnable
   {
-    
     @Override
     public void run()
     {
@@ -276,7 +279,6 @@ public class MainProgramm
         ex.printStackTrace();
       }
     }
-    
   }
   public static void main(String[] args)
   {
