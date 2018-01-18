@@ -5,8 +5,8 @@
  */
 package jamodWithPostgresql.src;
 
-import com.pi4j.io.gpio.*;
-import com.pi4j.io.gpio.event.*;
+//import com.pi4j.io.gpio.*;
+//import com.pi4j.io.gpio.event.*;
 import jamodWithPostgresql.data.DataFromArduino;
 import static jamodWithPostgresql.src.Constants.*;
 import jamodtester.easyModbus.*;
