@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
@@ -23,8 +24,10 @@ import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -38,7 +41,7 @@ import java.net.UnknownHostException;
 
 import at.htlkaindorf.hoemam11.blaulichtsteuerung.GateControlling.GateControllingActivity;
 
-public class MainActivity extends AppCompatActivity //implements AdapterView.OnItemSelectedListener
+public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener //implements AdapterView.OnItemSelectedListener
 {
     private InetAddress address;
     // String-Konstanten für onSaveInstanceState
@@ -158,10 +161,14 @@ public class MainActivity extends AppCompatActivity //implements AdapterView.OnI
         }
         else if (view.getId() == R.id.nicht_belegt)
         {
-            // Toast.makeText(getBaseContext(), address.toString(), Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, GateControllingActivity.class);
-            intent.putExtra("ADDRESS",address.getAddress());
-            startActivity(intent);
+            if (address != null) {
+                Intent intent = new Intent(this, GateControllingActivity.class);
+                intent.putExtra("ADDRESS",address.getAddress());
+                startActivity(intent);
+            }
+            else {
+                Toast.makeText(getApplicationContext(),"Zuerst IP-Adresse eingeben.",Toast.LENGTH_LONG).show();
+            }
         }
         else
         {
@@ -446,13 +453,38 @@ public class MainActivity extends AppCompatActivity //implements AdapterView.OnI
         alert.setPositiveButton("Speichern", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                try
+
+                new AsyncTask<Void, Void, InetAddress>()
+                {
+
+                    @Override
+                    protected InetAddress doInBackground(Void... voids) {
+                        try {
+                            return InetAddress.getByName(input.getText().toString());
+                        } catch (UnknownHostException e) {
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    protected void onPostExecute(InetAddress inetAddress) {
+                        if (inetAddress == null) {
+                            Toast.makeText(getApplicationContext(), "Falsche Adresse.", Toast.LENGTH_LONG).show();
+                            System.out.println("*** Falsche Adresse");
+                        }
+                        else {
+                            address = inetAddress;
+                        }
+                    }
+                }.execute();
+
+                /*try
                 {
                     address = InetAddress.getByName(input.getText().toString());
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
-                }
-                Toast.makeText(getBaseContext(), address.toString(), Toast.LENGTH_LONG).show();
+                }*/
+                // Toast.makeText(getBaseContext(), address.toString(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -469,6 +501,37 @@ public class MainActivity extends AppCompatActivity //implements AdapterView.OnI
     {
         Toast toast = Toast.makeText(this, getString(resId), Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        Toast.makeText(this, (int) v, Toast.LENGTH_LONG).show();
+        return false;
     }
 
     public class IncomingSms extends BroadcastReceiver

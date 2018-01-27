@@ -109,5 +109,5 @@
     <string name="dialog_blaulicht_offDescription">Schaltet das Blaulicht aus.</string>
     <string name="button_test_connection">Kommunikation testen</string>
     <string name="dialog_test_connectionDescription">Testet die Kommunikation mit der Steuerung.</string>
-    <string name="button_nicht_belegt">Nicht belegt</string>
+    <string name="button_gate_controlling">Nicht belegt</string>
 </resources>

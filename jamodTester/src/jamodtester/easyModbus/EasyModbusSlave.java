@@ -30,6 +30,8 @@ public class EasyModbusSlave {
         this.rCoils = rCoils;
         this.wRegisters = wRegisters;
         this.rRegisters = rRegisters;
+        
+        start();
     }
     
     public EasyModbusSlave(int port, int unitId, int wCoils, int rCoils) {
@@ -39,9 +41,11 @@ public class EasyModbusSlave {
         this.rCoils = rCoils;
         this.wRegisters = 0;
         this.rRegisters = 0;
+        
+        start();
     }
     
-    public void start()
+    private void start()
     {
         spi = new SimpleProcessImage();
         int i;
@@ -179,7 +183,6 @@ public class EasyModbusSlave {
         System.out.println(slave.getString(0, 10));
         slave.stop();
         System.exit(0);
-        return;
     }
     
 }

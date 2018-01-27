@@ -21,7 +21,7 @@
                 android:src="@drawable/ic_nicht_belegt"/>
 
             <TextView
-                android:text="@string/button_nicht_belegt"
+                android:text="@string/button_gate_controlling"
                 style="@style/ButtonTextStyle"/>
 
 

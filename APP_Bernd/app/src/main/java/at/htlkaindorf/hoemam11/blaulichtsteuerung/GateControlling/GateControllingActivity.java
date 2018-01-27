@@ -4,8 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,7 +28,8 @@ import at.htlkaindorf.hoemam11.blaulichtsteuerung.GateControlling.easyModbus.Get
 import at.htlkaindorf.hoemam11.blaulichtsteuerung.R;
 
 public class GateControllingActivity extends AppCompatActivity {
-    private TextView auto1,auto2,auto3,auto4,auto5,tor1,tor2,tor3,tor4,tor5, reaktionszeit;
+    private ConstraintLayout auto1,auto2,auto3,auto4,auto5;
+    private TextView tor1,tor2,tor3,tor4,tor5, reaktionszeit;
     private EasyModbusMaster master;
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     private ScheduledFuture future;
@@ -39,13 +41,14 @@ public class GateControllingActivity extends AppCompatActivity {
         Intent intent = getIntent();
         try {
             InetAddress address = InetAddress.getByAddress(intent.getByteArrayExtra("ADDRESS"));
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, address, 10, 15, 0, 1);
+            Toast.makeText(this,address.getHostAddress(),Toast.LENGTH_LONG).show();
+            master = new EasyModbusMaster(5555, 15, address, 10, 15, 0, 1);
 
-            auto1 = (TextView) findViewById(R.id.twFahrzeug1);
-            auto2 = (TextView) findViewById(R.id.twFahrzeug2);
-            auto3 = (TextView) findViewById(R.id.twFahrzeug3);
-            auto4 = (TextView) findViewById(R.id.twFahrzeug4);
-            auto5 = (TextView) findViewById(R.id.twFahrzeug5);
+            auto1 = (ConstraintLayout) findViewById(R.id.bg1);
+            auto2 = (ConstraintLayout) findViewById(R.id.bg2);
+            auto3 = (ConstraintLayout) findViewById(R.id.bg3);
+            auto4 = (ConstraintLayout) findViewById(R.id.bg4);
+            auto5 = (ConstraintLayout) findViewById(R.id.bg5);
 
             tor1 = (TextView) findViewById(R.id.twTor1);
             tor2 = (TextView) findViewById(R.id.twTor2);
@@ -53,9 +56,10 @@ public class GateControllingActivity extends AppCompatActivity {
             tor4 = (TextView) findViewById(R.id.twTor4);
             tor5 = (TextView) findViewById(R.id.twTor5);
 
-            reaktionszeit = (TextView) findViewById(R.id.twEinsatzdauer);
+            // reaktionszeit = (TextView) findViewById(R.id.twEinsatzdauer);
         } catch (UnknownHostException e) {
             e.printStackTrace();
+            this.finishActivity(0);
         }
     }
 
@@ -118,12 +122,12 @@ public class GateControllingActivity extends AppCompatActivity {
 
     private class BackgroundWorker implements Runnable
     {
-        private void setCar(TextView car, boolean state)
+        private void setCar(ConstraintLayout car, boolean state)
         {
             if (state)
-                car.setText("Fahrzeug in der Garage");
+                car.setBackgroundColor(Color.green(255));
             else
-                car.setText("Fahrzeug nicht in der Garage");
+                car.setBackgroundColor(Color.red(255));
         }
 
         private void setTor(TextView tor, boolean sensorUnten,boolean sensorOben)
@@ -194,30 +198,6 @@ public class GateControllingActivity extends AppCompatActivity {
             catch (Exception ex)
             {
                 System.out.println("***** "+ex.toString());
-
-                /*
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(getBaseContext(), android.R.style.Theme_Material_Dialog_Alert);
-                } else {
-                    builder = new AlertDialog.Builder(getBaseContext());
-                }
-                builder.setTitle("Verbindungsfehler")
-                        .setMessage(ex.getMessage())
-                        .setPositiveButton("Refresh", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // continue with delete
-                            }
-                        })
-                        .setNegativeButton("Back", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // do nothing
-                                finish();
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();*/
-
             }
         }
     }
