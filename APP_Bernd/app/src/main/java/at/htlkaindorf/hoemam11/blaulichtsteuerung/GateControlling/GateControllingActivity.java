@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -42,13 +43,14 @@ public class GateControllingActivity extends AppCompatActivity {
         try {
             InetAddress address = InetAddress.getByAddress(intent.getByteArrayExtra("ADDRESS"));
             Toast.makeText(this,address.getHostAddress(),Toast.LENGTH_LONG).show();
-            master = new EasyModbusMaster(5555, 15, address, 10, 15, 0, 1);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, address, 10, 15, 0, 1);
 
             auto1 = (ConstraintLayout) findViewById(R.id.bg1);
             auto2 = (ConstraintLayout) findViewById(R.id.bg2);
             auto3 = (ConstraintLayout) findViewById(R.id.bg3);
             auto4 = (ConstraintLayout) findViewById(R.id.bg4);
             auto5 = (ConstraintLayout) findViewById(R.id.bg5);
+
 
             tor1 = (TextView) findViewById(R.id.twTor1);
             tor2 = (TextView) findViewById(R.id.twTor2);
@@ -125,9 +127,9 @@ public class GateControllingActivity extends AppCompatActivity {
         private void setCar(ConstraintLayout car, boolean state)
         {
             if (state)
-                car.setBackgroundColor(Color.green(255));
+                car.setBackgroundColor(Color.GREEN);
             else
-                car.setBackgroundColor(Color.red(255));
+                car.setBackgroundColor(Color.RED);
         }
 
         private void setTor(TextView tor, boolean sensorUnten,boolean sensorOben)
@@ -162,6 +164,7 @@ public class GateControllingActivity extends AppCompatActivity {
                             public void run()
                             {
                                 try {
+                                    System.out.println("***" + resp.toString());
                                     setCar(auto1, resp.getCoil(10));
                                     setCar(auto2, resp.getCoil(11));
                                     setCar(auto3, resp.getCoil(12));
