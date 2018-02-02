@@ -28,7 +28,7 @@ public class GaragenDb extends Database
   }
   private GaragenDb()
   {
-    super("jdbc:postgresql://localhost:5432/garagenueberwachung", "remote","1234");
+    super("jdbc:postgresql://localhost:5432/garagenueberwachung", "pi","12345");
   }
   
   public Map<Integer,Ereignistyp> getEreignistypen() throws Exception

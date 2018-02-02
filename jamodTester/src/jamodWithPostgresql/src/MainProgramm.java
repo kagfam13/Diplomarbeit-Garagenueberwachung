@@ -299,7 +299,7 @@ public class MainProgramm
       slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID,10,15,0,1);
       slave.start();
       System.out.println("Slave gestartet: "+slave.toString());
-      slave.setRegister(0, 0);
+//      slave.setRegister(0, 0);
       
       final ScheduledExecutorService exe = Executors.newScheduledThreadPool(CARS+2); // CARS+1 ist die Azahl an maximal gleichzeitig geöffneten Threads
 //      exe.scheduleWithFixedDelay(new HandleDbWorker(master0, 0), 1000, 5000, TimeUnit.MILLISECONDS);
@@ -309,7 +309,7 @@ public class MainProgramm
           new EasyModbusMaster(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID,
             InetAddress.getByName(IP[i]), 2, 3), 1),
           1000, 5000, TimeUnit.MILLISECONDS);
-      exe.scheduleWithFixedDelay(new HandleSireneWorker(), 1000, 1000, TimeUnit.MILLISECONDS); //Thread für Sirene
+      //exe.scheduleWithFixedDelay(new HandleSireneWorker(), 1000, 1000, TimeUnit.MILLISECONDS); //Thread für Sirene
       exe.scheduleWithFixedDelay(new HandleAndroidDataWorker(slave), 1000, 5000, TimeUnit.MILLISECONDS); // Thread für Slave
       
 /*      while(true)
