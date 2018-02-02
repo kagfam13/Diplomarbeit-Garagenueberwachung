@@ -83,9 +83,9 @@ public class GaragenDb extends Database
       {
         while(rs.next())
         {
-          final int id = rs.getInt("ereignisId");
-          final Ereignistyp ereignistyp = ereignistypen.get(rs.getInt("typId"));
-          final Objekt objekt = objekte.get(rs.getInt("objektId"));
+          final int id = rs.getInt("ereignisid");
+          final Ereignistyp ereignistyp = ereignistypen.get(rs.getInt("typid"));
+          final Objekt objekt = objekte.get(rs.getInt("objektid"));
           final Timestamp zeit = rs.getTimestamp("zeit");
 //          final long ms = zeit.getTime();
 //          final LocalDateTime dt = LocalDateTime.ofInstant(Instant.ofEpochSecond(ms/1000), TimeZone.getDefault().toZoneId());
@@ -136,7 +136,7 @@ public class GaragenDb extends Database
   
   public int getLastId() throws Exception
   {
-    int id=0;
+    int id=1;
     final Map<Integer,Ereignis> ereignisse = getEreignisse();
       for(Ereignis ereignis : ereignisse.values())
       {

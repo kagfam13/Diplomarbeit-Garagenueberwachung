@@ -26,8 +26,8 @@ public class Constants
   public final static int ARDUINOTORZU = 1;
   
   public final static int CARS=2; 
-  public final static String[] IP = {"10.200.112.190","10.200.112.189","10.200.215.71","10.200.215.71","10.200.215.71"};
-  public final static String IP1 = "10.200.112.190";
+  public final static String[] IP = {"10.200.112.79","10.200.111.80","10.200.215.71","10.200.215.71","10.200.215.71"};
+  public final static String IP1 = "10.200.112.79";
   public final static String IP2 = "10.200.112.189";
   public final static String IP3 = "10.200.215.71";
   public final static String IP4 = "10.200.215.71";
