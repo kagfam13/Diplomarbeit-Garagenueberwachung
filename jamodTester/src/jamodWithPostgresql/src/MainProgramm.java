@@ -286,7 +286,7 @@ public class MainProgramm
     {
 //      gpio = GpioFactory.getInstance();
 //      clamp1 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_01, PinPullResistance.PULL_DOWN);
-      master0 = new EasyModbusMaster(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID, InetAddress.getByName(IP1), 2, 3);
+//      master0 = new EasyModbusMaster(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID, InetAddress.getByName(IP1), 2, 3);
 //      master1 = new EasyModbusMaster(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID, InetAddress.getByName(IP2), 2, 3);
       /*
       master2 = new EasyModbusMaster(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID, InetAddress.getByName(IP3), 2, 3);
@@ -309,6 +309,9 @@ public class MainProgramm
           new EasyModbusMaster(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID,
             InetAddress.getByName(IP[i]), 2, 3), 1),
           1000, 5000, TimeUnit.MILLISECONDS);
+//      exe.scheduleWithFixedDelay(new HandleDbWorker( // erstellt Threads die mit einem bestimmten Delay arbeiten Threads für Master
+//              master0,1),
+//          1000, 5000, TimeUnit.MILLISECONDS);
       exe.scheduleWithFixedDelay(new HandleSireneWorker(), 1000, 1000, TimeUnit.MILLISECONDS); //Thread für Sirene
       exe.scheduleWithFixedDelay(new HandleAndroidDataWorker(slave), 1000, 5000, TimeUnit.MILLISECONDS); // Thread für Slave
       
