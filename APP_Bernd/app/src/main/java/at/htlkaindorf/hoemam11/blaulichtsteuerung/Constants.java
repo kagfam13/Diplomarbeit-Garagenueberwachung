@@ -15,4 +15,5 @@ public class Constants
     public static final int PERMISSION_SEND_SMS = 0;
     public static final int PERMISSION_READ_CONTACTS = 3;
     public static final int PERMISSION_READ_PHONE_STATE = 4;
+    public static final String MODBUSADDRESS = "modbusaddress";
 }

@@ -1,6 +1,7 @@
 package at.htlkaindorf.hoemam11.blaulichtsteuerung;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -22,6 +23,7 @@ import android.transition.Fade;
 import android.transition.Scene;
 import android.transition.Transition;
 import android.transition.TransitionManager;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.GestureDetector;
@@ -43,7 +45,6 @@ import at.htlkaindorf.hoemam11.blaulichtsteuerung.GateControlling.GateControllin
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener //implements AdapterView.OnItemSelectedListener
 {
-    private InetAddress address;
     // String-Konstanten für onSaveInstanceState
     private static final String USER_ON_SIMULATIONS_PAGE = "simulations";
     private static final String SENDING_ALLOWED = "sending_allowed";
@@ -161,9 +162,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         }
         else if (view.getId() == R.id.nicht_belegt)
         {
+            byte[] address = Base64.decode(sharedPreferences.getString(Constants.MODBUSADDRESS, ""), Base64.DEFAULT);
             if (address != null) {
                 Intent intent = new Intent(this, GateControllingActivity.class);
-                intent.putExtra("ADDRESS",address.getAddress());
+                intent.putExtra("ADDRESS", address);
                 startActivity(intent);
             }
             else {
@@ -451,11 +453,11 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         alert.setView(input);
 
         alert.setPositiveButton("Speichern", new DialogInterface.OnClickListener() {
+            @SuppressLint("StaticFieldLeak")
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                new AsyncTask<Void, Void, InetAddress>()
-                {
+                new AsyncTask<Void, Void, InetAddress>() {
 
                     @Override
                     protected InetAddress doInBackground(Void... voids) {
@@ -473,7 +475,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                             System.out.println("*** Falsche Adresse");
                         }
                         else {
-                            address = inetAddress;
+                            System.out.println(inetAddress.toString());
+                            sharedPreferences.edit().putString(Constants.MODBUSADDRESS, Base64.encodeToString(inetAddress.getAddress(), Base64.DEFAULT)).apply();
                         }
                     }
                 }.execute();
