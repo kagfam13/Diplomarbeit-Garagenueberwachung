@@ -1,17 +1,12 @@
 package at.htlkaindorf.hoemam11.blaulichtsteuerung.GateControlling;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,10 +35,36 @@ public class GateControllingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gate_controlling);
         Intent intent = getIntent();
-        try {
-            InetAddress address = InetAddress.getByAddress(intent.getByteArrayExtra("ADDRESS"));
-            Toast.makeText(this,address.getHostAddress(),Toast.LENGTH_LONG).show();
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, address, 10, 15, 0, 1);
+            InetAddress address;
+            final String ipExtra = intent.getStringExtra("ADDRESS");
+            new AsyncTask<Void, Void, InetAddress>() {
+
+                @Override
+                protected InetAddress doInBackground(Void... voids) {
+                    try {
+                        return InetAddress.getByName(ipExtra);
+                    } catch (UnknownHostException e) {
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(InetAddress inetAddress) {
+                    if (inetAddress == null) {
+                        Toast.makeText(getApplicationContext(), "Falsche Adresse.", Toast.LENGTH_LONG).show();
+                        System.out.println("*** Falsche Adresse");
+                    }
+                    else {
+                        // Toast.makeText(this,inetAddress,Toast.LENGTH_LONG).show();
+                        try {
+                            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, inetAddress, 10, 15, 0, 1);
+                        } catch (UnknownHostException e) {
+                            e.printStackTrace();
+                            finish();
+                        }
+                    }
+                }
+            }.execute();
 
             auto1 = (ConstraintLayout) findViewById(R.id.bg1);
             auto2 = (ConstraintLayout) findViewById(R.id.bg2);
@@ -58,11 +79,8 @@ public class GateControllingActivity extends AppCompatActivity {
             tor4 = (TextView) findViewById(R.id.twTor4);
             tor5 = (TextView) findViewById(R.id.twTor5);
 
-            // reaktionszeit = (TextView) findViewById(R.id.twEinsatzdauer);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            this.finishActivity(0);
-        }
+            reaktionszeit = (TextView) findViewById(R.id.twReaktionszeit);
+
     }
 
     @Override
@@ -92,6 +110,7 @@ public class GateControllingActivity extends AppCompatActivity {
             case R.id.btZu4: new writeCoilTask(7).execute(); break;
             case R.id.btAuf5: new writeCoilTask(8).execute(); break;
             case R.id.btZu5: new writeCoilTask(9).execute(); break;
+            case R.id.bg_back: finish(); break;
         }
     }
 
@@ -127,9 +146,9 @@ public class GateControllingActivity extends AppCompatActivity {
         private void setCar(ConstraintLayout car, boolean state)
         {
             if (state)
-                car.setBackgroundColor(Color.GREEN);
+                car.setBackgroundColor(Color.rgb(20, 188, 57));
             else
-                car.setBackgroundColor(Color.RED);
+                car.setBackgroundColor(Color.rgb(214, 63, 21));
         }
 
         private void setTor(TextView tor, boolean sensorUnten,boolean sensorOben)
@@ -144,9 +163,9 @@ public class GateControllingActivity extends AppCompatActivity {
                 tor.setText("WTF ist los??");
         }
 
-        private void setTime(TextView tWeinsatzdauer,int min,int sec)
+        private void setTime(TextView textView,int min,int sec)
         {
-            tWeinsatzdauer.setText("Dauer des Letzten einsatzes: " + min + " min " + sec + " sec");
+            textView.setText( + min + " min " + sec + " sec");
         }
 
 
@@ -177,8 +196,6 @@ public class GateControllingActivity extends AppCompatActivity {
                                     setTor(tor3, resp.getCoil(19), resp.getCoil(20));
                                     setTor(tor4, resp.getCoil(21), resp.getCoil(22));
                                     setTor(tor5, resp.getCoil(23), resp.getCoil(24));
-
-
 
                                 } catch (Exception e) {
                                     e.printStackTrace();

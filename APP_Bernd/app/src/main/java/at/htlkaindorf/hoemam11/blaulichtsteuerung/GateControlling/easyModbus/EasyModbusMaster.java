@@ -5,19 +5,10 @@
  */
 package at.htlkaindorf.hoemam11.blaulichtsteuerung.GateControlling.easyModbus;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.wimpi.modbus.Modbus;
-import net.wimpi.modbus.ModbusException;
-import net.wimpi.modbus.ModbusSlaveException;
 import net.wimpi.modbus.io.ModbusTCPTransaction;
 import net.wimpi.modbus.msg.ModbusRequest;
-import net.wimpi.modbus.msg.ModbusResponse;
 import net.wimpi.modbus.msg.ReadCoilsRequest;
-import net.wimpi.modbus.msg.ReadInputRegistersRequest;
 import net.wimpi.modbus.msg.ReadMultipleRegistersRequest;
 import net.wimpi.modbus.msg.WriteCoilRequest;
 import net.wimpi.modbus.msg.WriteMultipleRegistersRequest;
@@ -26,39 +17,27 @@ import net.wimpi.modbus.net.TCPMasterConnection;
 import net.wimpi.modbus.procimg.Register;
 import net.wimpi.modbus.procimg.SimpleRegister;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Fabian
  */
 public class EasyModbusMaster {
-    private final static String ERRORMESSAGE = "***MODBUS ERROR: ";
-    private final int port,unitId;
-    private final InetAddress address;
+    private final static String ERRORMESSAGE = "*** MODBUS ERROR: ";
+    private final int unitId;
     private final int wCoils, rCoils, wRegisters, rRegisters;
     private final TCPMasterConnection connection;
 
     public EasyModbusMaster(int port, int unitId, InetAddress address, int wCoils, int rCoils, int wRegisters, int rRegisters) throws UnknownHostException {
-        this.port = port;
         this.unitId = unitId;
-        this.address = address;
         this.wCoils = wCoils;
         this.rCoils = rCoils;
         this.wRegisters = wRegisters;
         this.rRegisters = rRegisters;
-        
-        connection = new TCPMasterConnection(address);
-        connection.setPort(port);
-        connection.setTimeout(3000);
-    }
-    
-    public EasyModbusMaster(int port, int unitId, InetAddress address, int wCoils, int rCoils) throws UnknownHostException {
-        this.port = port;
-        this.unitId = unitId;
-        this.address = address;
-        this.wCoils = wCoils;
-        this.rCoils = rCoils;
-        this.wRegisters = 0;
-        this.rRegisters = 0;
         
         connection = new TCPMasterConnection(address);
         connection.setPort(port);
@@ -194,7 +173,7 @@ public class EasyModbusMaster {
         }
     }
     
-    public void writeRegisrer(int index, int value) throws Exception
+    public void writeRegister(int index, int value) throws Exception
     {
         try {
             if(index<0)
@@ -265,8 +244,6 @@ public class EasyModbusMaster {
             System.out.println(master.getString(0, 10));
             master.writeString(0, 10, "Test");
             
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(EasyModbusMaster.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(EasyModbusMaster.class.getName()).log(Level.SEVERE, null, ex);
         }

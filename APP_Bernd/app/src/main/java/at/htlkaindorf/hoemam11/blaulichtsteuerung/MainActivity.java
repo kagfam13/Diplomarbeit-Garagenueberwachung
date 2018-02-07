@@ -26,16 +26,11 @@ import android.transition.TransitionManager;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.net.InetAddress;
@@ -43,7 +38,7 @@ import java.net.UnknownHostException;
 
 import at.htlkaindorf.hoemam11.blaulichtsteuerung.GateControlling.GateControllingActivity;
 
-public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener //implements AdapterView.OnItemSelectedListener
+public class MainActivity extends AppCompatActivity //implements AdapterView.OnItemSelectedListener
 {
     // String-Konstanten für onSaveInstanceState
     private static final String USER_ON_SIMULATIONS_PAGE = "simulations";
@@ -162,8 +157,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         }
         else if (view.getId() == R.id.nicht_belegt)
         {
-            byte[] address = Base64.decode(sharedPreferences.getString(Constants.MODBUSADDRESS, ""), Base64.DEFAULT);
-            if (address != null) {
+            String address = sharedPreferences.getString(Constants.MODBUSADDRESS, "");
+            if (address != "") {
                 Intent intent = new Intent(this, GateControllingActivity.class);
                 intent.putExtra("ADDRESS", address);
                 startActivity(intent);
@@ -475,19 +470,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                             System.out.println("*** Falsche Adresse");
                         }
                         else {
-                            System.out.println(inetAddress.toString());
-                            sharedPreferences.edit().putString(Constants.MODBUSADDRESS, Base64.encodeToString(inetAddress.getAddress(), Base64.DEFAULT)).apply();
+                            sharedPreferences.edit().putString(Constants.MODBUSADDRESS, String.valueOf(input.getText())).apply();
                         }
                     }
                 }.execute();
-
-                /*try
-                {
-                    address = InetAddress.getByName(input.getText().toString());
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                }*/
-                // Toast.makeText(getBaseContext(), address.toString(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -504,37 +490,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     {
         Toast toast = Toast.makeText(this, getString(resId), Toast.LENGTH_LONG);
         toast.show();
-    }
-
-    @Override
-    public boolean onDown(MotionEvent motionEvent) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent motionEvent) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        Toast.makeText(this, (int) v, Toast.LENGTH_LONG).show();
-        return false;
     }
 
     public class IncomingSms extends BroadcastReceiver

@@ -29,6 +29,4 @@ public class GetCoilsResp {
     public String toString() {
         return Arrays.toString(b);
     }
-    
-    
 }
