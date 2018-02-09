@@ -28,16 +28,86 @@ public class AndroidSimSlave extends javax.swing.JFrame
     private class motorWorker extends SwingWorker<Object, Object>
     {
         JPanel panel;
+        boolean auf;
 
-        public motorWorker(JPanel panel) {
+        public motorWorker(JPanel panel, int motor) {
             this.panel = panel;
+            if(motor%2 == 0) {
+              this.auf = true;
+            }
+            else {
+              this.auf = false;
+            }
         }
         
         @Override
         protected Object doInBackground() throws Exception {
             panel.setBackground(Color.green);
+            if(panel == pta1) {
+              if(auf) {
+                slave.setCoil(15, false);
+              } else {
+                slave.setCoil(16, false);
+              }
+            } else if(panel == pta2) {
+              if(auf) {
+                slave.setCoil(17, false);
+              } else {
+                slave.setCoil(18, false);
+              }
+            } else if(panel == pta3) {
+              if(auf) {
+                slave.setCoil(19, false);
+              } else {
+                slave.setCoil(20, false);
+              }
+            } else if(panel == pta4) {
+              if(auf) {
+                slave.setCoil(21, false);
+              } else {
+                slave.setCoil(22, false);
+              }
+            } else if(panel == pta5) {
+              if(auf) {
+                slave.setCoil(23, false);
+              } else {
+                slave.setCoil(24, false);
+              }
+            }
             Thread.sleep(5000);
             panel.setBackground(Color.red);
+            
+            if(panel == pta1) {
+              if(auf) {
+                slave.setCoil(16, true);
+              } else {
+                slave.setCoil(15, true);
+              }
+            } else if(panel == pta2) {
+              if(auf) {
+                slave.setCoil(18, true);
+              } else {
+                slave.setCoil(17, true);
+              }
+            } else if(panel == pta3) {
+              if(auf) {
+                slave.setCoil(20, true);
+              } else {
+                slave.setCoil(19, true);
+              }
+            } else if(panel == pta4) {
+              if(auf) {
+                slave.setCoil(22, true);
+              } else {
+                slave.setCoil(21, true);
+              }
+            } else if(panel == pta5) {
+              if(auf) {
+                slave.setCoil(24, true);
+              } else {
+                slave.setCoil(23, true);
+              }
+            }
             return 0;
         }
     }
@@ -67,7 +137,7 @@ public class AndroidSimSlave extends javax.swing.JFrame
             if(slave.getCoil(motor))
             {
                 slave.setCoil(motor, false);
-                new motorWorker(panel).execute();
+                new motorWorker(panel, motor).execute();
             }
         }
     }
