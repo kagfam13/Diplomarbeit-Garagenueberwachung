@@ -5,7 +5,6 @@
  */
 package at.htlkaindorf.hoemam11.blaulichtsteuerung.GateControlling.easyModbus;
 
-import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.io.ModbusTCPTransaction;
 import net.wimpi.modbus.msg.ModbusRequest;
 import net.wimpi.modbus.msg.ReadCoilsRequest;
@@ -19,234 +18,222 @@ import net.wimpi.modbus.procimg.SimpleRegister;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
- * @author Fabian
+ * @author Kager Fabian
  */
-public class EasyModbusMaster {
-    private final static String ERRORMESSAGE = "*** MODBUS ERROR: ";
-    private final int unitId;
-    private final int wCoils, rCoils, wRegisters, rRegisters;
-    private final TCPMasterConnection connection;
+public class EasyModbusMaster
+{
 
-    public EasyModbusMaster(int port, int unitId, InetAddress address, int wCoils, int rCoils, int wRegisters, int rRegisters) throws UnknownHostException {
-        this.unitId = unitId;
-        this.wCoils = wCoils;
-        this.rCoils = rCoils;
-        this.wRegisters = wRegisters;
-        this.rRegisters = rRegisters;
-        
-        connection = new TCPMasterConnection(address);
-        connection.setPort(port);
-        connection.setTimeout(3000);
-    }
-    
-    public int getRegister(int index) throws Exception
+  private final int unitId;
+  private final int wCoils, rCoils, wRegisters, rRegisters;
+  private final TCPMasterConnection connection;
+
+
+  public EasyModbusMaster (int port, int unitId, InetAddress address, int wCoils, int rCoils, int wRegisters, int rRegisters)
+          throws UnknownHostException
+  {
+    this.unitId = unitId;
+    this.wCoils = wCoils;
+    this.rCoils = rCoils;
+    this.wRegisters = wRegisters;
+    this.rRegisters = rRegisters;
+
+    connection = new TCPMasterConnection(address);
+    connection.setPort(port);
+    connection.setTimeout(3000);
+  }
+
+
+  public int getRegister (int index) throws Exception
+  {
+    while (connection.isConnected());
+    connection.connect();
+    ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
+    ModbusRequest request = new ReadMultipleRegistersRequest(index, 1);
+    request.setUnitID(unitId);
+    transaction.setRequest(request);
+    transaction.execute();
+    connection.close();
+    transaction.getResponse();
+    String hexMessage = transaction.getResponse().getHexMessage();
+    System.out.println(hexMessage);
+    hexMessage = hexMessage.replaceAll(" ", "");
+
+    hexMessage = hexMessage.substring(18); // Extracted the Data
+
+    System.out.println(hexMessage);
+    int regValue = Integer.parseInt(hexMessage, 16);
+    System.out.println(regValue);
+    return regValue;
+  }
+
+
+  public int[] getMultipleRegisters (int start, int cnt) throws Exception
+  {
+    while (connection.isConnected());
+    connection.connect();
+    ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
+    ModbusRequest request = new ReadMultipleRegistersRequest(start, cnt);
+    request.setUnitID(unitId);
+    transaction.setRequest(request);
+    transaction.execute();
+    connection.close();
+    String hexMessage = transaction.getResponse().getHexMessage();
+    hexMessage = hexMessage.replaceAll(" ", "");
+
+    hexMessage = hexMessage.substring(18); // Extracted the Data
+    int[] val = new int[cnt];
+    for (int i = 0; i < cnt; i++)
     {
-        try {
-            while(connection.isConnected());
-            connection.connect();
-            ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-            ModbusRequest request = new ReadMultipleRegistersRequest(index, 1);
-            request.setUnitID(unitId);
-            transaction.setRequest(request);
-            transaction.execute();
-            connection.close();
-            transaction.getResponse();
-            String hexMessage = transaction.getResponse().getHexMessage();
-            System.out.println(hexMessage);
-            hexMessage = hexMessage.replaceAll(" ", "");
-
-            hexMessage = hexMessage.substring(18); // Extracted the Data
-
-            System.out.println(hexMessage);
-            int regValue = Integer.parseInt(hexMessage, 16);
-            System.out.println(regValue);
-            return regValue;
-        } catch (Exception e) {
-            throw(new Exception(ERRORMESSAGE + e.getMessage()));
-        }
+      int hB = Integer.parseInt(hexMessage.substring(i * 4, i * 4 + 2), 16);
+      int lB = Integer.parseInt(hexMessage.substring(i * 4 + 2, i * 4 + 4), 16);
+      val[i] = (hB << 8) | (lB);
     }
+    return val;
+  }
 
-    public int[] getMultipleRegisters(int start, int cnt) throws Exception {
-        try {
-            while(connection.isConnected());
-            connection.connect();
-            ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-            ModbusRequest request = new ReadMultipleRegistersRequest(start, cnt);
-            request.setUnitID(unitId);
-            transaction.setRequest(request);
-            transaction.execute();
-            connection.close();
-            String hexMessage = transaction.getResponse().getHexMessage();
-            hexMessage = hexMessage.replaceAll(" ", "");
 
-            hexMessage = hexMessage.substring(18); // Extracted the Data
-            int[] val = new int[cnt];
-            for(int i = 0; i<cnt; i++) {
-                int hB = Integer.parseInt(hexMessage.substring(i*4+0, i*4+2), 16);
-                int lB = Integer.parseInt(hexMessage.substring(i*4+2, i*4+4), 16);
-                val[i] = (hB<<8) | (lB);
-            }
-            return val;
-        } catch (Exception e) {
-            throw(new Exception(ERRORMESSAGE + e.getMessage()));
-        }
+  public String getString (int start, int maxLengthInRegs) throws Exception
+  {
+    final int[] reg = getMultipleRegisters(start, maxLengthInRegs);
+    final StringBuilder sb = new StringBuilder();
+    for (int aReg : reg) {
+      final int hi = (aReg >> 8) & 0xFF,
+              lo = aReg & 0xFF;
+      if (hi != 0) {
+        sb.append((char) hi);
+      } else {
+        break;
+      }
+      if (lo != 0) {
+        sb.append((char) lo);
+      } else {
+        break;
+      }
     }
-    
-    public String getString(int start, int maxLengthInRegs) throws Exception
+    return sb.toString();
+  }
+
+
+  public Boolean[] getCoils () throws Exception
+  {
+    while (connection.isConnected());
+    connection.connect();
+
+    ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
+
+    ModbusRequest request = new ReadCoilsRequest(0, rCoils + wCoils);
+    request.setUnitID(unitId);
+    transaction.setRequest(request);
+    transaction.execute();
+    connection.close();
+    String hexMessage = transaction.getResponse().getHexMessage();
+    System.out.println(hexMessage);
+    hexMessage = hexMessage.replaceAll(" ", "");
+
+    hexMessage = hexMessage.substring(18); // Extracted the Data
+    System.out.println(hexMessage);
+    String orderedHex = "";
+    while (!hexMessage.isEmpty())
     {
-        final int[] reg = getMultipleRegisters(start, maxLengthInRegs);
-        final StringBuilder sb = new StringBuilder();
-        for (int i=0;i<reg.length;i++) 
-        {
-            final int
-              hi = (reg[i]>>8) & 0xFF,
-              lo = reg[i] & 0xFF;
-            if (hi!=0)
-                sb.append((char)hi);
-            else
-              break;
-            if (lo!=0)
-                sb.append((char)lo);
-            else
-                break;
-        }
-        return sb.toString();
+      orderedHex = String.format("%s%s%s", hexMessage.charAt(0), hexMessage.charAt(1), orderedHex);
+
+      hexMessage = hexMessage.substring(2);
     }
-    
-    public Boolean[] getCoils() throws Exception
+    System.out.println(orderedHex);
+    return new HexToBin(orderedHex, rCoils + wCoils).getCoils();
+  }
+
+
+  public void writeCoil (int id, boolean state) throws Exception
+  {
+    if (id < 0)
     {
-        try {
-            while(connection.isConnected());
-            connection.connect();
-            
-            ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-            
-            ModbusRequest request = new ReadCoilsRequest(0,rCoils+wCoils);
-            request.setUnitID(unitId);
-            transaction.setRequest(request);
-            transaction.execute();
-            connection.close();
-            String hexMessage = transaction.getResponse().getHexMessage();
-            System.out.println(hexMessage);
-            hexMessage = hexMessage.replaceAll(" ", "");
-            
-            hexMessage = hexMessage.substring(18); // Extracted the Data
-            System.out.println(hexMessage);
-            String orderedHex = "";
-            while(!hexMessage.isEmpty())
-            {
-                orderedHex = String.format("%s%s%s",hexMessage.charAt(0),hexMessage.charAt(1),orderedHex);
-
-                hexMessage = hexMessage.substring(2);
-            }
-            System.out.println(orderedHex);
-            return new HexToBin(orderedHex, rCoils+wCoils).getCoils();
-        } catch (Exception e) {
-            throw(new Exception(ERRORMESSAGE + e.getMessage()));
-        }
+      throw new Exception("Index des zu beschreibenden Coils ist kleiner 0.");
     }
-    
-    public void writeCoil(int id, boolean state) throws Exception
+    if (id >= wCoils)
     {
-        try {
-            if(id<0)
-                throw new Exception(ERRORMESSAGE + "Index des zu beschreibenden Coils ist kleiner 0.");
-            if(id>=wCoils)
-                throw new Exception(ERRORMESSAGE + "Index des zu beschreibenden Coils ist zu groß.");
-            while(connection.isConnected());
-            connection.connect();
-
-            ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-
-            ModbusRequest request = new WriteCoilRequest(id, state);
-            request.setUnitID(unitId);
-            transaction.setRequest(request);
-            transaction.execute();
-            connection.close();
-        } catch (Exception e) {
-            throw(new Exception(ERRORMESSAGE + e.getMessage()));
-        }
+      throw new Exception("Index des zu beschreibenden Coils ist zu groß.");
     }
-    
-    public void writeRegister(int index, int value) throws Exception
+    while (connection.isConnected());
+    connection.connect();
+
+    ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
+
+    ModbusRequest request = new WriteCoilRequest(id, state);
+    request.setUnitID(unitId);
+    transaction.setRequest(request);
+    transaction.execute();
+    connection.close();
+  }
+
+
+  public void writeRegister (int index, int value) throws Exception
+  {
+    if (index < 0)
     {
-        try {
-            if(index<0)
-                throw new Exception("Index des zu beschreibenden Registers ist kleiner 0.");
-            if(index>=wRegisters)
-                throw new Exception("Index des zu beschreibenden Registers ist zu groß.");
-            while(connection.isConnected());
-            connection.connect();
-
-            ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-
-            ModbusRequest request = new WriteSingleRegisterRequest(index, new SimpleRegister(value));
-            request.setUnitID(unitId);
-            transaction.setRequest(request);
-            transaction.execute();
-            connection.close();
-        } catch (Exception e) {
-            throw(new Exception(ERRORMESSAGE + e.getMessage()));
-        }
+      throw new Exception("Index des zu beschreibenden Registers ist kleiner 0.");
     }
-    
-    public void writeMultipleRegisters(int start, int... value) throws Exception  {
-        try {
-            if(start<0)
-                throw new Exception("Index des zu beschreibenden Registers ist kleiner 0.");
-            if(start+value.length>=wRegisters)
-                throw new Exception("Index des zu beschreibenden Registers ist zu groß.");
-            while(connection.isConnected());
-            connection.connect();
+    if (index >= wRegisters)
+    {
+      throw new Exception("Index des zu beschreibenden Registers ist zu groß.");
+    }
+    while (connection.isConnected());
+    connection.connect();
 
-            ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
+    ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
 
-            Register[] regs = new Register[value.length];
-            for(int i=0;i<value.length;i++)
-            {
-                regs[i] = new SimpleRegister(value[i]);
-            }
-            ModbusRequest request = new WriteMultipleRegistersRequest(start, regs);
-            request.setUnitID(unitId);
-            transaction.setRequest(request);
-            transaction.execute();
-            connection.close();
-        } catch (Exception e) {
-            throw(new Exception(ERRORMESSAGE + e.getMessage()));
-        }
+    ModbusRequest request = new WriteSingleRegisterRequest(index, new SimpleRegister(value));
+    request.setUnitID(unitId);
+    transaction.setRequest(request);
+    transaction.execute();
+    connection.close();
+  }
+
+
+  public void writeMultipleRegisters (int start, int... value) throws Exception
+  {
+    if (start < 0)
+    {
+      throw new Exception("Index des zu beschreibenden Registers ist kleiner 0.");
     }
-    
-    public void writeString(int start, int maxLengthInRegs, String text) throws Exception {
-        final byte[] b = text.getBytes("utf8");
-        final int[] register = new int[maxLengthInRegs];
-        for (int i=0;i<maxLengthInRegs;i++)
-        {
-            final int
-              indexH = i*2,
-              indexL = i*2+1;
-            final byte
-              bH = indexH<b.length ? b[indexH] : (byte)0,
-              bL = indexL<b.length ? b[indexL] : (byte)0;
-            register[i] = (bH<<8) | bL;
-        }
-        writeMultipleRegisters(start, register);
+    if (start + value.length >= wRegisters)
+    {
+      throw new Exception("Index des zu beschreibenden Registers ist zu groß.");
     }
-    
-    
-    public static void main(String[] args) {
-        try {
-            EasyModbusMaster master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.0.0.20"), 0, 0, 30, 0);
-            System.out.println(master.getString(0, 10));
-            master.writeString(0, 10, "Test");
-            
-        } catch (Exception ex) {
-            Logger.getLogger(EasyModbusMaster.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    while (connection.isConnected());
+    connection.connect();
+
+    ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
+
+    Register[] regs = new Register[value.length];
+    for (int i = 0; i < value.length; i++)
+    {
+      regs[i] = new SimpleRegister(value[i]);
     }
-    
+    ModbusRequest request = new WriteMultipleRegistersRequest(start, regs);
+    request.setUnitID(unitId);
+    transaction.setRequest(request);
+    transaction.execute();
+    connection.close();
+  }
+
+
+  public void writeString (int start, int maxLengthInRegs, String text) throws Exception
+  {
+    final byte[] b = text.getBytes("utf8");
+    final int[] register = new int[maxLengthInRegs];
+    for (int i = 0; i < maxLengthInRegs; i++)
+    {
+      final int indexH = i * 2,
+              indexL = i * 2 + 1;
+      final byte bH = indexH < b.length ? b[indexH] : (byte) 0,
+              bL = indexL < b.length ? b[indexL] : (byte) 0;
+      register[i] = (bH << 8) | bL;
+    }
+    writeMultipleRegisters(start, register);
+  }
 }

@@ -1,5 +1,6 @@
 package at.htlkaindorf.hoemam11.blaulichtsteuerung.GateControlling;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -20,7 +21,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import at.htlkaindorf.hoemam11.blaulichtsteuerung.GateControlling.easyModbus.EasyModbusMaster;
-import at.htlkaindorf.hoemam11.blaulichtsteuerung.GateControlling.easyModbus.GetCoilsResp;
 import at.htlkaindorf.hoemam11.blaulichtsteuerung.R;
 
 public class GateControllingActivity extends AppCompatActivity {
@@ -30,12 +30,12 @@ public class GateControllingActivity extends AppCompatActivity {
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     private ScheduledFuture future;
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gate_controlling);
         Intent intent = getIntent();
-            InetAddress address;
             final String ipExtra = intent.getStringExtra("ADDRESS");
             new AsyncTask<Void, Void, InetAddress>() {
 
@@ -55,11 +55,10 @@ public class GateControllingActivity extends AppCompatActivity {
                         System.out.println("*** Falsche Adresse");
                     }
                     else {
-                        // Toast.makeText(this,inetAddress,Toast.LENGTH_LONG).show();
                         try {
                             master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, inetAddress, 10, 15, 0, 1);
-                        } catch (UnknownHostException e) {
-                            e.printStackTrace();
+                        } catch (UnknownHostException ex) {
+                            ex.printStackTrace();
                             finish();
                         }
                     }
@@ -130,9 +129,9 @@ public class GateControllingActivity extends AppCompatActivity {
                 master.writeCoil(coil, true);
                 return 0;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                e.printStackTrace();
+                ex.printStackTrace();
             }
 
             return null;
@@ -171,11 +170,8 @@ public class GateControllingActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            System.out.println("***** START");
             try {
-                final GetCoilsResp resp = new GetCoilsResp(master.getCoils());
-                System.out.println("***** "+resp.toString());
-
+                final Boolean[] coils = master.getCoils();
                 auto1.post(
                         new Runnable()
                         {
@@ -183,19 +179,19 @@ public class GateControllingActivity extends AppCompatActivity {
                             public void run()
                             {
                                 try {
-                                    System.out.println("***" + resp.toString());
-                                    setCar(auto1, resp.getCoil(10));
-                                    setCar(auto2, resp.getCoil(11));
-                                    setCar(auto3, resp.getCoil(12));
-                                    setCar(auto4, resp.getCoil(13));
-                                    setCar(auto5, resp.getCoil(14));
+                                    System.out.println("***" + coils.toString());
+                                    setCar(auto1, coils[10]);
+                                    setCar(auto2, coils[11]);
+                                    setCar(auto3, coils[12]);
+                                    setCar(auto4, coils[13]);
+                                    setCar(auto5, coils[14]);
 
-                                    setTor(tor1, resp.getCoil(15), resp.getCoil(16));
-                                    setTor(tor2, resp.getCoil(17), resp.getCoil(18));
+                                    setTor(tor1, coils[15], coils[16]);
+                                    setTor(tor2, coils[17], coils[18]);
 
-                                    setTor(tor3, resp.getCoil(19), resp.getCoil(20));
-                                    setTor(tor4, resp.getCoil(21), resp.getCoil(22));
-                                    setTor(tor5, resp.getCoil(23), resp.getCoil(24));
+                                    setTor(tor3, coils[19], coils[20]);
+                                    setTor(tor4, coils[21], coils[22]);
+                                    setTor(tor5, coils[23], coils[24]);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -217,7 +213,7 @@ public class GateControllingActivity extends AppCompatActivity {
             }
             catch (Exception ex)
             {
-                System.out.println("***** "+ex.toString());
+                ex.printStackTrace();
             }
         }
     }

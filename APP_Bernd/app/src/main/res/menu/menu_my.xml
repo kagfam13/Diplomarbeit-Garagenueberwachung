@@ -31,13 +31,13 @@
         android:onClick="changeMail"/>
 
     <item
+        android:id="@+id/ip-mi"
+        android:onClick="onIpMi"
+        android:title="Host Addresse ändern" />
+    <item
         android:id="@+id/about"
         android:title="@string/about"
         app:showAsAction="never"
         android:onClick="showAboutDialog"/>
-    <item
-        android:id="@+id/ip-mi"
-        android:onClick="onIpMi"
-        android:title="Ip-Einstellen" />
 
 </menu>
