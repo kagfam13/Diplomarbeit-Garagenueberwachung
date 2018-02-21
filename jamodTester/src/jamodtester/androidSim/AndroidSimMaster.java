@@ -6,7 +6,6 @@
 package jamodtester.androidSim;
 
 import jamodtester.easyModbus.EasyModbusMaster;
-import jamodtester.easyModbus.GetCoilsResp;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -68,19 +67,18 @@ public class AndroidSimMaster extends javax.swing.JFrame {
         protected Object doInBackground() throws Exception {
             while(true)
             {
-                GetCoilsResp resp = new GetCoilsResp(master.getCoils());
-                System.out.println(resp.toString());
-                setCar(car1, resp.getCoil(10));
-                setCar(car2, resp.getCoil(11));
-                setCar(car3, resp.getCoil(12));
-                setCar(car4, resp.getCoil(13));
-                setCar(car5, resp.getCoil(14));
+                Boolean[] coils = master.getCoils();
+                setCar(car1, coils[10]);
+                setCar(car2, coils[11]);
+                setCar(car3, coils[12]);
+                setCar(car4, coils[13]);
+                setCar(car5, coils[14]);
                 
-                setTor(tor1, resp.getCoil(15), resp.getCoil(16));
-                setTor(tor2, resp.getCoil(17), resp.getCoil(18));
-                setTor(tor3, resp.getCoil(19), resp.getCoil(20));
-                setTor(tor4, resp.getCoil(21), resp.getCoil(22));
-                setTor(tor5, resp.getCoil(23), resp.getCoil(24));
+                setTor(tor1, coils[15], coils[16]);
+                setTor(tor2, coils[17], coils[18]);
+                setTor(tor3, coils[19], coils[20]);
+                setTor(tor4, coils[21], coils[22]);
+                setTor(tor5, coils[23], coils[24]);
                 
                 int zeit = master.getRegister(0);
                 

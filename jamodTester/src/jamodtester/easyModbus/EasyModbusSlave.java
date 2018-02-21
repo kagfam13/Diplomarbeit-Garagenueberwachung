@@ -164,15 +164,11 @@ public class EasyModbusSlave {
     }
     
     public static void main(String[] args) {
-        EasyModbusSlave slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID, 0, 0, 30, 0);
+        EasyModbusSlave slave = new EasyModbusSlave(4567, Modbus.DEFAULT_UNIT_ID, 4, 0, 0, 0);
         slave.start();
         System.out.println("Slave gestartet");
-        try {
-            slave.setString(0, 10, "Hallo");
-            System.out.println(slave.getString(0, 10));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        
+        
         
         try {
             System.in.read();

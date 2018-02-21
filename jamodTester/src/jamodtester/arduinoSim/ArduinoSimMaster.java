@@ -8,7 +8,6 @@ package jamodtester.arduinoSim;
 
 
 import jamodtester.easyModbus.EasyModbusMaster;
-import jamodtester.easyModbus.GetCoilsResp;
 import java.net.*;
 import java.util.logging.*;
 import javax.swing.*;
@@ -31,7 +30,7 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
         initComponents();
         try {
             // master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getByName("10.200.112.70"), 2, 3);
-            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 2, 3);
+            master = new EasyModbusMaster(Modbus.DEFAULT_PORT, 15, InetAddress.getLocalHost(), 2, 3, 0, 0);
             new manageLabels().execute();
              
          } catch (UnknownHostException ex) {
@@ -48,10 +47,9 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
             while(true)
             {
                 System.out.println("*********************************");
-                GetCoilsResp resp = new GetCoilsResp(master.getCoils());
-                System.out.println(resp.toString());
+                Boolean[] coils = master.getCoils();
              
-                if(resp.getCoil(2))
+                if(coils[2])
                 {
                   lCar.setText("Auto da");
                 }
@@ -59,11 +57,11 @@ public class ArduinoSimMaster extends javax.swing.JFrame {
                 {
                   lCar.setText("Auto nix da");
                 }
-                if(resp.getCoil(4))// Tor offen
+                if(coils[4])// Tor offen
                 {
                   lTor.setText("Tor offen");
                 }
-                else if(resp.getCoil(3)) // Tor geschlossen
+                else if(coils[3]) // Tor geschlossen
                 {
                   lTor.setText("Tor geschlossen");
                 }

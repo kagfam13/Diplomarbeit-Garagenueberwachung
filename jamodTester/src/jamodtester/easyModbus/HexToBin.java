@@ -5,10 +5,6 @@
  */
 package jamodtester.easyModbus;
 
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * 
  * @author Fabian
@@ -52,12 +48,5 @@ public class HexToBin {
 
     public Boolean[] getCoils() {
         return coils;
-    }
-    
-    
-    
-    public static void main(String[] args) {
-        GetCoilsResp coilsResp = new GetCoilsResp(new HexToBin("0f0",12).getCoils());
-        System.out.println(coilsResp.toString());
     }
 }

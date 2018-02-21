@@ -46,7 +46,7 @@ public class WRMaster extends javax.swing.JFrame {
         protected Object doInBackground() {
             try {
                 // master.writeRegisrer(0, jSlider1.getValue());
-                master.writeRegisrer(0, 1005);
+                master.writeRegister(0, 1005);
             } catch (Exception ex) {
                 Logger.getLogger(WRMaster.class.getName()).log(Level.SEVERE, null, ex);
             }
