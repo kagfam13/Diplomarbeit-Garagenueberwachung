@@ -165,7 +165,6 @@ public class EasyModbusSlave {
     
     public static void main(String[] args) {
         EasyModbusSlave slave = new EasyModbusSlave(4567, Modbus.DEFAULT_UNIT_ID, 4, 0, 0, 0);
-        slave.start();
         System.out.println("Slave gestartet");
         
         

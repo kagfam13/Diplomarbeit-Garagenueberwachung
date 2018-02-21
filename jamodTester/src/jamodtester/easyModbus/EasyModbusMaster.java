@@ -121,15 +121,44 @@ public class EasyModbusMaster
     return sb.toString();
   }
 
-
   public Boolean[] getCoils () throws Exception
+  {
+    return getMultipleCoils(0, rCoils+wCoils);
+//    while (connection.isConnected());
+//    connection.connect();
+//
+//    ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
+//
+//    ModbusRequest request = new ReadCoilsRequest(0, rCoils + wCoils);
+//    request.setUnitID(unitId);
+//    transaction.setRequest(request);
+//    transaction.execute();
+//    connection.close();
+//    String hexMessage = transaction.getResponse().getHexMessage();
+//    System.out.println(hexMessage);
+//    hexMessage = hexMessage.replaceAll(" ", "");
+//
+//    hexMessage = hexMessage.substring(18); // Extracted the Data
+//    System.out.println(hexMessage);
+//    String orderedHex = "";
+//    while (!hexMessage.isEmpty())
+//    {
+//      orderedHex = String.format("%s%s%s", hexMessage.charAt(0), hexMessage.charAt(1), orderedHex);
+//
+//      hexMessage = hexMessage.substring(2);
+//    }
+//    System.out.println(orderedHex);
+//    return new HexToBin(orderedHex, rCoils + wCoils).getCoils();
+  }
+  
+  public Boolean[] getMultipleCoils (int start, int cnt) throws Exception
   {
     while (connection.isConnected());
     connection.connect();
 
     ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
 
-    ModbusRequest request = new ReadCoilsRequest(0, rCoils + wCoils);
+    ModbusRequest request = new ReadCoilsRequest(start, cnt);
     request.setUnitID(unitId);
     transaction.setRequest(request);
     transaction.execute();
@@ -147,7 +176,6 @@ public class EasyModbusMaster
 
       hexMessage = hexMessage.substring(2);
     }
-    System.out.println(orderedHex);
     return new HexToBin(orderedHex, rCoils + wCoils).getCoils();
   }
 
@@ -245,10 +273,10 @@ public class EasyModbusMaster
   {
     try
     {
-      EasyModbusMaster master = new EasyModbusMaster(4567, Modbus.DEFAULT_UNIT_ID, InetAddress.getByName("localhost"), 4, 0, 0, 0);
+      EasyModbusMaster master = new EasyModbusMaster(4567, Modbus.DEFAULT_UNIT_ID, InetAddress.getByName("10.0.0.15"), 4, 0, 0, 0);
       
       master.writeCoil(0, true);
-      System.out.println(Arrays.toString(master.getCoils()));
+      System.out.println(Arrays.toString(master.getMultipleCoils(0, 5)));
       
     }
     catch (Exception ex)
