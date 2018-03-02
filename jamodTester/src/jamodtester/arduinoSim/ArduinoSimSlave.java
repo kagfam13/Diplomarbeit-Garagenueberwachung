@@ -7,6 +7,7 @@ package jamodtester.arduinoSim;
 
 import jamodtester.writeCoils.WCSlave;
 import java.awt.Color;
+import java.net.*;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 import net.wimpi.modbus.Modbus;
@@ -117,6 +118,7 @@ public class ArduinoSimSlave extends javax.swing.JFrame {
             if (Modbus.debug)
                     System.out.println("Listening...");
             listener = new ModbusTCPListener(3);
+            
             listener.setPort(port);
 
             System.out.println("Listening to "+listener+" on port "+port);

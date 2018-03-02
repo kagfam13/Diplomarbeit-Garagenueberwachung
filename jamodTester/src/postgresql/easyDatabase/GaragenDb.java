@@ -28,9 +28,8 @@ public class GaragenDb extends Database
   }
   private GaragenDb()
   {
-    super("jdbc:postgresql://localhost:5432/garagenueberwachung", "pi","12345");
+    super("jdbc:postgresql://localhost:5432/garagenueberwachung", "remote","1234");  // "pi", "12345" || "remote", "1234"
   }
-  
   public Map<Integer,Ereignistyp> getEreignistypen() throws Exception
   {
     try (GaragenDb db = GaragenDb.getInstance())
@@ -268,7 +267,7 @@ public class GaragenDb extends Database
       
       
 //    Ein Ereignis schreiben 
-        final GaragenDb db = GaragenDb.getInstance();
+//        final GaragenDb db = GaragenDb.getInstance();
 //        int ereignisID = db.getLastId();
 //        final Map<Integer,Ereignis> ereignisse = db.getEreignisse();
 //        final Ereignistyp typ = db.getEreignistyp(0); //TODO GET VALUE FROM COILS
@@ -289,7 +288,7 @@ public class GaragenDb extends Database
 //        {
 //          System.out.println("gaxi");
 //        }
-      db.HandleDatabase(0, 2);
+//      db.HandleDatabase(0, 2);
       //db.schreibeEreignis(ereignis);
     }
     catch (Exception e)

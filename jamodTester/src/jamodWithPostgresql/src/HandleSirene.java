@@ -18,7 +18,6 @@ public class HandleSirene
 {
   private final int sirnenobjektID;
   final GaragenDb db = GaragenDb.getInstance();
-  public long secondsBetweenSireneandFirstRannedautCar;
   public boolean newEreignis = MainProgramm.newCarEreignis;
   private long totalSec;
 

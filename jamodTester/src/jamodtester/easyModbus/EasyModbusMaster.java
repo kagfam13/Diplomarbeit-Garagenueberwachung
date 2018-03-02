@@ -108,7 +108,8 @@ public class EasyModbusMaster {
             System.out.println(orderedHex);
             return new HexToBin(orderedHex, rCoils+wCoils).getCoils();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Lesefehler/Verbindungsfehler bei " + connection.getAddress().toString());
         }
         return null;
     }
