@@ -34,17 +34,6 @@ public class EasyModbusSlave {
         start();
     }
     
-    public EasyModbusSlave(int port, int unitId, int wCoils, int rCoils) {
-        this.port = port;
-        this.unitId = unitId;
-        this.wCoils = wCoils;
-        this.rCoils = rCoils;
-        this.wRegisters = 0;
-        this.rRegisters = 0;
-        
-        start();
-    }
-    
     private void start()
     {
         spi = new SimpleProcessImage();
@@ -76,10 +65,6 @@ public class EasyModbusSlave {
         listener.start();
     }
     
-    public int getRegisterCount()
-    {
-        return ModbusCoupler.getReference().getProcessImage().getRegisterCount();
-    }
     public void setRegister(int index,int value)
     {
         spi.setRegister(index, new SimpleRegister(value));
@@ -147,14 +132,14 @@ public class EasyModbusSlave {
     public boolean getCoil(int id) throws Exception
     {
         if(id >= wCoils + rCoils || id < 0)
-            throw new Exception("Geht ned");
+            throw new Exception("bad id");
         return ModbusCoupler.getReference().getProcessImage().getDigitalOut(id).isSet();
     }
     
     public void setCoil(int id,boolean state) throws Exception
     {
         if(id >= wCoils + rCoils || id < 0)
-            throw new Exception("Geht ned");
+            throw new Exception( "bad id");
         spi.setDigitalOut(id, new SimpleDigitalOut(state));
     }
     

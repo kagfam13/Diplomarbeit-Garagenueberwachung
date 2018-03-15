@@ -18,7 +18,7 @@
 
                     <ImageView
                         style="@style/ButtonIconStyle"
-                        android:src="@drawable/ic_nicht_belegt"/>
+                        android:src="@drawable/ic_garagesurveilance"/>
 
                     <TextView
                         android:text="@string/button_gate_controlling"
