@@ -164,7 +164,7 @@ public class GateControllingActivity extends AppCompatActivity {
 
         private void setTime(TextView textView,int min,int sec)
         {
-            textView.setText( + min + " min " + sec + " sec");
+            textView.setText( "Reaktionszeit: "+ min + " min " + sec + " sec");
         }
 
 

@@ -2,107 +2,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:orientation="horizontal"
     android:layout_height="match_parent"
- tools:context=".MainActivity"
-              android:baselineAligned="false">
+    tools:context=".MainActivity"
+    android:baselineAligned="false">
 
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-                <RelativeLayout
-                    style="@style/ButtonLayoutStyle"
-                    android:background="@drawable/gradient_nicht_belegt"
-                    android:id="@+id/nicht_belegt">
+        <RelativeLayout
+            style="@style/ButtonLayoutStyle"
+            android:background="@drawable/gradient_nicht_belegt"
+            android:id="@+id/nicht_belegt">
 
-                    <ImageView
-                        style="@style/ButtonIconStyle"
-                        android:src="@drawable/ic_garage_surveilance"/>
+            <ImageView
+                style="@style/ButtonIconStyle"
+                android:src="@drawable/ic_garagesurveilance"/>
 
-                    <TextView
-                        android:text="@string/button_gate_controlling"
-                        style="@style/ButtonTextStyle"/>
-                </RelativeLayout>
+            <TextView
+                android:text="@string/button_gate_controlling"
+                style="@style/ButtonTextStyle"/>
+        </RelativeLayout>
 
-                <RelativeLayout
-                    style="@style/ButtonLayoutStyle"
-                    android:background="@drawable/gradient_blaulicht_on"
-                    android:id="@+id/blaulicht_on">
+        <RelativeLayout
+            style="@style/ButtonLayoutStyle"
+            android:background="@drawable/gradient_blaulicht_on"
+            android:id="@+id/blaulicht_on">
 
-                    <ImageView
-                        style="@style/ButtonIconStyle"
-                        android:src="@drawable/ic_blaulicht_on"/>
+            <ImageView
+                style="@style/ButtonIconStyle"
+                android:src="@drawable/ic_blaulicht_on"/>
 
-                    <TextView
-                        style="@style/ButtonTextStyle"
-                        android:text="@string/button_blaulicht_on"/>
-                </RelativeLayout>
+            <TextView
+                style="@style/ButtonTextStyle"
+                android:text="@string/button_blaulicht_on"/>
+        </RelativeLayout>
 
-                <RelativeLayout
-                    style="@style/ButtonLayoutStyle"
-                    android:background="@drawable/gradient_simulate_alarm"
-                    android:id="@+id/alarm">
+        <RelativeLayout
+            style="@style/ButtonLayoutStyle"
+            android:background="@drawable/gradient_simulate_alarm"
+            android:id="@+id/alarm">
 
-                    <ImageView
-                        style="@style/ButtonIconStyle"
-                        android:src="@drawable/ic_simulate_alarm"/>
+            <ImageView
+                style="@style/ButtonIconStyle"
+                android:src="@drawable/ic_simulate_alarm"/>
 
-                    <TextView
-                        style="@style/ButtonTextStyle"
-                        android:text="@string/button_simulations"/>
-                </RelativeLayout>
+            <TextView
+                style="@style/ButtonTextStyle"
+                android:text="@string/button_simulations"/>
+        </RelativeLayout>
 
 
     </LinearLayout>
 
-        <LinearLayout
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <RelativeLayout
-                style="@style/ButtonLayoutStyle"
-                android:background="@drawable/gradient_test_connection"
-                android:id="@+id/test_connection">
+        <RelativeLayout
+            style="@style/ButtonLayoutStyle"
+            android:background="@drawable/gradient_test_connection"
+            android:id="@+id/test_connection">
 
-                <ImageView
-                    style="@style/ButtonIconStyle"
-                    android:src="@drawable/ic_test_connection"/>
+            <ImageView
+                style="@style/ButtonIconStyle"
+                android:src="@drawable/ic_test_connection"/>
 
-                <TextView
-                    android:text="@string/button_test_connection"
-                    style="@style/ButtonTextStyle"/>
-            </RelativeLayout>
+            <TextView
+                android:text="@string/button_test_connection"
+                style="@style/ButtonTextStyle"/>
+        </RelativeLayout>
 
-            <RelativeLayout
-                style="@style/ButtonLayoutStyle"
-                android:background="@drawable/gradient_test_all"
-                android:id="@+id/blaulicht_off">
+        <RelativeLayout
+            style="@style/ButtonLayoutStyle"
+            android:background="@drawable/gradient_test_all"
+            android:id="@+id/blaulicht_off">
 
-                <ImageView
-                    style="@style/ButtonIconStyle"
-                    android:src="@drawable/ic_blaulicht_off"/>
+            <ImageView
+                style="@style/ButtonIconStyle"
+                android:src="@drawable/ic_blaulicht_off"/>
 
-                <TextView
-                    style="@style/ButtonTextStyle"
-                    android:text="@string/button_blaulicht_off"/>
-            </RelativeLayout>
+            <TextView
+                style="@style/ButtonTextStyle"
+                android:text="@string/button_blaulicht_off"/>
+        </RelativeLayout>
 
-            <RelativeLayout
-                style="@style/ButtonLayoutStyle"
-                android:background="@drawable/gradient_back"
-                android:id="@+id/button_back">
+        <RelativeLayout
+            style="@style/ButtonLayoutStyle"
+            android:background="@drawable/gradient_back"
+            android:id="@+id/button_back">
 
-                <ImageView
-                    style="@style/ButtonIconStyle"
-                    android:src="@drawable/ic_back"/>
+            <ImageView
+                style="@style/ButtonIconStyle"
+                android:src="@drawable/ic_back"/>
 
-                <TextView
-                    android:text="@string/back"
-                    style="@style/ButtonTextStyle"/>
-            </RelativeLayout>
+            <TextView
+                android:text="@string/back"
+                style="@style/ButtonTextStyle"/>
+        </RelativeLayout>
 
-        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

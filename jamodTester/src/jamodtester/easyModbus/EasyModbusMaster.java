@@ -50,34 +50,49 @@ public class EasyModbusMaster
     connection.setTimeout(3000);
   }
 
-
+  private Boolean[] hexToBinConvert(String data,int length) {
+        Boolean[] coils;
+        String daten = new StringBuffer(data).reverse().toString(); 
+        String coilsss = "";
+        while(!daten.isEmpty())
+        {
+            System.out.println(daten);
+            int intVal = Integer.parseInt(""+daten.charAt(0), 16);
+            String bin = Integer.toBinaryString(intVal);
+            while(bin.length()<4)
+                bin = "0" + bin;
+            daten = daten.substring(1);
+            coilsss += new StringBuffer(bin).reverse().toString();
+            System.out.println(coilsss);
+        }
+        coils = new Boolean[length];
+        int i;
+        for(i=0;i<coilsss.length();i++)
+        {
+            if(i<length)
+                coils[i] = coilsss.charAt(i) == '1';
+        }
+        return coils;
+    }
+  
   public int getRegister (int index) throws Exception
   {
-    while (connection.isConnected());
-    connection.connect();
-    ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-    ModbusRequest request = new ReadMultipleRegistersRequest(index, 1);
-    request.setUnitID(unitId);
-    transaction.setRequest(request);
-    transaction.execute();
-    connection.close();
-    transaction.getResponse();
-    String hexMessage = transaction.getResponse().getHexMessage();
-    System.out.println(hexMessage);
-    hexMessage = hexMessage.replaceAll(" ", "");
-
-    hexMessage = hexMessage.substring(18); // Extracted the Data
-
-    System.out.println(hexMessage);
-    int regValue = Integer.parseInt(hexMessage, 16);
-    System.out.println(regValue);
-    return regValue;
+    // Range check
+    if(index < 0 || index >= wRegisters+rRegisters)
+      throw new Exception("Register out of range");
+    
+    int[] rv = getMultipleRegisters(index, 1);
+    
+    return rv[0];
   }
 
+  public int[] getRegisters() throws Exception
+  {
+    return getMultipleRegisters(0, rRegisters+wRegisters);
+  }
 
   public int[] getMultipleRegisters (int start, int cnt) throws Exception
   {
-    while (connection.isConnected());
     connection.connect();
     ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
     ModbusRequest request = new ReadMultipleRegistersRequest(start, cnt);
@@ -124,36 +139,24 @@ public class EasyModbusMaster
   public Boolean[] getCoils () throws Exception
   {
     return getMultipleCoils(0, rCoils+wCoils);
-//    while (connection.isConnected());
-//    connection.connect();
-//
-//    ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
-//
-//    ModbusRequest request = new ReadCoilsRequest(0, rCoils + wCoils);
-//    request.setUnitID(unitId);
-//    transaction.setRequest(request);
-//    transaction.execute();
-//    connection.close();
-//    String hexMessage = transaction.getResponse().getHexMessage();
-//    System.out.println(hexMessage);
-//    hexMessage = hexMessage.replaceAll(" ", "");
-//
-//    hexMessage = hexMessage.substring(18); // Extracted the Data
-//    System.out.println(hexMessage);
-//    String orderedHex = "";
-//    while (!hexMessage.isEmpty())
-//    {
-//      orderedHex = String.format("%s%s%s", hexMessage.charAt(0), hexMessage.charAt(1), orderedHex);
-//
-//      hexMessage = hexMessage.substring(2);
-//    }
-//    System.out.println(orderedHex);
-//    return new HexToBin(orderedHex, rCoils + wCoils).getCoils();
+  }
+  
+  public Boolean getCoil(int id) throws Exception 
+  {
+    if(id<0 || id>=wCoils+rCoils)
+      throw new Exception("Coil out of range");
+    Boolean[] rv = getMultipleCoils(id, 1);
+    return rv[0];
   }
   
   public Boolean[] getMultipleCoils (int start, int cnt) throws Exception
   {
-    while (connection.isConnected());
+    // Range check
+    if(start < 0) 
+      throw new Exception("Index des zu lesenden Coils ist kleiner 0.");
+    if(start+cnt >= rCoils + wCoils)
+      throw new Exception("Index des zu beschreibenden Registers ist zu groß.");
+    
     connection.connect();
 
     ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
@@ -176,12 +179,13 @@ public class EasyModbusMaster
 
       hexMessage = hexMessage.substring(2);
     }
-    return new HexToBin(orderedHex, rCoils + wCoils).getCoils();
+    return hexToBinConvert(orderedHex, rCoils + wCoils);
   }
 
 
   public void writeCoil (int id, boolean state) throws Exception
   {
+    // Range check
     if (id < 0)
     {
       throw new Exception("Index des zu beschreibenden Coils ist kleiner 0.");
@@ -190,7 +194,6 @@ public class EasyModbusMaster
     {
       throw new Exception("Index des zu beschreibenden Coils ist zu groß.");
     }
-    while (connection.isConnected());
     connection.connect();
 
     ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);
@@ -205,6 +208,7 @@ public class EasyModbusMaster
 
   public void writeRegister (int index, int value) throws Exception
   {
+    // Range check
     if (index < 0)
     {
       throw new Exception("Index des zu beschreibenden Registers ist kleiner 0.");
@@ -213,7 +217,6 @@ public class EasyModbusMaster
     {
       throw new Exception("Index des zu beschreibenden Registers ist zu groß.");
     }
-    while (connection.isConnected());
     connection.connect();
 
     ModbusTCPTransaction transaction = new ModbusTCPTransaction(connection);

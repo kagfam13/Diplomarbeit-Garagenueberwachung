@@ -39,7 +39,6 @@ public class WRSlave extends javax.swing.JFrame {
     public WRSlave() {
         initComponents();
         slave = new EasyModbusSlave(Modbus.DEFAULT_PORT, Modbus.DEFAULT_UNIT_ID, 0, 0, 1, 0);
-        System.out.println(slave.getRegisterCount());
         new lulu().execute();
     }
 
